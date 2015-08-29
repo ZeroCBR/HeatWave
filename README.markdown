@@ -179,6 +179,16 @@ should be entered in the MinGW shell):
 
 TODO set up rails/rake environments
 
+### Modules
+
+The project is split into gems with minimal coupling between them.
+
+Create a gem using bundle from the repository root:
+
+```bash
+% bundle gem gem_name
+```
+
 ### Setup
 
 1. Perform the setup steps for deployment.
