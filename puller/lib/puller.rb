@@ -1,6 +1,5 @@
 require 'puller/puller'
 require 'puller/version'
 require 'puller/getter'
-require 'puller/saver'
 require 'puller/processor'
 require 'open-uri'
