@@ -70,11 +70,63 @@ Use both Rubocop and other team members' code reviews to verify this.
 Committing to `master` without justifying all deviations from the styleguide
 will result in commits being reverted.
 
+## Gems
+
+The project is split into gems with minimal coupling between them.
+
+Create a gem using bundle from the repository root:
+
+```bash
+% bundle gem gem_name
+```
+
+## Dependencies
+
+Gems should specify their dependencies in the gemspec,
+Gemfile, and Gemfile.lock, depending on the type of gem.
+
+Development dependencies (eg. build or testing tools)
+should be included in `gem_name.gemspec` using, for example:
+```ruby
+spec.add_development_dependency "bundler", "~> 1.10"
+```
+The gemspec file should always be checked in.
+
+Anything which is a standalone executable should specify
+their dependencies in `Gemfile.lock`, which should be checked in.
+
+Anything which is a library should specify its dependencies in
+the `gem_name.gemspec`, which should be checked in.
+`Gemfile.lock` should not be checked in for libraries.
+
+## Rake
+
+Rake should be used to manage build tasks.
+
+All gems outside the rails app should include the following tasks,
+in addition to the built in tasks.
+
+* `test` -- runs the gem's tests.
+* `rubocop` -- runs Rubocop on the gem.
+* `validate` -- runs Rubocop and all tests for the gem.
+
 ## Testing
 
 All units should be tested at least to some extent.
 Committing any complex code to `master` without adding new tests
 and/or updating old tests will result in commits being reverted.
+
+In general, we use a test file for each source file.
+
+Tests may use whatever framework you wish, but it is
+suggested that you start with `Test::Unit`, since it is
+built in and straightforward.
+
+Tests must be runnable by calling `% bundle exec rake test`
+from the gem directory.
+This task should include any setup tasks required for running
+the tests.
+This ensures that running tests is not a painful process.
 
 # The Rails Application
 
