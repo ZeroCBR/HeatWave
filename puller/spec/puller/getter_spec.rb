@@ -42,15 +42,15 @@ describe Puller::Getter do
     end
 
     context 'with real ftp', slow: 'network access' do
+      before(:context) do
+        @hostname = 'ftp2.bom.gov.au'
+      end
+
       let(:source) do
         { hostname: @hostname,
           filename: @filename,
           user: @user,
           passwd: @passwd }
-      end
-
-      before(:context) do
-        @hostname = 'ftp2.bom.gov.au'
       end
 
       it 'is expected to equal the ftp result' do

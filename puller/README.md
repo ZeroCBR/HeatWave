@@ -3,25 +3,67 @@
 This gem provides an interface for pulling weather data using a
 supplied weather getter, weather processor, and weather saver.
 
-## Installation
+## Validation
 
-Add this line to your application's Gemfile:
+Run the following shell command to validate the application:
 
-```ruby
-gem 'puller'
+```Ruby
+
+$ cd $REPOSITORY_ROOT/puller
+$ bundle exec rake validate
+
 ```
 
-And then execute:
+## Installation
 
-    $ bundle
+Install the application through rake with the following commands:
 
-Or install it yourself as:
-
-    $ gem install puller
+```bash
+$ cd $REPOSITORY_PATH/puller
+$ bundle exec rake install
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+Install the application using the instructions above.
+
+To pull weather data in Victoria for the next week, run:
+
+```bash
+$ cd $ANY_DIRECTORY
+$ puller relative/path/to/datastore
+```
+
+This will pull weather data from BoM, and extract the upcoming
+maximum temperatures for each region, and save them to disk
+in a binary format.
+Any preexisting datastore in the same file will be overwritten.
+
+To load the data in any Ruby script, use the following code:
+
+```Ruby
+
+data = Marshal.load(File.open('relative/path/to/datastore'))
+
+```
+
+The data will be loaded as a hash with:
+
+* The BoM location IDs as the keys.
+* An array of the maximum temperatures forcasted for the next 7 days
+  at that location.
+
+For example:
+
+```Ruby
+
+{
+  90180 => [13, 15, 15, 14, 13, 14, 16],
+  72146 => [15, 15, 17, 14, 17, 16, 17],
+  # ...
+}
+
+```
 
 ## Development
 
