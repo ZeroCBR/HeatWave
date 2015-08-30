@@ -7,7 +7,7 @@ describe Puller do
     expect(Puller::VERSION).not_to be nil
   end
 
-  describe '::pull_from' do
+  describe '.pull_from' do
     let(:source) do
       { hostname: 'ftp2.bom.gov.au',
         filename: '/anon/gen/fwo/IDA00003.dat',
@@ -15,18 +15,25 @@ describe Puller do
         passwd: '' }
     end
 
-    let(:real_pipeline) do
-      { getter: Puller::Getter,
-        processor: Puller::Processor,
-        marshaller: Marshal }
-    end
+    context 'with a real pipeline', speed: 'slow' do
+      let(:pipeline) do
+        { getter: Puller::Getter,
+          processor: Puller::Processor,
+          marshaller: Marshal }
+      end
 
-    it 'actually works', slow: 'network access' do
-      Puller.pull_from(source, real_pipeline)
+      let(:minimum_region_count) { 10 } # Chosen arbitrarily
+
+      it 'actually works', slow: 'network access' do
+        result = Puller.pull_from(source, pipeline)
+
+        loaded = Marshal.load(result)
+        expect(loaded.size).to be > minimum_region_count
+      end
     end
 
     context 'with a stubbed pipeline' do
-      subject { Puller.pull_from(source, stub_pipeline) }
+      subject { Puller.pull_from(source, pipeline) }
 
       let(:content) { 'content' }
       let(:data) { 'data' }
@@ -41,8 +48,10 @@ describe Puller do
         allow(processor).to receive(:data_in).with(content).once { data }
       end
 
-      let(:stub_pipeline) do
-        { getter: getter, processor: processor, marshaller: Marshal }
+      let(:pipeline) do
+        { getter: getter,
+          processor: processor,
+          marshaller: Marshal }
       end
 
       it 'uses the getter to retrieve data' do

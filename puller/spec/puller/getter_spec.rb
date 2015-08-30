@@ -25,7 +25,7 @@ describe Puller::Getter do
       end
 
       before(:context) do
-        @port = 21212 # rubocop:disable Style/NumericLiterals
+        @port = 21_212
         @content = 'the is a test file with test content'
         @server = FakeFtp::Server.new(@port, @port + 1)
         @server.start
@@ -41,7 +41,7 @@ describe Puller::Getter do
       end
     end
 
-    context 'with real ftp', slow: 'network access' do
+    context 'with real ftp', speed: 'slow' do
       before(:context) do
         @hostname = 'ftp2.bom.gov.au'
       end
