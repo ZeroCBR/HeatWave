@@ -14,59 +14,51 @@ describe Puller do
         user: 'ftp',
         passwd: '' }
     end
+
     let(:real_pipeline) do
       { getter: Puller::Getter,
         processor: Puller::Processor,
         marshaller: Marshal }
     end
 
-    before(:context) do
-      @destination = Tempfile.new('puller_pull_from_spec_output')
-    end
-
-    before(:example) do
-      @destination.truncate 0
-    end
-
     it 'actually works', slow: 'network access' do
-      Puller.pull_from(source, real_pipeline, @destination)
+      Puller.pull_from(source, real_pipeline)
     end
 
     context 'with a stubbed pipeline' do
+      subject { Puller.pull_from(source, stub_pipeline) }
+
       let(:content) { 'content' }
       let(:data) { 'data' }
-      let(:getter) do
-        it = double('Getter')
-        allow(it).to receive(:get).with(source) { content }
-        it
+
+      let(:getter) { double('Getter') }
+      let(:processor) { double('Processor') }
+
+      let(:expected) { Marshal.dump(data) }
+
+      before(:example) do
+        allow(getter).to receive(:get).with(source).once { content }
+        allow(processor).to receive(:data_in).with(content).once { data }
       end
-      let(:processor) do
-        it = double('Processor')
-        allow(it).to receive(:data_in).with(content) { data }
-        it
-      end
-      let(:marshaller) do
-        it = double('Marshaller')
-        allow(it).to receive(:dump).with(data, @destination) {}
-        it
-      end
+
       let(:stub_pipeline) do
-        { getter: getter, processor: processor, marshaller: marshaller }
+        { getter: getter, processor: processor, marshaller: Marshal }
       end
 
       it 'uses the getter to retrieve data' do
         expect(getter).to receive(:get).with(source)
-        Puller.pull_from(source, stub_pipeline, @destination)
+        is_expected.to eq(expected)
       end
 
       it 'forwards the content to the processor' do
         expect(processor).to receive(:data_in).with(content)
-        Puller.pull_from(source, stub_pipeline, @destination)
+        is_expected.to eq(expected)
       end
 
       it 'marshals the processed data with the marshaller' do
-        expect(marshaller).to receive(:dump).with(data, @destination)
-        Puller.pull_from(source, stub_pipeline, @destination)
+        expected # Prevent breaking the expectation bellow:
+        expect(Marshal).to receive(:dump).with(data).once.and_call_original
+        is_expected.to eq(expected)
       end
     end
   end

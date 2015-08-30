@@ -16,8 +16,4 @@ pipeline = { getter: Puller::Getter,
              processor: Puller::Processor,
              marshaller: Marshal }
 
-out_filename = ARGV.shift
-
-out_file = File.open(out_filename, mode: 'w')
-
-Puller.pull_from(source, pipeline, out_file)
+puts Puller.pull_from(source, pipeline)

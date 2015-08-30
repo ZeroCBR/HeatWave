@@ -8,10 +8,8 @@ supplied weather getter, weather processor, and weather saver.
 Run the following shell command to validate the application:
 
 ```Ruby
-
 $ cd $REPOSITORY_ROOT/puller
 $ bundle exec rake validate
-
 ```
 
 ## Installation
@@ -31,20 +29,31 @@ To pull weather data in Victoria for the next week, run:
 
 ```bash
 $ cd $ANY_DIRECTORY
-$ puller relative/path/to/datastore
+$ puller
 ```
 
 This will pull weather data from BoM, and extract the upcoming
-maximum temperatures for each region, and save them to disk
-in a binary format.
-Any preexisting datastore in the same file will be overwritten.
+maximum temperatures for each region, marshal the result,
+and print it to stdout.
 
 To load the data in any Ruby script, use the following code:
 
 ```Ruby
 
-data = Marshal.load(File.open('relative/path/to/datastore'))
+data = Marshal.load(marshalled_string)
 
+```
+
+`marshalled_string` should be a string which was loaded,
+for example through stdin by piping from puller:
+```bash
+$ puller | my_script.rb
+```
+
+or by reading a file which puller output was redirected to:
+```bash
+$ puller > data_store
+$ my_script.rb < data_store
 ```
 
 The data will be loaded as a hash with:
@@ -64,10 +73,4 @@ For example:
 }
 
 ```
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment. Run `bundle exec puller` to use the gem in this directory, ignoring other installed copies of this gem.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
