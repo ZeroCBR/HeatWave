@@ -1,4 +1,6 @@
 class Attribute < ActiveRecord::Base
-	has_and_belongs_to_many :users
-	has_and_belongs_to_many :rules
+	has_many :attributes_rules
+	has_many :a_r, :through => :attributes_rules, :class_name => "Rule"
+	has_many :users_attributes
+	has_many :u_a, :through => :users_attributes, :class_name => "User"
 end
