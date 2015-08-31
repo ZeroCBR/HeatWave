@@ -5,18 +5,18 @@ class AttributesControllerTest < ActionController::TestCase
     @attribute = attributes(:one)
   end
 
-  test "should get index" do
+  test 'should get index' do
     get :index
     assert_response :success
     assert_not_nil assigns(:attributes)
   end
 
-  test "should get new" do
+  test 'should get new' do
     get :new
     assert_response :success
   end
 
-  test "should create attribute" do
+  test 'should create attribute' do
     assert_difference('Attribute.count') do
       post :create, attribute: { annotation: @attribute.annotation, name: @attribute.name }
     end
@@ -24,22 +24,22 @@ class AttributesControllerTest < ActionController::TestCase
     assert_redirected_to attribute_path(assigns(:attribute))
   end
 
-  test "should show attribute" do
+  test 'should show attribute' do
     get :show, id: @attribute
     assert_response :success
   end
 
-  test "should get edit" do
+  test 'should get edit' do
     get :edit, id: @attribute
     assert_response :success
   end
 
-  test "should update attribute" do
+  test 'should update attribute' do
     patch :update, id: @attribute, attribute: { annotation: @attribute.annotation, name: @attribute.name }
     assert_redirected_to attribute_path(assigns(:attribute))
   end
 
-  test "should destroy attribute" do
+  test 'should destroy attribute' do
     assert_difference('Attribute.count', -1) do
       delete :destroy, id: @attribute
     end

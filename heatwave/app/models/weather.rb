@@ -10,5 +10,4 @@ class Weather < ActiveRecord::Base
       create(target.merge(change))
     end
   end
-	
 end

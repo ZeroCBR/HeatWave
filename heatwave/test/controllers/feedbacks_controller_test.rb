@@ -5,18 +5,18 @@ class FeedbacksControllerTest < ActionController::TestCase
     @feedback = feedbacks(:one)
   end
 
-  test "should get index" do
+  test 'should get index' do
     get :index
     assert_response :success
     assert_not_nil assigns(:feedbacks)
   end
 
-  test "should get new" do
+  test 'should get new' do
     get :new
     assert_response :success
   end
 
-  test "should create feedback" do
+  test 'should create feedback' do
     assert_difference('Feedback.count') do
       post :create, feedback: { comment: @feedback.comment, content: @feedback.content, responded: @feedback.responded, title: @feedback.title }
     end
@@ -24,22 +24,22 @@ class FeedbacksControllerTest < ActionController::TestCase
     assert_redirected_to feedback_path(assigns(:feedback))
   end
 
-  test "should show feedback" do
+  test 'should show feedback' do
     get :show, id: @feedback
     assert_response :success
   end
 
-  test "should get edit" do
+  test 'should get edit' do
     get :edit, id: @feedback
     assert_response :success
   end
 
-  test "should update feedback" do
+  test 'should update feedback' do
     patch :update, id: @feedback, feedback: { comment: @feedback.comment, content: @feedback.content, responded: @feedback.responded, title: @feedback.title }
     assert_redirected_to feedback_path(assigns(:feedback))
   end
 
-  test "should destroy feedback" do
+  test 'should destroy feedback' do
     assert_difference('Feedback.count', -1) do
       delete :destroy, id: @feedback
     end
