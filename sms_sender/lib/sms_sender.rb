@@ -21,11 +21,11 @@ module SmsSender
   #
   # * The token with which we may access the API
   #
-  def self::get_token(c_id, c_secret, rest_client)
+  def self::get_token(client_id, client_secret, rest_client)
     # get an hour-long session token
     resp = rest_client.get 'https://staging.api.telstra.com/v1/oauth/token?'\
-      "client_id=#{c_id}"\
-      "&client_secret=#{c_secret}"\
+      "client_id=#{client_id}"\
+      "&client_secret=#{client_secret}"\
       '&grant_type=client_credentials&scope=SMS'
 
     JSON.parse(resp)['access_token']
@@ -52,7 +52,6 @@ module SmsSender
     resp = rest_client.post 'https://staging.api.telstra.com/v1/sms/messages',
                             { to: number, body: body }.to_json,
                             header
-
     JSON.parse(resp)['messageId']
   end
 end
@@ -62,7 +61,6 @@ end
 #
 class ExampleSender
   include SmsSender
-
   CLIENT_ID = 'jiUppg79kSishjRu6OSkk8k2LCTm7VJE'
   CLIENT_SECRET = 'LLPYNnRboAj1pBtQ'
   ##
