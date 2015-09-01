@@ -1,3 +1,4 @@
+# Control the history page
 class HistoriesController < ApplicationController
   before_action :set_history, only: [:show, :edit, :update, :destroy]
 
@@ -28,11 +29,15 @@ class HistoriesController < ApplicationController
 
     respond_to do |format|
       if @history.save
-        format.html { redirect_to @history, notice: 'History was successfully created.' }
+        format.html do
+          redirect_to @history, notice: 'History was successfully created.'
+        end
         format.json { render :show, status: :created, location: @history }
       else
         format.html { render :new }
-        format.json { render json: @history.errors, status: :unprocessable_entity }
+        format.json do
+          render json: @history.errors, status: :unprocessable_entity
+        end
       end
     end
   end
@@ -42,11 +47,15 @@ class HistoriesController < ApplicationController
   def update
     respond_to do |format|
       if @history.update(history_params)
-        format.html { redirect_to @history, notice: 'History was successfully updated.' }
+        format.html do
+          redirect_to @history, notice: 'History was successfully updated.'
+        end
         format.json { render :show, status: :ok, location: @history }
       else
         format.html { render :edit }
-        format.json { render json: @history.errors, status: :unprocessable_entity }
+        format.json do
+          render json: @history.errors, status: :unprocessable_entity
+        end
       end
     end
   end
@@ -56,7 +65,10 @@ class HistoriesController < ApplicationController
   def destroy
     @history.destroy
     respond_to do |format|
-      format.html { redirect_to histories_url, notice: 'History was successfully destroyed.' }
+      format.html do
+        redirect_to histories_url,
+                    notice: 'History was successfully destroyed.'
+      end
       format.json { head :no_content }
     end
   end
@@ -68,7 +80,8 @@ class HistoriesController < ApplicationController
     @history = History.find(params[:id])
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
+  # Never trust parameters from the scary internet, only allow the
+  # white list through.
   def history_params
     params.require(:history).permit(:title, :content)
   end

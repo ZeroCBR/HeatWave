@@ -1,3 +1,4 @@
+# Control the rule page
 class RulesController < ApplicationController
   before_action :set_rule, only: [:show, :edit, :update, :destroy]
 
@@ -25,10 +26,11 @@ class RulesController < ApplicationController
   # POST /rules.json
   def create
     @rule = Rule.new(rule_params)
-
     respond_to do |format|
       if @rule.save
-        format.html { redirect_to @rule, notice: 'Rule was successfully created.' }
+        format.html do
+          redirect_to @rule, notice: 'Rule was successfully created.'
+        end
         format.json { render :show, status: :created, location: @rule }
       else
         format.html { render :new }
@@ -42,11 +44,15 @@ class RulesController < ApplicationController
   def update
     respond_to do |format|
       if @rule.update(rule_params)
-        format.html { redirect_to @rule, notice: 'Rule was successfully updated.' }
+        format.html do
+          redirect_to @rule, notice: 'Rule was successfully updated.'
+        end
         format.json { render :show, status: :ok, location: @rule }
       else
         format.html { render :edit }
-        format.json { render json: @rule.errors, status: :unprocessable_entity }
+        format.json do
+          render json: @rule.errors, status: :unprocessable_entity
+        end
       end
     end
   end
@@ -56,7 +62,9 @@ class RulesController < ApplicationController
   def destroy
     @rule.destroy
     respond_to do |format|
-      format.html { redirect_to rules_url, notice: 'Rule was successfully destroyed.' }
+      format.html do
+        redirect_to rules_url, notice: 'Rule was successfully destroyed.'
+      end
       format.json { head :no_content }
     end
   end
@@ -68,7 +76,8 @@ class RulesController < ApplicationController
     @rule = Rule.find(params[:id])
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
+  # Never trust parameters from the scary internet, only allow the
+  # white list through.
   def rule_params
     params.require(:rule).permit(:name, :annotation)
   end

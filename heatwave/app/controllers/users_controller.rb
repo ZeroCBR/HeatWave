@@ -1,3 +1,4 @@
+# Control the user page
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
@@ -28,11 +29,15 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.html do
+          redirect_to(@user, notice: 'User was successfully created.')
+        end
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        format.json do
+          render json: @user.errors, status: :unprocessable_entity
+        end
       end
     end
   end
@@ -42,11 +47,15 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.html do
+          redirect_to @user, notice: 'User was successfully updated.'
+        end
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        format.json do
+          render json: @user.errors, status: :unprocessable_entity
+        end
       end
     end
   end
@@ -56,7 +65,9 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+      format.html do
+        redirect_to users_url, notice: 'User was successfully destroyed.'
+      end
       format.json { head :no_content }
     end
   end
@@ -68,8 +79,12 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
+  # Never trust parameters from the scary internet, only allow the
+  # white list through.
   def user_params
-    params.require(:user).permit(:username, :f_name, :l_name, :password, :adminAccess, :gender, :address, :phone, :age, :email, :suscribed, :birthday, :postcode)
+    params.require(:user).permit(:username, :f_name,
+                                 :l_name, :password, :adminAccess, :gender,
+                                 :address, :phone, :age, :email, :suscribed,
+                                 :birthday, :postcode)
   end
 end

@@ -1,3 +1,4 @@
+# Control the attribute page
 class AttributesController < ApplicationController
   before_action :set_attribute, only: [:show, :edit, :update, :destroy]
 
@@ -25,14 +26,17 @@ class AttributesController < ApplicationController
   # POST /attributes.json
   def create
     @attribute = Attribute.new(attribute_params)
-
     respond_to do |format|
       if @attribute.save
-        format.html { redirect_to @attribute, notice: 'Attribute was successfully created.' }
+        format.html do
+          redirect_to @attribute, notice: 'Attribute was successfully created.'
+        end
         format.json { render :show, status: :created, location: @attribute }
       else
         format.html { render :new }
-        format.json { render json: @attribute.errors, status: :unprocessable_entity }
+        format.json do
+          render json: @attribute.errors, status: :unprocessable_entity
+        end
       end
     end
   end
@@ -42,11 +46,15 @@ class AttributesController < ApplicationController
   def update
     respond_to do |format|
       if @attribute.update(attribute_params)
-        format.html { redirect_to @attribute, notice: 'Attribute was successfully updated.' }
+        format.html do
+          redirect_to @attribute, notice: 'Attribute was successfully updated.'
+        end
         format.json { render :show, status: :ok, location: @attribute }
       else
         format.html { render :edit }
-        format.json { render json: @attribute.errors, status: :unprocessable_entity }
+        format.json do
+          render json: @attribute.errors, status: :unprocessable_entity
+        end
       end
     end
   end
@@ -56,7 +64,10 @@ class AttributesController < ApplicationController
   def destroy
     @attribute.destroy
     respond_to do |format|
-      format.html { redirect_to attributes_url, notice: 'Attribute was successfully destroyed.' }
+      format.html do
+        redirect_to attributes_url,
+                    notice: 'Attribute was successfully destroyed.'
+      end
       format.json { head :no_content }
     end
   end
@@ -68,7 +79,8 @@ class AttributesController < ApplicationController
     @attribute = Attribute.find(params[:id])
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
+  # Never trust parameters from the scary internet, only allow the
+  # white list through.
   def attribute_params
     params.require(:attribute).permit(:name, :annotation)
   end
