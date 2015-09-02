@@ -49,6 +49,19 @@ From the `mail_example` directory, run the following commands:
 % bin/console # Run the gem as a console application.
 ```
 
+To use your own gmail account, you'll need to enable
+'less secure applications' in your account settings.
+This can be done with:
+Gmail 'My Account' page
+\> Sign in and Security
+\> Connected Apps and Sites
+\< Allow Less Secure Apps: switch to ON.
+
+Alternatively, use the team account which has been set up
+for this purpose.
+Address: heatwaveorange@gmail.com
+Password: heatwaveorange1234
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
