@@ -6,9 +6,7 @@ module Puller
     ID_FIELD = 0
     NUM_FIELDS = 7
     FIELD_SEP = 2
-    MIN_FIELD = 9
-    MAX_FIELD = MIN_FIELD + NUM_FIELDS * FIELD_SEP
-    MAX_FIELDS = (MIN_FIELD...MAX_FIELD).step(FIELD_SEP)
+    MIN_FIELD = 7
     DELIMITTER = '#'
 
     HEADER = \
@@ -25,12 +23,26 @@ module Puller
       lines.drop(1).each do |line|
         fields = line.split(DELIMITTER)
         id = fields[ID_FIELD].to_i
-        data[id] = MAX_FIELDS.map { |i| fields[i].to_i }
+        field_indices = indices_for(fields)
+        data[id] = field_indices.map { |i| fields[i].to_i }
       end
 
       data
     end
 
     class FormatError < StandardError; end
+
+    private
+
+    def self.indices_for(fields)
+      if fields[MIN_FIELD] == ''
+        min = MIN_FIELD + FIELD_SEP
+        max = MIN_FIELD + (NUM_FIELDS) * FIELD_SEP
+      else
+        min = MIN_FIELD
+        max = MIN_FIELD + (NUM_FIELDS - 1) * FIELD_SEP
+      end
+      (min..max).step(FIELD_SEP)
+    end
   end
 end

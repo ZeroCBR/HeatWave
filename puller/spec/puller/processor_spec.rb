@@ -11,8 +11,8 @@ describe Puller::Processor do
       '#Possible rain.#'
 
     @albury = \
-      '072146#Albury-Wodonga#VIC#20150829#20150829#161521###2#16#1#16#1#15#4#' \
-      '16#7#16#5#16#3#15#Partly cloudy.#Early fog and frost.#' \
+      '072146#Albury-Wodonga#VIC#20150829#20150829#161521#2#16#1#16#1#15#4#' \
+      '16#7#16#5#16#3#15###Partly cloudy.#Early fog and frost.#' \
       'Morning frost. Mostly sunny.#Cloudy.#Rain increasing.#Shower or two.#' \
       'Partly cloudy.#Partly cloudy.#'
 
