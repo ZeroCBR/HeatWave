@@ -1,6 +1,39 @@
-require "bundler/gem_tasks"
-require "rspec/core/rake_task"
+require 'bundler/gem_tasks'
+require 'rspec/core/rake_task'
 
 RSpec::Core::RakeTask.new(:spec)
 
 task :default => :spec
+
+namespace :test do
+  task :acceptance do
+    #require 'lib/mail_example'
+    require 'mail_example'
+
+    # Case 1
+    recipient = 'n.pummeroy@student.unimelb.edu.au'
+    message = 'hello'
+    MailExample.example_send(recipient, message)
+
+    # Case 2
+    recipient = 'j.mcmahon3@student.unimelb.edu.au'
+    message = "\nh\ne\nl\nl\no\n"
+    MailExample.example_send(recipient, message)
+
+    # Case 3
+    recipient = 'j.mcmahon3@student.unimelb.edu.au'
+    message = ''
+    MailExample.example_send(recipient, message)
+
+    # Case 4
+    recipient = 'n.pummeroy@student.unimelb.edu.au'
+    message = <<-EOF.gsub(/^\s+\|/, '')
+    |Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut mi massa, efficitur at vehicula auctor, feugiat et eros. Morbi fringilla vitae urna a scelerisque. Vivamus bibendum congue elit, eget elementum elit volutpat eget. Duis at iaculis metus. Nullam tincidunt suscipit dolor, a fringilla neque feugiat sed. Proin quis placerat tortor. Proin hendrerit ligula id aliquet vulputate. Nam luctus pulvinar vestibulum. Nam pretium sapien risus, id vehicula lacus sodales id. Curabitur laoreet felis id eleifend finibus.
+    |
+    |Nullam vel dapibus sem. Donec nisl dui, dignissim sit amet aliquam eget, mattis eu nunc. Donec efficitur nec arcu eget convallis. In egestas velit urna, eget posuere dui porttitor ut. Cras accumsan eros quis velit imperdiet porttitor. Ut euismod iaculis massa sit amet pellentesque. Donec ultricies aliquet neque sit amet sollicitudin. Nullam dignissim eros laoreet elementum hendrerit. Proin a mattis risus. Integer pulvinar faucibus lorem ut cursus. Donec tincidunt efficitur iaculis. Donec a urna ut diam sodales imperdiet. Etiam imperdiet sit amet magna vitae mollis. Integer quis ipsum ex. Quisque volutpat facilisis pretium. Duis dictum euismod metus sed mollis.
+    |
+    |Suspendisse et ligula quis risus tincidunt luctus. Vestibulum ac vestibulum quam. Aliquam porttitor dignissim justo, eu tincidunt elit lacinia eu. Etiam dapibus efficitur magna sed placerat. Suspendisse bibendum, magna non tempus suscipit, ex lacus pharetra nulla, eget fermentum augue tortor non nisl. Sed eleifend metus in magna condimentum maximus. Nulla gravida lacinia lacus, quis pulvinar justo auctor vel. Morbi nec libero sit amet risus egestas viverra non a ipsum. Suspendisse ex libero, ultricies vitae diam vitae, lacinia vulputate est. Vivamus convallis, dui at consequat pulvinar, odio nisl elementum orci, id convallis urna elit sed lectus. Phasellus scelerisque eget felis vel rhoncus. Maecenas odio lorem, porttitor ut lacinia sed, egestas ac nisl. Nulla vehicula tortor ligula, sit amet turpis duis.
+    EOF
+    MailExample.example_send(recipient, message)
+  end
+end

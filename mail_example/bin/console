@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
-require "bundler/setup"
-require "mail_example"
+require 'bundler/setup'
+require 'mail_example'
 
 # You can add fixtures and/or initialization code here to make experimenting
 # with your gem easier. You can also use a different console, if you like.
@@ -11,4 +11,15 @@ require "mail_example"
 # Pry.start
 
 include MailExample
-MailExample.example_run
+
+def input(prompt)
+  puts prompt
+  gets
+end
+
+def long_input(prompt)
+  puts prompt
+  gets nil
+end
+
+MailExample.example_send(input('Recipient:'), input('Message:'))
