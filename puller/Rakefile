@@ -1,6 +1,7 @@
 require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
+require 'rdoc/task'
 
 RSpec::Core::RakeTask.new(:spec)
 RuboCop::RakeTask.new(:rubocop) do |task|
@@ -13,9 +14,39 @@ namespace :test do
   RSpec::Core::RakeTask.new(:fast) do |task|
     task.rspec_opts = '--tag ~speed:slow'
   end
+
+  task :acceptance do
+    require 'puller'
+
+    source = { hostname: 'ftp2.bom.gov.au',
+               filename: '/anon/gen/fwo/IDA00003.dat',
+               user: 'ftp',
+               passwd: '' }
+
+    ## Custom printer for acceptance tests.
+    module CustomPrinter
+      def self::dump(data)
+        data.each_pair do |name, maxes|
+          puts "Region: #{name}"
+          puts maxes
+        end
+      end
+    end
+
+    pipeline = { getter: Puller::Getter,
+                 processor: Puller::Processor::ByName,
+                 marshaler: CustomPrinter }
+
+    Puller.pull_from(source, pipeline)
+  end
 end
 
 task test: :spec # Run all tests for this gem.
 
 task validate: :test
 task validate: :rubocop
+
+RDoc::Task.new :rdoc do |task|
+  task.main = 'README.md'
+  task.rdoc_files.include('README.md', 'lib/**/*.rb')
+end

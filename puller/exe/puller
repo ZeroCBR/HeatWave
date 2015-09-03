@@ -2,11 +2,6 @@
 
 require 'puller'
 
-HOSTNAME = 'ftp2.bom.gov.au'
-FILENAME = '/anon/gen/fwo/IDA00003.dat'
-USER = 'ftp'
-PASSWD = ''
-
 source = { hostname: 'ftp2.bom.gov.au',
            filename: '/anon/gen/fwo/IDA00003.dat',
            user: 'ftp',
@@ -14,6 +9,6 @@ source = { hostname: 'ftp2.bom.gov.au',
 
 pipeline = { getter: Puller::Getter,
              processor: Puller::Processor,
-             marshaller: Marshal }
+             marshaler: Marshal }
 
 puts Puller.pull_from(source, pipeline)

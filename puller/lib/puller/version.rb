@@ -1,4 +1,6 @@
 #:nodoc:
 module Puller
-  VERSION = '0.1.0'
+  ##
+  # Version 0.0.3 - patched to handle changing data format.
+  VERSION = '0.0.3'
 end

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    puller (0.1.0)
+    puller (0.0.3)
 
 GEM
   remote: https://rubygems.org/

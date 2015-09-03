@@ -19,7 +19,7 @@ describe Puller do
       let(:pipeline) do
         { getter: Puller::Getter,
           processor: Puller::Processor,
-          marshaller: Marshal }
+          marshaler: Marshal }
       end
 
       let(:minimum_region_count) { 10 } # Chosen arbitrarily
@@ -51,7 +51,7 @@ describe Puller do
       let(:pipeline) do
         { getter: getter,
           processor: processor,
-          marshaller: Marshal }
+          marshaler: Marshal }
       end
 
       it 'uses the getter to retrieve data' do
@@ -64,7 +64,7 @@ describe Puller do
         is_expected.to eq(expected)
       end
 
-      it 'marshals the processed data with the marshaller' do
+      it 'marshals the processed data with the marshaler' do
         expected # Prevent breaking the expectation bellow:
         expect(Marshal).to receive(:dump).with(data).once.and_call_original
         is_expected.to eq(expected)

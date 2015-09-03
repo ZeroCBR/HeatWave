@@ -45,9 +45,9 @@ describe Puller::Processor do
     context 'with the header line and one data line' do
       let(:lines) { [@header, @aireys] }
 
-      it 'should keep the data point' do
+      it 'is expected to return a single element hash by id' do
         is_expected.to eq(
-          90_180 => [12, 13, 15, 14, 14, 13, 12]
+          '090180' => [12, 13, 15, 14, 14, 13, 12]
         )
       end
     end
@@ -64,12 +64,118 @@ describe Puller::Processor do
     context 'with many data lines' do
       let(:lines) { [@header, @albury, @edenhope, @aireys] }
 
-      it 'is expected to keep all the data points' do
+      it 'is expected to return a many element hash by id' do
         is_expected.to eq(
-          72_146 => [16, 16, 15, 16, 16, 16, 15], # Albury
-          90_180 => [12, 13, 15, 14, 14, 13, 12], # Aireys
-          79_099 => [14, 15, 17, 14, 15, 14, 13] # Edenhope
+          '072146' => [16, 16, 15, 16, 16, 16, 15], # Albury
+          '090180' => [12, 13, 15, 14, 14, 13, 12], # Aireys
+          '079099' => [14, 15, 17, 14, 15, 14, 13] # Edenhope
         )
+      end
+    end
+  end
+
+  describe '.data_by_name' do
+    subject { Puller::Processor.data_by_name(lines) }
+
+    context 'with no lines' do
+      let(:lines) { [] }
+
+      it 'is expected to fail' do
+        expect { Puller::Processor.data_in(lines) }.to \
+          raise_error(Puller::Processor::FormatError)
+      end
+    end
+
+    context 'with just the header line' do
+      let(:lines) { [@header] }
+
+      it 'is expected to return an empty dataset' do
+        is_expected.to eq({})
+      end
+    end
+
+    context 'with the header line and one data line' do
+      let(:lines) { [@header, @aireys] }
+
+      it 'is expected to return a single element hash by id' do
+        is_expected.to eq(
+          'Aireys Inlet' => [12, 13, 15, 14, 14, 13, 12]
+        )
+      end
+    end
+
+    context 'with no header line but a data line' do
+      let(:lines) { [@aireys] }
+
+      it 'is expected to raise an error' do
+        expect { Puller::Processor.data_in(lines) }.to \
+          raise_error(Puller::Processor::FormatError)
+      end
+    end
+
+    context 'with many data lines' do
+      let(:lines) { [@header, @albury, @edenhope, @aireys] }
+
+      it 'is expected to return a many element hash by name' do
+        is_expected.to eq(
+          'Albury-Wodonga' => [16, 16, 15, 16, 16, 16, 15], # Albury
+          'Aireys Inlet' => [12, 13, 15, 14, 14, 13, 12], # Aireys
+          'Edenhope' => [14, 15, 17, 14, 15, 14, 13] # Edenhope
+        )
+      end
+    end
+  end
+
+  describe '::ByName' do
+    describe '.data_in' do
+      subject { Puller::Processor::ByName.data_in(lines) }
+
+      context 'with no lines' do
+        let(:lines) { [] }
+
+        it 'is expected to fail' do
+          expect { Puller::Processor.data_in(lines) }.to \
+            raise_error(Puller::Processor::FormatError)
+        end
+      end
+
+      context 'with just the header line' do
+        let(:lines) { [@header] }
+
+        it 'is expected to return an empty dataset' do
+          is_expected.to eq({})
+        end
+      end
+
+      context 'with the header line and one data line' do
+        let(:lines) { [@header, @aireys] }
+
+        it 'is expected to return a single element hash by name' do
+          is_expected.to eq(
+            'Aireys Inlet' => [12, 13, 15, 14, 14, 13, 12]
+          )
+        end
+      end
+
+      context 'with no header line but a data line' do
+        let(:lines) { [@aireys] }
+
+        it 'is expected to raise an error' do
+          expect { Puller::Processor.data_in(lines) }.to \
+            raise_error(Puller::Processor::FormatError)
+        end
+      end
+
+      context 'with many data lines' do
+        let(:lines) { [@header, @albury, @edenhope, @aireys] }
+
+        it 'is expected to return a many element hash by name' do
+          is_expected.to eq(
+            'Albury-Wodonga' => [16, 16, 15, 16, 16, 16, 15], # Albury
+            'Aireys Inlet' => [12, 13, 15, 14, 14, 13, 12], # Aireys
+            'Edenhope' => [14, 15, 17, 14, 15, 14, 13] # Edenhope
+          )
+        end
       end
     end
   end

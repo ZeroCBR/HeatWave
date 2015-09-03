@@ -3,11 +3,21 @@
 This gem provides an interface for pulling weather data using a
 supplied weather getter, weather processor, and weather saver.
 
+## Acceptance Testing
+
+The `test:acceptance` rake task will run the puller with human
+readable output for acceptance testing.
+
+```shell
+$ cd $REPOSITORY_ROOT/puller
+$ bundle exec rake test:acceptance
+```
+
 ## Validation
 
 Run the following shell command to validate the application:
 
-```Ruby
+```shell
 $ cd $REPOSITORY_ROOT/puller
 $ bundle exec rake validate
 ```
@@ -39,18 +49,18 @@ and print it to stdout.
 To load the data in any Ruby script, use the following code:
 
 ```Ruby
-
 data = Marshal.load(marshalled_string)
-
 ```
 
 `marshalled_string` should be a string which was loaded,
 for example through stdin by piping from puller:
+
 ```bash
 $ puller | my_script.rb
 ```
 
 or by reading a file which puller output was redirected to:
+
 ```bash
 $ puller > data_store
 $ my_script.rb < data_store
@@ -73,4 +83,3 @@ For example:
 }
 
 ```
-
