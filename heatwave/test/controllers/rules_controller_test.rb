@@ -19,7 +19,8 @@ class RulesControllerTest < ActionController::TestCase
 
   test 'should create rule' do
     assert_difference('Rule.count') do
-      post :create, rule: { annotation: @rule.annotation, name: @rule.name }
+      post :create, rule: { annotation: @rule.annotation,
+                            name: @rule.name }
     end
 
     assert_redirected_to rule_path(assigns(:rule))
@@ -36,7 +37,8 @@ class RulesControllerTest < ActionController::TestCase
   end
 
   test 'should update rule' do
-    patch :update, id: @rule, rule: { annotation: @rule.annotation, name: @rule.name }
+    patch :update, id: @rule, rule: { annotation: @rule.annotation,
+                                      name: @rule.name }
     assert_redirected_to rule_path(assigns(:rule))
   end
 

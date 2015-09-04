@@ -19,7 +19,8 @@ class AttributesControllerTest < ActionController::TestCase
 
   test 'should create attribute' do
     assert_difference('Attribute.count') do
-      post :create, attribute: { annotation: @attribute.annotation, name: @attribute.name }
+      post :create, attribute: { annotation: @attribute.annotation,
+                                 name: @attribute.name }
     end
 
     assert_redirected_to attribute_path(assigns(:attribute))
@@ -36,7 +37,8 @@ class AttributesControllerTest < ActionController::TestCase
   end
 
   test 'should update attribute' do
-    patch :update, id: @attribute, attribute: { annotation: @attribute.annotation, name: @attribute.name }
+    patch :update, id: @attribute, attribute: {
+      annotation: @attribute.annotation, name: @attribute.name }
     assert_redirected_to attribute_path(assigns(:attribute))
   end
 
@@ -44,7 +46,6 @@ class AttributesControllerTest < ActionController::TestCase
     assert_difference('Attribute.count', -1) do
       delete :destroy, id: @attribute
     end
-
     assert_redirected_to attributes_path
   end
 end

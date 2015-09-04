@@ -32,12 +32,8 @@ class UsersController < ApplicationController
         format.html do
           redirect_to(@user, notice: 'User was successfully created.')
         end
-        format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new }
-        format.json do
-          render json: @user.errors, status: :unprocessable_entity
-        end
       end
     end
   end
@@ -50,12 +46,8 @@ class UsersController < ApplicationController
         format.html do
           redirect_to @user, notice: 'User was successfully updated.'
         end
-        format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit }
-        format.json do
-          render json: @user.errors, status: :unprocessable_entity
-        end
       end
     end
   end
@@ -68,7 +60,6 @@ class UsersController < ApplicationController
       format.html do
         redirect_to users_url, notice: 'User was successfully destroyed.'
       end
-      format.json { head :no_content }
     end
   end
 

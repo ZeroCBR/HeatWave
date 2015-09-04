@@ -31,10 +31,8 @@ class RulesController < ApplicationController
         format.html do
           redirect_to @rule, notice: 'Rule was successfully created.'
         end
-        format.json { render :show, status: :created, location: @rule }
       else
         format.html { render :new }
-        format.json { render json: @rule.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -47,12 +45,8 @@ class RulesController < ApplicationController
         format.html do
           redirect_to @rule, notice: 'Rule was successfully updated.'
         end
-        format.json { render :show, status: :ok, location: @rule }
       else
         format.html { render :edit }
-        format.json do
-          render json: @rule.errors, status: :unprocessable_entity
-        end
       end
     end
   end
@@ -65,7 +59,6 @@ class RulesController < ApplicationController
       format.html do
         redirect_to rules_url, notice: 'Rule was successfully destroyed.'
       end
-      format.json { head :no_content }
     end
   end
 

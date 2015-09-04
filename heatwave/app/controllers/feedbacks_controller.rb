@@ -31,12 +31,8 @@ class FeedbacksController < ApplicationController
         format.html do
           redirect_to @feedback, notice: 'Feedback was successfully created.'
         end
-        format.json { render :show, status: :created, location: @feedback }
       else
         format.html { render :new }
-        format.json do
-          render json: @feedback.errors, status: :unprocessable_entity
-        end
       end
     end
   end
@@ -49,12 +45,8 @@ class FeedbacksController < ApplicationController
         format.html do
           redirect_to @feedback, notice: 'Feedback was successfully updated.'
         end
-        format.json { render :show, status: :ok, location: @feedback }
       else
         format.html { render :edit }
-        format.json do
-          render json: @feedback.errors, status: :unprocessable_entity
-        end
       end
     end
   end
@@ -68,7 +60,6 @@ class FeedbacksController < ApplicationController
         redirect_to(feedbacks_url,
                     notice: 'Feedback was successfully destroyed.')
       end
-      format.json { head :no_content }
     end
   end
 
