@@ -1,21 +1,5 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  username: MyString
-  f_name: MyString
-  l_name: MyString
-  password: MyString
-  adminAccess: false
-  gender: MyString
-  address: MyString
-  phone: MyString
-  age: 1
-  email: MyString
-  suscribed: false
-  birthday: 2015-08-28
-  postcode: 
-
-two:
   username: MyString
   f_name: MyString
   l_name: MyString
