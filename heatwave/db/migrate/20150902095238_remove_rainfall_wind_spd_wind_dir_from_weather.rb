@@ -1,3 +1,4 @@
+# Remove unnecessary column from weather
 class RemoveRainfallWindSpdWindDirFromWeather < ActiveRecord::Migration
   def change
     remove_column :weathers, :rainFall, :float

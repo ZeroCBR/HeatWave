@@ -1,3 +1,4 @@
+# Create rule table
 class CreateRules < ActiveRecord::Migration
   def change
     create_table :rules do |t|

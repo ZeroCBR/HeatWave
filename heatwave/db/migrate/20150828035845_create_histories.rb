@@ -1,3 +1,4 @@
+# Create history table
 class CreateHistories < ActiveRecord::Migration
   def change
     create_table :histories do |t|

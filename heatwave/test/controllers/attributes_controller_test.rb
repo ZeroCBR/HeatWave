@@ -1,5 +1,6 @@
 require 'test_helper'
 
+# Test attribute
 class AttributesControllerTest < ActionController::TestCase
   setup do
     @attribute = attributes(:one)

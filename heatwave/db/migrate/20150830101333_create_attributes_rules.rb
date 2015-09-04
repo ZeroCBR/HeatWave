@@ -1,3 +1,4 @@
+# Create attribute rule join table
 class CreateAttributesRules < ActiveRecord::Migration
   def change
     create_table :attributes_rules do |t|

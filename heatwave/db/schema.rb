@@ -49,60 +49,59 @@ ActiveRecord::Schema.define(version: 20150913050319) do
     t.datetime 'created_at',   null: false
     t.datetime 'updated_at',   null: false
 
-  create_table "attributes_rules", force: :cascade do |t|
-    t.integer  "attribute_id", null: false
-    t.integer  "rule_id",      null: false
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+  create_table 'attributes_rules', force: :cascade do |t|
+    t.integer 'attribute_id', null: false
+    t.integer 'rule_id',      null: false
+    t.datetime 'created_at',   null: false
+    t.datetime 'updated_at',   null: false
   end
 
-  create_table "feedbacks", force: :cascade do |t|
-    t.string   "title"
-    t.string   "content"
-    t.string   "comment"
-    t.boolean  "responded"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table 'feedbacks', force: :cascade do |t|
+    t.string 'title'
+    t.string 'content'
+    t.string 'comment'
+    t.boolean 'responded'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
   end
 
-  create_table "histories", force: :cascade do |t|
-    t.string   "title"
-    t.string   "content"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table 'histories', force: :cascade do |t|
+    t.string 'title'
+    t.string 'content'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
   end
 
-  create_table "rules", force: :cascade do |t|
-    t.string   "name"
-    t.string   "annotation"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table 'rules', force: :cascade do |t|
+    t.string 'name'
+    t.string 'annotation'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string   "username"
-    t.string   "f_name"
-    t.string   "l_name"
-    t.string   "password"
-    t.boolean  "adminAccess"
-    t.string   "gender"
-    t.string   "address"
-    t.string   "phone"
-    t.integer  "age"
-    t.string   "email"
-    t.boolean  "suscribed"
-    t.date     "birthday"
-    t.integer  "postcode"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+  create_table 'users', force: :cascade do |t|
+    t.string 'username'
+    t.string 'f_name'
+    t.string 'l_name'
+    t.string 'password'
+    t.boolean 'adminAccess'
+    t.string 'gender'
+    t.string 'address'
+    t.string 'phone'
+    t.integer 'age'
+    t.string 'email'
+    t.boolean 'suscribed'
+    t.date 'birthday'
+    t.integer 'postcode'
+    t.datetime 'created_at',  null: false
+    t.datetime 'updated_at',  null: false
   end
 
-  create_table "users_attributes", force: :cascade do |t|
-    t.integer  "user_id",      null: false
-    t.integer  "attribute_id", null: false
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+  create_table 'users_attributes', force: :cascade do |t|
+    t.integer 'user_id',      null: false
+    t.integer 'attribute_id', null: false
+    t.datetime 'created_at',   null: false
+    t.datetime 'updated_at',   null: false
   end
   end
-
 end

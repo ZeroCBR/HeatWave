@@ -1,5 +1,6 @@
 require 'test_helper'
 
+# Test history
 class HistoriesControllerTest < ActionController::TestCase
   setup do
     @history = histories(:one)

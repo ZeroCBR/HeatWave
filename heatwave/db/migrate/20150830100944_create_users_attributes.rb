@@ -1,3 +1,4 @@
+# Create user attribute join table
 class CreateUsersAttributes < ActiveRecord::Migration
   def change
     create_table :users_attributes do |t|

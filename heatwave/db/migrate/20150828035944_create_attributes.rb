@@ -1,3 +1,4 @@
+# Create attribute table
 class CreateAttributes < ActiveRecord::Migration
   def change
     create_table :attributes do |t|

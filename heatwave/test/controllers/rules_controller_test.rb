@@ -1,5 +1,6 @@
 require 'test_helper'
 
+# Test rule
 class RulesControllerTest < ActionController::TestCase
   setup do
     @rule = rules(:one)

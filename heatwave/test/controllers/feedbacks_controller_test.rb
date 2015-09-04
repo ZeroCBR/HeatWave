@@ -1,5 +1,6 @@
 require 'test_helper'
 
+# Test feedback
 class FeedbacksControllerTest < ActionController::TestCase
   setup do
     @feedback = feedbacks(:one)
