@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["jmcma@student.unimelb.edu.au"]
 
   spec.summary       = %q{sending SMSs via telstra}
-  
+
   spec.homepage      = ""
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
@@ -30,4 +30,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rest-client","~> 1.7"
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "rspec"
 end
