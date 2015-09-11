@@ -4,8 +4,8 @@ class CreateWeathers < ActiveRecord::Migration
     create_table :weathers do |t|
       t.datetime :datetime
       t.float :temp
-      t.float :lowTemp
-      t.float :highTemo
+      t.float :low_temp
+      t.float :high_temp
 
       t.timestamps null: false
     end
