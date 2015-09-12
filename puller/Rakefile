@@ -1,20 +1,30 @@
+require 'active_record_migrations'
 require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
 require 'rdoc/task'
 
+# Default to validation
+task default: :validate
+
+# Testing framework
 RSpec::Core::RakeTask.new(:spec)
+
+# Linter
 RuboCop::RakeTask.new(:rubocop) do |task|
   task.options = ['-D']
 end
 
-task default: :spec
-
 namespace :test do
+  ##
+  # Fast tests are generally ones which don't require a network.
   RSpec::Core::RakeTask.new(:fast) do |task|
     task.rspec_opts = '--tag ~speed:slow'
   end
 
+  ##
+  # The acceptance test just produces a human readable version
+  # of the current weather data.
   task :acceptance do
     require 'puller'
 
@@ -43,10 +53,19 @@ end
 
 task test: :spec # Run all tests for this gem.
 
+# Validation runs tests and the linter.
 task validate: :test
 task validate: :rubocop
 
+# Rdoc produces documentation for this gem.
 RDoc::Task.new :rdoc do |task|
   task.main = 'README.md'
   task.rdoc_files.include('README.md', 'lib/**/*.rb')
 end
+
+# Add ActiveRecord migration tasks without Rails.
+ActiveRecordMigrations.configure do |config|
+  # Copy the migrations from the rails app.
+  config.migrations_paths = ['../heatwave/db/migrate']
+end
+ActiveRecordMigrations.load_tasks

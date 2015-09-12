@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  location_id: 
+  high_temp: 
+  date: 2015-09-13
+
+two:
+  location_id: 
+  high_temp: 
+  date: 2015-09-13

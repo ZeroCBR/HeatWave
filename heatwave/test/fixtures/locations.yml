@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  jan_average: 9.99
+  feb_average: 9.99
+  mar_average: 9.99
+  apr_average: 9.99
+  jun_average: 9.99
+  jul_average: 9.99
+  aug_average: 9.99
+  sep_average: 9.99
+  oct_average: 9.99
+  nov_average: 9.99
+  dec_average: 9.99
+
+two:
+  name: MyString
+  jan_average: 9.99
+  feb_average: 9.99
+  mar_average: 9.99
+  apr_average: 9.99
+  jun_average: 9.99
+  jul_average: 9.99
+  aug_average: 9.99
+  sep_average: 9.99
+  oct_average: 9.99
+  nov_average: 9.99
+  dec_average: 9.99
