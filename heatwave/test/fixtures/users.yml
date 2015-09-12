@@ -4,7 +4,7 @@ one:
   f_name: MyString
   l_name: MyString
   password: MyString
-  adminAccess: false
+  admin_access: false
   gender: MyString
   address: MyString
   phone: MyString

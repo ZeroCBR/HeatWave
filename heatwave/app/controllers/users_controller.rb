@@ -74,7 +74,7 @@ class UsersController < ApplicationController
   # white list through.
   def user_params
     params.require(:user).permit(:username, :f_name,
-                                 :l_name, :password, :adminAccess, :gender,
+                                 :l_name, :password, :admin_access, :gender,
                                  :address, :phone, :age, :email, :suscribed,
                                  :birthday, :postcode)
   end

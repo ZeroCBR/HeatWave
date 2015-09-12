@@ -29,7 +29,7 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'should update user' do
     patch :update, id: @user, user: { address: @user.address,
-                                      adminAccess: @user.adminAccess,
+                                      admin_access: @user.admin_access,
                                       age: @user.age,
                                       birthday: @user.birthday,
                                       email: @user.email,
