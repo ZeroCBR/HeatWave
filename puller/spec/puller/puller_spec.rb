@@ -19,16 +19,16 @@ describe Puller do
       let(:pipeline) do
         { getter: Puller::Getter,
           processor: Puller::Processor,
-          marshaler: Marshal }
+          marshaler: Puller::ModelMarshaler }
       end
 
-      let(:minimum_region_count) { 10 } # Chosen arbitrarily
+      let(:minimum_weather_count) { 7 * Location.count } # Chosen arbitrarily
 
       it 'actually works', slow: 'network access' do
-        result = Puller.pull_from(source, pipeline)
-
-        loaded = Marshal.load(result)
-        expect(loaded.size).to be > minimum_region_count
+        Weather.delete_all
+        expect(Weather.count).to be 0
+        Puller.pull_from(source, pipeline)
+        expect(Weather.count).to be >= minimum_weather_count
       end
     end
 
@@ -65,7 +65,7 @@ describe Puller do
       end
 
       it 'marshals the processed data with the marshaler' do
-        expected # Prevent breaking the expectation bellow:
+        expected # Load it now to prevent breaking the expectation bellow.
         expect(Marshal).to receive(:dump).with(data).once.and_call_original
         is_expected.to eq(expected)
       end

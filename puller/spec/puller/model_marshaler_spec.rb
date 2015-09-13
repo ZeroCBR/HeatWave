@@ -32,7 +32,7 @@ describe Puller::ModelMarshaler do
   describe '.dump' do
     before(:context) do
       @aireys = '090180'
-      @naracoorte = '026023'
+      @mort_lake = '090176'
       @unknown_id = '387100'
 
       @date1 = Date.today
@@ -47,7 +47,7 @@ describe Puller::ModelMarshaler do
 
       let(:location_model) { double('Location') }
       let(:aireys) { double('Location') }
-      let(:naracoorte) { double('Location') }
+      let(:mort_lake) { double('Location') }
 
       before(:example) do
         Puller::ModelMarshaler.weather_model = weather_model
@@ -56,8 +56,8 @@ describe Puller::ModelMarshaler do
         allow(location_model).to receive(:find_by_id).with(@aireys.to_i) do
           aireys
         end
-        allow(location_model).to receive(:find_by_id).with(@naracoorte.to_i) do
-          naracoorte
+        allow(location_model).to receive(:find_by_id).with(@mort_lake.to_i) do
+          mort_lake
         end
         allow(location_model).to receive(:find_by_id).with(@unknown_id.to_i) do
           nil
@@ -140,7 +140,7 @@ describe Puller::ModelMarshaler do
         context 'with one weather event each' do
           let(:data) do
             { @aireys => { @date1 => @high_temp1 },
-              @naracoorte => { @date2 => @high_temp2 },
+              @mort_lake => { @date2 => @high_temp2 },
               @unknown_id => { @date1 => @high_temp2 } }
           end
 
@@ -152,7 +152,7 @@ describe Puller::ModelMarshaler do
         context 'with many weather events each' do
           let(:data) do
             { @aireys => { @date1 => @high_temp1, @date2 => @high_temp2 },
-              @naracoorte => { @date1 => @high_temp1, @date2 => @high_temp2 },
+              @mort_lake => { @date1 => @high_temp1, @date2 => @high_temp2 },
               @unknown_id => { @date1 => @high_temp2, @date2 => @high_temp1 } }
           end
 
@@ -177,12 +177,12 @@ describe Puller::ModelMarshaler do
                           nov_mean: 19.6, dec_mean: 21.1)
         end
 
-        unless Location.exists?(@naracoorte)
-          Location.create(id: @naracoorte, name: 'Naracoorte', jan_mean: 28.1,
-                          feb_mean: 28.7, mar_mean: 25.5, apr_mean: 21.5,
-                          may_mean: 17.5, jun_mean: 14.9, jul_mean: 14.2,
-                          aug_mean: 15.4, sep_mean: 17.3, oct_mean: 20.2,
-                          nov_mean: 22.9, dec_mean: 25.4)
+        unless Location.exists?(@mort_lake)
+          Location.create(id: @mort_lake, name: 'Mort Lake', jan_mean: 25.9,
+                          feb_mean: 26.4, mar_mean: 23.8, apr_mean: 19.9,
+                          may_mean: 16.2, jun_mean: 13.5, jul_mean: 12.9,
+                          aug_mean: 13.9, sep_mean: 15.8, oct_mean: 17.9,
+                          nov_mean: 20.8, dec_mean: 23.2)
         end
       end
 
@@ -248,7 +248,7 @@ describe Puller::ModelMarshaler do
         context 'with many weather events each' do
           let(:data) do
             { @aireys => { @date1 => @high_temp1, @date2 => @high_temp2 },
-              @naracoorte => { @date1 => @high_temp2, @date2 => @high_temp1 },
+              @mort_lake => { @date1 => @high_temp2, @date2 => @high_temp1 },
               @unknown_id => { @date1 => @high_temp2, @date2 => @high_temp1 } }
           end
 
@@ -262,10 +262,10 @@ describe Puller::ModelMarshaler do
             result = Weather.where(location_id: @aireys, date: @date2)
             expect(result.first.high_temp).to eq(@high_temp2)
 
-            result = Weather.where(location_id: @naracoorte, date: @date1)
+            result = Weather.where(location_id: @mort_lake, date: @date1)
             expect(result.first.high_temp).to eq(@high_temp2)
 
-            result = Weather.where(location_id: @naracoorte, date: @date2)
+            result = Weather.where(location_id: @mort_lake, date: @date2)
             expect(result.first.high_temp).to eq(@high_temp1)
 
             result = Weather.where(location_id: @unknown_id)
