@@ -1,3 +1,5 @@
+require 'date'
+
 module Puller
   ##
   # Processes weather data from its source form to
@@ -17,7 +19,7 @@ module Puller
     MAX_FIELD_DELTA = 2
 
     ## First max temperature field index.
-    FIRST_MAX_FIELD = 7 #
+    FIRST_MAX_FIELD = 7
 
     ## The field delimitter for the input content.
     DELIMITTER = '#'
@@ -130,21 +132,34 @@ module Puller
       (min..max).step(MAX_FIELD_DELTA)
     end
 
+    # Returns a hash mapping locations to a hash containing their forecast.
+    # The weather data is taken from +lines+, using field number
+    # +id_field+ for the hash keys.
+    #
+    # eg. { '123456' => { <today> => 10, <tomorow> => 12, etc. } }
     def self.data(id_field, lines)
       fail FormatError, 'missing header' unless lines.first == HEADER
 
-      Hash[lines.drop(1).map { |line| line_data(line, id_field) }]
+      all_data = lines.drop(1).map do |line|
+        fields = line.split(DELIMITTER)
+        [fields[id_field], line_data(fields)]
+      end
+
+      Hash[all_data]
     end
 
-    def self.line_data(line, id_field)
-      fields = line.split(DELIMITTER)
+    # Returns a hash mapping dates to the forecasted high temperature
+    # for those dates.
+    def self.line_data(fields)
       field_indices = indices_for(fields)
       dates = field_indices.map { |i| date_for i }
       temperatures = field_indices.map { |i| fields[i].to_f }
 
-      [fields[id_field], Hash[dates.zip temperatures]]
+      Hash[dates.zip temperatures]
     end
 
+    # Determines the date for a particular field index,
+    # starting from today.
     def self.date_for(field_index)
       Date.today + (field_index - FIRST_MAX_FIELD) / MAX_FIELD_DELTA
     end
