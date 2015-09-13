@@ -10,16 +10,43 @@ describe Puller::Processor do
       '#Partly cloudy.#Rain at times.#Possible shower.#Possible shower.' \
       '#Possible rain.#'
 
+    @aireys_id = '090180'
+    @aireys_want = { Date.today + 1 => 12.0,
+                     Date.today + 2 => 13.0,
+                     Date.today + 3 => 15.0,
+                     Date.today + 4 => 14.0,
+                     Date.today + 5 => 14.0,
+                     Date.today + 6 => 13.0,
+                     Date.today + 7 => 12.0 }
+
     @albury = \
       '072146#Albury-Wodonga#VIC#20150829#20150829#161521#2#16#1#16#1#15#4#' \
       '16#7#16#5#16#3#15###Partly cloudy.#Early fog and frost.#' \
       'Morning frost. Mostly sunny.#Cloudy.#Rain increasing.#Shower or two.#' \
       'Partly cloudy.#Partly cloudy.#'
 
+    @albury_id = '072146'
+    @albury_want = { Date.today     => 16.0,
+                     Date.today + 1 => 16.0,
+                     Date.today + 2 => 15.0,
+                     Date.today + 3 => 16.0,
+                     Date.today + 4 => 16.0,
+                     Date.today + 5 => 16.0,
+                     Date.today + 6 => 15.0 }
+
     @edenhope = \
       '079099#Edenhope#VIC#20150829#20150829#161521###3#14#2#15#6#' \
       '17#8#14#7#15#5#14#2#13#Cloudy.#Partly cloudy.#Light early frost.#' \
       'Shower or two.#Rain.#Possible shower.#Partly cloudy.#Becoming cloudy.#'
+
+    @edenhope_id = '079099'
+    @edenhope_want = { Date.today + 1 => 14.0,
+                       Date.today + 2 => 15.0,
+                       Date.today + 3 => 17.0,
+                       Date.today + 4 => 14.0,
+                       Date.today + 5 => 15.0,
+                       Date.today + 6 => 14.0,
+                       Date.today + 7 => 13.0 }
   end
 
   describe '.data_in' do
@@ -46,9 +73,7 @@ describe Puller::Processor do
       let(:lines) { [@header, @aireys] }
 
       it 'is expected to return a single element hash by id' do
-        is_expected.to eq(
-          '090180' => [12, 13, 15, 14, 14, 13, 12]
-        )
+        is_expected.to eq(@aireys_id => @aireys_want)
       end
     end
 
@@ -66,9 +91,9 @@ describe Puller::Processor do
 
       it 'is expected to return a many element hash by id' do
         is_expected.to eq(
-          '072146' => [16, 16, 15, 16, 16, 16, 15], # Albury
-          '090180' => [12, 13, 15, 14, 14, 13, 12], # Aireys
-          '079099' => [14, 15, 17, 14, 15, 14, 13] # Edenhope
+          @albury_id => @albury_want,
+          @aireys_id => @aireys_want,
+          @edenhope_id => @edenhope_want
         )
       end
     end
@@ -98,9 +123,7 @@ describe Puller::Processor do
       let(:lines) { [@header, @aireys] }
 
       it 'is expected to return a single element hash by id' do
-        is_expected.to eq(
-          'Aireys Inlet' => [12, 13, 15, 14, 14, 13, 12]
-        )
+        is_expected.to eq('Aireys Inlet' => @aireys_want)
       end
     end
 
@@ -118,9 +141,9 @@ describe Puller::Processor do
 
       it 'is expected to return a many element hash by name' do
         is_expected.to eq(
-          'Albury-Wodonga' => [16, 16, 15, 16, 16, 16, 15], # Albury
-          'Aireys Inlet' => [12, 13, 15, 14, 14, 13, 12], # Aireys
-          'Edenhope' => [14, 15, 17, 14, 15, 14, 13] # Edenhope
+          'Albury-Wodonga' => @albury_want, # Albury
+          'Aireys Inlet' => @aireys_want,
+          'Edenhope' => @edenhope_want
         )
       end
     end
@@ -151,9 +174,7 @@ describe Puller::Processor do
         let(:lines) { [@header, @aireys] }
 
         it 'is expected to return a single element hash by name' do
-          is_expected.to eq(
-            'Aireys Inlet' => [12, 13, 15, 14, 14, 13, 12]
-          )
+          is_expected.to eq('Aireys Inlet' => @aireys_want)
         end
       end
 
@@ -171,9 +192,9 @@ describe Puller::Processor do
 
         it 'is expected to return a many element hash by name' do
           is_expected.to eq(
-            'Albury-Wodonga' => [16, 16, 15, 16, 16, 16, 15], # Albury
-            'Aireys Inlet' => [12, 13, 15, 14, 14, 13, 12], # Aireys
-            'Edenhope' => [14, 15, 17, 14, 15, 14, 13] # Edenhope
+            'Albury-Wodonga' => @albury_want,
+            'Aireys Inlet' => @aireys_want,
+            'Edenhope' => @edenhope_want
           )
         end
       end

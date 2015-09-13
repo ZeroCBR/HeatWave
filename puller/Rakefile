@@ -4,6 +4,8 @@ require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
 require 'rdoc/task'
 
+RAILS_HOME = '../heatwave' unless defined?(RAILS_HOME)
+
 # Default to validation
 task default: :validate
 
@@ -38,7 +40,9 @@ namespace :test do
       def self::dump(data)
         data.each_pair do |name, maxes|
           puts "Region: #{name}"
-          puts maxes
+          maxes.each_pair do |date, max|
+            puts "#{date.strftime('%a %d %b')}: #{max}C"
+          end
         end
       end
     end
@@ -67,5 +71,27 @@ end
 ActiveRecordMigrations.configure do |config|
   # Copy the migrations from the rails app.
   config.migrations_paths = ['../heatwave/db/migrate']
+  # TODO: Not very DRY, but I don't know how to fix.
+  config.database_configuration = {
+    'development' => {
+      'adapter' => 'sqlite3',
+      'pool' => 5,
+      'timeout' => 5000,
+      'database' => "#{RAILS_HOME}/db/development.sqlite3"
+    },
+    'test' => {
+      'adapter' => 'sqlite3',
+      'pool' => 5,
+      'timeout' => 5000,
+      'database' => 'db/test.sqlite3'
+    },
+    'production' => {
+      'adapter' => 'sqlite3',
+      'pool' => 5,
+      'timeout' => 5000,
+      'database' => "#{RAILS_HOME}/db/production.sqlite3"
+    }
+  }
 end
+
 ActiveRecordMigrations.load_tasks

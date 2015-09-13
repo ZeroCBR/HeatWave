@@ -40,8 +40,10 @@ module Puller
     #
     # ==== Returns
     #
-    # * A hash mapping region ids to an array of their next seven
-    #   forecasted maximum temperatures.
+    # * A hash mapping region ids to an array of hashes for the
+    #   next seven forecasted days containing:
+    #   * +:date+ - the date of the forecast
+    #   * +:max_temp+ - the maximum temperature forecasted for that day.
     #
     # ==== Raises
     #
@@ -62,8 +64,10 @@ module Puller
     #
     # ==== Returns
     #
-    # * A hash mapping region names to an array of their next seven
-    #   forecasted maximum temperatures.
+    # * A hash mapping region names to an array of hashes for the
+    #   next seven forecasted days containing:
+    #   * +:date+ - the date of the forecast
+    #   * +:max_temp+ - the maximum temperature forecasted for that day.
     #
     # ==== Raises
     #
@@ -90,8 +94,10 @@ module Puller
       #
       # ==== Returns
       #
-      # * A hash mapping region ids to an array of their next seven
-      #   forecasted maximum temperatures.
+      # * A hash mapping region names to an array of hashes for the
+      #   next seven forecasted days containing:
+      #   * +:date+ - the date of the forecast
+      #   * +:max_temp+ - the maximum temperature forecasted for that day.
       #
       # ==== Raises
       #
@@ -109,6 +115,10 @@ module Puller
 
     private
 
+    # Returns the temperature fields which are to be used for
+    # a given set of fields.
+    # Skips either the first or the last maximum temperature field,
+    # depending on which one is populated.
     def self.indices_for(fields)
       if fields[FIRST_MAX_FIELD] == ''
         min = FIRST_MAX_FIELD + MAX_FIELD_DELTA
@@ -121,18 +131,22 @@ module Puller
     end
 
     def self.data(id_field, lines)
-      data = {}
-
       fail FormatError, 'missing header' unless lines.first == HEADER
 
-      lines.drop(1).each do |line|
-        fields = line.split(DELIMITTER)
-        id = fields[id_field]
-        field_indices = indices_for(fields)
-        data[id] = field_indices.map { |i| fields[i].to_i }
-      end
+      Hash[lines.drop(1).map { |line| line_data(line, id_field) }]
+    end
 
-      data
+    def self.line_data(line, id_field)
+      fields = line.split(DELIMITTER)
+      field_indices = indices_for(fields)
+      dates = field_indices.map { |i| date_for i }
+      temperatures = field_indices.map { |i| fields[i].to_f }
+
+      [fields[id_field], Hash[dates.zip temperatures]]
+    end
+
+    def self.date_for(field_index)
+      Date.today + (field_index - FIRST_MAX_FIELD) / MAX_FIELD_DELTA
     end
   end
 end
