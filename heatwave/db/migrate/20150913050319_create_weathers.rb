@@ -1,7 +1,7 @@
 class CreateWeathers < ActiveRecord::Migration
   def change
     create_table :weathers do |t|
-      t.integer :location_id, null: false, limit: 1
+      t.integer :location_id, null: false
       t.integer :high_temp, null: false, limit: 1
       t.date :date, null: false
 

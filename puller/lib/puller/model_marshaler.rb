@@ -44,12 +44,12 @@ module Puller
     def self.dump(data)
       data.each_pair do |location_id, events|
         # Skip nil locations.
-        location = @location_model.find(location_id) || next
+        location = @location_model.find_by_id(location_id.to_i) || next
 
         events.each_pair do |date, high_temp|
-          @weather_model.create(location: location,
-                                date: date,
-                                high_temp: high_temp)
+          @weather_model.find_and_update_or_create_by(
+            { location: location, date: date }, high_temp: high_temp
+          )
         end
       end
     end

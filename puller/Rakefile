@@ -3,8 +3,7 @@ require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
 require 'rdoc/task'
-
-RAILS_HOME = '../heatwave' unless defined?(RAILS_HOME)
+require 'puller'
 
 # Default to validation
 task default: :validate
@@ -15,6 +14,17 @@ RSpec::Core::RakeTask.new(:spec)
 # Linter
 RuboCop::RakeTask.new(:rubocop) do |task|
   task.options = ['-D']
+end
+
+namespace :db do
+  namespace :test do
+    task :reset do
+      ActiveRecord::Base.establish_connection(:test)
+      Rake::Task['db:drop'].invoke
+      Rake::Task['db:create'].invoke
+      Rake::Task['db:migrate'].invoke
+    end
+  end
 end
 
 namespace :test do
@@ -55,6 +65,7 @@ namespace :test do
   end
 end
 
+task spec: :'db:test:reset' # Always reset the test db before specs
 task test: :spec # Run all tests for this gem.
 
 # Validation runs tests and the linter.
@@ -72,26 +83,7 @@ ActiveRecordMigrations.configure do |config|
   # Copy the migrations from the rails app.
   config.migrations_paths = ['../heatwave/db/migrate']
   # TODO: Not very DRY, but I don't know how to fix.
-  config.database_configuration = {
-    'development' => {
-      'adapter' => 'sqlite3',
-      'pool' => 5,
-      'timeout' => 5000,
-      'database' => "#{RAILS_HOME}/db/development.sqlite3"
-    },
-    'test' => {
-      'adapter' => 'sqlite3',
-      'pool' => 5,
-      'timeout' => 5000,
-      'database' => 'db/test.sqlite3'
-    },
-    'production' => {
-      'adapter' => 'sqlite3',
-      'pool' => 5,
-      'timeout' => 5000,
-      'database' => "#{RAILS_HOME}/db/production.sqlite3"
-    }
-  }
+  config.database_configuration = DATABASE_CONFIG
 end
 
 ActiveRecordMigrations.load_tasks

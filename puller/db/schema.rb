@@ -11,6 +11,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20150913050319) do
+
+  create_table "locations", force: :cascade do |t|
+    t.string   "name",                               null: false
+    t.decimal  "jan_mean",   precision: 4, scale: 1, null: false
+    t.decimal  "feb_mean",   precision: 4, scale: 1, null: false
+    t.decimal  "mar_mean",   precision: 4, scale: 1, null: false
+    t.decimal  "apr_mean",   precision: 4, scale: 1, null: false
+    t.decimal  "may_mean",   precision: 4, scale: 1, null: false
+    t.decimal  "jun_mean",   precision: 4, scale: 1, null: false
+    t.decimal  "jul_mean",   precision: 4, scale: 1, null: false
+    t.decimal  "aug_mean",   precision: 4, scale: 1, null: false
+    t.decimal  "sep_mean",   precision: 4, scale: 1, null: false
+    t.decimal  "oct_mean",   precision: 4, scale: 1, null: false
+    t.decimal  "nov_mean",   precision: 4, scale: 1, null: false
+    t.decimal  "dec_mean",   precision: 4, scale: 1, null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
+
+  create_table "weathers", force: :cascade do |t|
+    t.integer  "location_id",           null: false
+    t.integer  "high_temp",   limit: 1, null: false
+    t.date     "date",                  null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
 
 end
