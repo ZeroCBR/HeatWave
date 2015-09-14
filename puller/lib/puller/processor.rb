@@ -80,37 +80,6 @@ module Puller
     end
 
     ##
-    # Processes weather data from its source form to
-    # a form suitable for marshaling using region name as
-    # the default key.
-    #
-    module ByName
-      ##
-      # Extracts from the supplied content lines the weather data
-      # they contain using region name as the key.
-      #
-      # ==== Parameters
-      #
-      # * +lines+ - an array of strings, one per weather data line,
-      #   starting with the header line.
-      #
-      # ==== Returns
-      #
-      # * A hash mapping region names to an array of hashes for the
-      #   next seven forecasted days containing:
-      #   * +:date+ - the date of the forecast
-      #   * +:max_temp+ - the maximum temperature forecasted for that day.
-      #
-      # ==== Raises
-      #
-      # * +FormatError+ if the lines are misformatted.
-      #
-      def self.data_in(lines)
-        Processor.data(NAME_FIELD, lines)
-      end
-    end
-
-    ##
     # Raised by +Puller::Getter::data_in+ if the supplied lines don't
     # include a valid header.
     class FormatError < StandardError; end

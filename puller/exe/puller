@@ -7,8 +7,12 @@ source = { hostname: 'ftp2.bom.gov.au',
            user: 'ftp',
            passwd: '' }
 
+Puller::Database.initialise
+Puller::ModelMarshaler.weather_model = Weather
+Puller::ModelMarshaler.location_model = Location
+
 pipeline = { getter: Puller::Getter,
              processor: Puller::Processor,
-             marshaler: Marshal }
+             marshaler: Puller::ModelMarshaler }
 
-puts Puller.pull_from(source, pipeline)
+puts "Added #{Puller.pull_from(source, pipeline)} records."

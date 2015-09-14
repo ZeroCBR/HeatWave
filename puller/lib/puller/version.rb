@@ -1,6 +1,6 @@
 #:nodoc:
 module Puller
   ##
-  # Version 0.0.3 - patched to handle changing data format.
-  VERSION = '0.0.3'
+  # Version 0.1.0 - integrated with database.
+  VERSION = '0.1.0'
 end

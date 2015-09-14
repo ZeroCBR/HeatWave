@@ -39,19 +39,32 @@ module Puller
     #
     # ==== Returns
     #
-    # No return value contract.
+    # The number of records which were dumped.
+    # For example, if 2 new records are made, and 3 records are
+    # updated, it will return 5.
     #
     def self.dump(data)
+      total = 0
+
       data.each_pair do |location_id, events|
         # Skip nil locations.
-        location = @location_model.find_by_id(location_id.to_i) || next
-
-        events.each_pair do |date, high_temp|
-          @weather_model.find_and_update_or_create_by(
-            { location: location, date: date }, high_temp: high_temp
-          )
-        end
+        location = @location_model.find_by_id(location_id.to_i)
+        next unless location
+        total += dump_all(location, events)
       end
+
+      total
+    end
+
+    private
+
+    def self.dump_all(location, events)
+      events.each_pair do |date, high_temp|
+        @weather_model.find_and_update_or_create_by(
+          { location: location, date: date }, high_temp: high_temp
+        )
+      end
+      events.size
     end
   end
 end

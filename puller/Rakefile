@@ -19,11 +19,13 @@ end
 namespace :db do
   namespace :test do
     task :reset do
-      ActiveRecord::Base.establish_connection(:test)
-      Rake::Task['db:drop'].invoke
-      Rake::Task['db:create'].invoke
-      Rake::Task['db:migrate'].invoke
+      system('rake db:reset RAILS_ENV=test')
     end
+    task reset: :'db:test'
+  end
+
+  task :test do
+    ENV['DATABASE_ENV'] = 'test'
   end
 end
 
@@ -38,30 +40,31 @@ namespace :test do
   # The acceptance test just produces a human readable version
   # of the current weather data.
   task :acceptance do
-    require 'puller'
+    Puller::Database.initialise('production')
+    Puller::ModelMarshaler.weather_model = Weather
+    Puller::ModelMarshaler.location_model = Location
 
     source = { hostname: 'ftp2.bom.gov.au',
                filename: '/anon/gen/fwo/IDA00003.dat',
                user: 'ftp',
                passwd: '' }
 
-    ## Custom printer for acceptance tests.
-    module CustomPrinter
-      def self::dump(data)
-        data.each_pair do |name, maxes|
-          puts "Region: #{name}"
-          maxes.each_pair do |date, max|
-            puts "#{date.strftime('%a %d %b')}: #{max}C"
-          end
-        end
-      end
-    end
-
     pipeline = { getter: Puller::Getter,
-                 processor: Puller::Processor::ByName,
-                 marshaler: CustomPrinter }
+                 processor: Puller::Processor,
+                 marshaler: Puller::ModelMarshaler }
 
-    Puller.pull_from(source, pipeline)
+    puts "Pulled #{Puller.pull_from(source, pipeline)} weather records."
+    puts
+    puts 'Current weather database contents:'
+    puts
+    puts '|    Date    | High | Location'
+    puts '|------------|------|-----------------------------'
+    Weather.all.each do |w|
+      puts "| #{w.date.strftime('%a %d %b')} "\
+           "| #{w.high_temp}*C | #{w.location.name}"
+    end
+    puts
+    puts "Total weather records: #{Weather.count}"
   end
 end
 
@@ -81,9 +84,8 @@ end
 # Add ActiveRecord migration tasks without Rails.
 ActiveRecordMigrations.configure do |config|
   # Copy the migrations from the rails app.
-  config.migrations_paths = ['../heatwave/db/migrate']
-  # TODO: Not very DRY, but I don't know how to fix.
-  config.database_configuration = DATABASE_CONFIG
+  config.migrations_paths = ["#{Puller::Database::RAILS_HOME}/db/migrate"]
+  config.database_configuration = Puller::Database::DATABASE_CONFIG
 end
 
 ActiveRecordMigrations.load_tasks

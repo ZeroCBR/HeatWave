@@ -27,7 +27,8 @@ describe Puller do
       it 'actually works', slow: 'network access' do
         Weather.delete_all
         expect(Weather.count).to be 0
-        Puller.pull_from(source, pipeline)
+        count = Puller.pull_from(source, pipeline)
+        expect(count).to eq Weather.count
         expect(Weather.count).to be >= minimum_weather_count
       end
     end
