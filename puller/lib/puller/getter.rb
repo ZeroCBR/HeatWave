@@ -28,6 +28,7 @@ module Puller
       ftp = Net::FTP.new
       ftp.connect(source[:hostname], source[:port])
       ftp.login(source[:user], source[:passwd])
+      ftp.passive = true
 
       result = []
       ftp.gettextfile(source[:filename], nil) { |line| result << line.strip }

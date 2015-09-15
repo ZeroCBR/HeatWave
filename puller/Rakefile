@@ -40,7 +40,7 @@ namespace :test do
   # The acceptance test just produces a human readable version
   # of the current weather data.
   task :acceptance do
-    Puller::Database.initialise('production')
+    Puller::Database.initialise(ENV['DATABASE_ENV'] || 'production')
     Puller::ModelMarshaler.weather_model = Weather
     Puller::ModelMarshaler.location_model = Location
 

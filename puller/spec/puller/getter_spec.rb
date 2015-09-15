@@ -7,10 +7,16 @@ describe Puller::Getter do
   describe '.get' do
     subject { Puller::Getter.get(source) }
 
-    before(:context) do
-      @filename = '/anon/gen/fwo/IDA00003.dat'
-      @user = 'ftp'
-      @passwd = ''
+    HOSTNAME = 'ftp2.bom.gov.au'
+    FILENAME = '/anon/gen/fwo/IDA00003.dat'
+    USER = 'ftp'
+    PASSWD = ''
+
+    let(:source) do
+      { hostname: HOSTNAME,
+        filename: FILENAME,
+        user: USER,
+        passwd: PASSWD }
     end
 
     context 'with a stubbed ftp server' do
@@ -19,15 +25,13 @@ describe Puller::Getter do
       before(:context) do
         @port = 21_212
 
-        @empty_content = ''
-        @single_content = 'this is a test file with test content'
-        @single_newline_content = "this is a test file with test content\n"
-        @multi_content = "this is a test\nfile with test content"
+        @empty_content = "\n"
+        @single_content = "this is a test file with test content\n"
+        @multi_content = "this is a test\nfile with test content\n"
 
         @empty_filename = '/anon/gen/fwo/IDA00001.dat'
         @single_filename = '/anon/gen/fwo/IDA00002.dat'
-        @single_newline_filename = '/anon/gen/fwo/IDA00003.dat'
-        @multi_filename = '/anon/gen/fwo/IDA00004.dat'
+        @multi_filename = '/anon/gen/fwo/IDA00003.dat'
 
         @server = FakeFtp::Server.new(@port, @port + 1)
         @server.start
@@ -37,12 +41,9 @@ describe Puller::Getter do
         @server.add_file(@multi_filename, @multi_content)
       end
 
-      let(:source) do
-        { hostname: 'localhost',
-          port: @port,
-          filename: @filename,
-          user: @user,
-          passwd: @passwd }
+      before(:example) do
+        source[:hostname] = 'localhost'
+        source[:port] = @port
       end
 
       after(:context) do
@@ -59,11 +60,6 @@ describe Puller::Getter do
         is_expected.to eq @single_content.lines.map(&:strip)
       end
 
-      it 'is expected to equal the lines of a newline terminated file' do
-        source[:filename] = @single_newline_filename
-        is_expected.to eq @single_newline_content.lines.map(&:strip)
-      end
-
       it 'is expected to equal the lines of multiline file' do
         source[:filename] = @multi_filename
         is_expected.to eq @multi_content.lines.map(&:strip)
@@ -71,24 +67,12 @@ describe Puller::Getter do
     end
 
     context 'with real ftp', speed: 'slow' do
-      before(:context) do
-        @hostname = 'ftp2.bom.gov.au'
-      end
-
-      let(:source) do
-        { hostname: @hostname,
-          filename: @filename,
-          user: @user,
-          passwd: @passwd }
-      end
-
       it 'is expected to equal the ftp result' do
-        ftp = Net::FTP.open(@hostname, @user, @passwd)
-        ftp_destination = Tempfile.new('puller_getter_ftp_destination')
-        ftp.gettextfile(@filename, ftp_destination.path)
-        the_ftp_result = ftp_destination.readlines.map(&:strip)
-
-        is_expected.to eq(the_ftp_result)
+        ftp = Net::FTP.open(HOSTNAME, USER, PASSWD)
+        ftp.passive = true
+        ftp_result = []
+        ftp.gettextfile(FILENAME, nil) { |line| ftp_result << line.strip }
+        is_expected.to eq(ftp_result)
       end
     end
   end
