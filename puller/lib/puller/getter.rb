@@ -20,7 +20,8 @@ module Puller
     #
     # ==== Returns
     #
-    # * An array containing the lines of the file which was retrieved.
+    # * An array containing the lines of the file which was retrieved,
+    #   with trailing whitespace stripped.
     #
     def self::get(source)
       source[:port] ||= 21
@@ -28,10 +29,10 @@ module Puller
       ftp.connect(source[:hostname], source[:port])
       ftp.login(source[:user], source[:passwd])
 
-      ftp_destination = Tempfile.new('puller_getter_destination')
-      ftp.gettextfile(source[:filename], ftp_destination.path)
+      result = []
+      ftp.gettextfile(source[:filename], nil) { |line| result << line.strip }
 
-      ftp_destination.readlines
+      result
     end
   end
 end

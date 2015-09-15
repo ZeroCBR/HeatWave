@@ -15,4 +15,4 @@ pipeline = { getter: Puller::Getter,
              processor: Puller::Processor,
              marshaler: Puller::ModelMarshaler }
 
-puts "Added #{Puller.pull_from(source, pipeline)} records."
+puts "Pulled #{Puller.pull_from(source, pipeline)} records."
