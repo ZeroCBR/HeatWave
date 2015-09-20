@@ -44,6 +44,7 @@ module SmsSender
   #
   # * The message ID given by Telstra for use with replies
   #
+
   def self::send_sms(token, number, body, rest_client)
     header = { authorization: "Bearer #{token}",
                'Content-Type' => 'application/json',
@@ -52,6 +53,7 @@ module SmsSender
     resp = rest_client.post 'https://staging.api.telstra.com/v1/sms/messages',
                             { to: number, body: body }.to_json,
                             header
+
     JSON.parse(resp)['messageId']
   end
 end

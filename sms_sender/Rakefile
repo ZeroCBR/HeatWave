@@ -16,6 +16,11 @@ RuboCop::RakeTask.new(:rubocop) do |task|
 end
 
 namespace :test do
+  RSpec::Core::RakeTask.new(:spec) do
+  end
+end
+
+namespace :test do
   ##
   # sends a real message over the API to James' phone
   task :acceptance do
