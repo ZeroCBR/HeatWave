@@ -24,7 +24,7 @@ namespace :test do
   ##
   # sends a real message over the API to James' phone
   task :acceptance do
-    SmsSender::ExampleSender.send('0400400269', 'Heatwave acceptance tests')
+    ExampleSender.new.send('0400400269', 'Heatwave acceptance tests')
   end
 end
 

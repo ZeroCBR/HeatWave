@@ -78,7 +78,7 @@ class ExampleSender
   # * The message ID given by Telstra for use with replies
   #
   def send(number, body)
-    token = get_token(CLIENT_ID, CLIENT_SECRET, RestClient)
-    send_sms(token, number, body, RestClient)
+    token = SmsSender.get_token(CLIENT_ID, CLIENT_SECRET, RestClient)
+    SmsSender.send_sms(token, number, body, RestClient)
   end
 end
