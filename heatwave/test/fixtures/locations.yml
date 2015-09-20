@@ -2,28 +2,30 @@
 
 one:
   name: MyString
-  jan_average: 9.99
-  feb_average: 9.99
-  mar_average: 9.99
-  apr_average: 9.99
-  jun_average: 9.99
-  jul_average: 9.99
-  aug_average: 9.99
-  sep_average: 9.99
-  oct_average: 9.99
-  nov_average: 9.99
-  dec_average: 9.99
+  jan_mean: 9.99
+  feb_mean: 9.99
+  mar_mean: 9.99
+  apr_mean: 9.99
+  may_mean: 9.99
+  jun_mean: 9.99
+  jul_mean: 9.99
+  aug_mean: 9.99
+  sep_mean: 9.99
+  oct_mean: 9.99
+  nov_mean: 9.99
+  dec_mean: 9.99
 
 two:
   name: MyString
-  jan_average: 9.99
-  feb_average: 9.99
-  mar_average: 9.99
-  apr_average: 9.99
-  jun_average: 9.99
-  jul_average: 9.99
-  aug_average: 9.99
-  sep_average: 9.99
-  oct_average: 9.99
-  nov_average: 9.99
-  dec_average: 9.99
+  jan_mean: 9.99
+  feb_mean: 9.99
+  mar_mean: 9.99
+  apr_mean: 9.99
+  may_mean: 9.99
+  jun_mean: 9.99
+  jul_mean: 9.99
+  aug_mean: 9.99
+  sep_mean: 9.99
+  oct_mean: 9.99
+  nov_mean: 9.99
+  dec_mean: 9.99
