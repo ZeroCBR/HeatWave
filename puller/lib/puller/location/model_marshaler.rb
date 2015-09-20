@@ -29,14 +29,14 @@ module Puller
       #     region in february.
       #   * +:XXX_average+ - the average high temperature for the
       #     region for each other month.
+      #   Note: malformed +data+ results in undefined behaviour.
       #
       # ==== Returns
       #
-      # +true+ if the location was location already existed,
-      # otherwise +false+.
+      # The result of the model's #update_or_create(..) method
       #
-      def self.dump(_data)
-        fail 'not implemented'
+      def self.dump(data)
+        @location_model.update_or_create(data)
       end
     end
   end
