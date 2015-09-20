@@ -81,4 +81,25 @@ class ExampleSender
     token = SmsSender.get_token(CLIENT_ID, CLIENT_SECRET, RestClient)
     SmsSender.send_sms(token, number, body, RestClient)
   end
+
+  ##
+  # send takes a list of Numbers and sends one message to each of them
+  #
+  # ==== Parameters
+  #
+  # * +number_list+ - A list of the phone numbers
+  #   in '04XXXXXXXX' or '614XXXXXXXX' format.
+  # * +body+ - the text of the message.
+  #
+  # ==== Returns
+  #
+  # * A list of the message ID given by Telstra for use with replies
+  #
+  def send_many(number_list, body)
+    token = SmsSender.get_token(CLIENT_ID, CLIENT_SECRET, RestClient)
+    responses = []
+    number_list.each do |number|
+      responses << SmsSender.send_sms(token, number, body, RestClient)
+    end
+  end
 end
