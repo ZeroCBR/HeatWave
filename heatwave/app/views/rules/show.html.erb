@@ -10,5 +10,15 @@
   <%= @rule.annotation %>
 </p>
 
+<p>
+  <strong>Delta:</strong>
+  <%= @rule.delta %>
+</p>
+
+<p>
+  <strong>Duration:</strong>
+  <%= @rule.duration %>
+</p>
+
 <%= link_to 'Edit', edit_rule_path(@rule) %> |
 <%= link_to 'Back', rules_path %>

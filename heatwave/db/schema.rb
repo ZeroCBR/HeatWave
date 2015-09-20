@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(version: 20150913050319) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string   "delta"
-    t.datetime "duration"
+    t.string   "duration"
   end
 
   create_table "users", force: :cascade do |t|
