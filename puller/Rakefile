@@ -3,7 +3,6 @@ require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
 require 'rdoc/task'
-require 'puller'
 
 # Default to validation
 task default: :validate
@@ -40,6 +39,7 @@ namespace :test do
   # The acceptance test just produces a human readable version
   # of the current weather data.
   task :acceptance do
+    require 'puller'
     Puller::Database.initialise(ENV['DATABASE_ENV'] || 'production')
     Puller::ModelMarshaler.weather_model = Weather
     Puller::ModelMarshaler.location_model = Location
@@ -83,6 +83,7 @@ end
 
 # Add ActiveRecord migration tasks without Rails.
 ActiveRecordMigrations.configure do |config|
+  require_relative 'lib/puller/database'
   # Copy the migrations from the rails app.
   config.migrations_paths = ["#{Puller::Database::RAILS_HOME}/db/migrate"]
   config.database_configuration = Puller::Database::DATABASE_CONFIG
