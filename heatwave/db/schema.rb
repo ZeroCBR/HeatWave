@@ -14,8 +14,8 @@
 ActiveRecord::Schema.define(version: 20150913050319) do
 
   create_table "attributes", force: :cascade do |t|
-    t.string   "name"
-    t.string   "annotation"
+    t.string   "name",       null: false
+    t.string   "annotation", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -28,8 +28,8 @@ ActiveRecord::Schema.define(version: 20150913050319) do
   end
 
   create_table "feedbacks", force: :cascade do |t|
-    t.string   "title"
-    t.string   "content"
+    t.string   "title",      null: false
+    t.string   "content",    null: false
     t.string   "comment"
     t.boolean  "responded"
     t.datetime "created_at", null: false
@@ -62,8 +62,8 @@ ActiveRecord::Schema.define(version: 20150913050319) do
   end
 
   create_table "rules", force: :cascade do |t|
-    t.string   "name"
-    t.string   "annotation"
+    t.string   "name",       null: false
+    t.string   "annotation", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string   "delta"
@@ -71,19 +71,19 @@ ActiveRecord::Schema.define(version: 20150913050319) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "username"
-    t.string   "f_name"
-    t.string   "l_name"
-    t.string   "password"
+    t.string   "username",     null: false
+    t.string   "f_name",       null: false
+    t.string   "l_name",       null: false
+    t.string   "password",     null: false
     t.boolean  "admin_access"
-    t.string   "gender"
-    t.string   "address"
+    t.string   "gender",       null: false
+    t.string   "address",      null: false
     t.string   "phone"
-    t.integer  "age"
+    t.integer  "age",          null: false
     t.string   "email"
     t.boolean  "suscribed"
-    t.date     "birthday"
-    t.integer  "postcode"
+    t.date     "birthday",     null: false
+    t.integer  "postcode",     null: false
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
