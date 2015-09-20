@@ -1,1 +1,35 @@
-require "bundler/gem_tasks"
+
+require 'bundler/gem_tasks'
+require 'rspec/core/rake_task'
+require 'rubocop/rake_task'
+require 'rdoc/task'
+require 'sms_sender'
+
+# Default to validation
+task default: :validate
+
+# Linter
+RuboCop::RakeTask.new(:rubocop) do |task|
+  task.options = ['-D']
+end
+
+namespace :test do
+  RSpec::Core::RakeTask.new(:spec)  do |task|
+  	
+  end
+end
+
+
+namespace :test do
+  ##
+  # sends a real message over the API to James' phone
+  task :acceptance do
+    SmsSender::ExampleSender.send('0400400269', 'Heatwave acceptance tests')
+  end
+end
+
+task test: :spec # Run all tests for this gem.
+
+# Validation runs tests and the linter.
+task validate: :test
+task validate: :rubocop
