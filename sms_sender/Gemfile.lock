@@ -11,6 +11,7 @@ GEM
     diff-lcs (1.2.5)
     domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
+    ffi (1.9.10-x64-mingw32)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     json (1.8.3)
@@ -18,6 +19,11 @@ GEM
     netrc (0.10.3)
     rake (10.4.2)
     rest-client (1.8.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 3.0)
+      netrc (~> 0.7)
+    rest-client (1.8.0-x64-mingw32)
+      ffi (~> 1.9)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
@@ -40,6 +46,7 @@ GEM
 
 PLATFORMS
   ruby
+  x64-mingw32
 
 DEPENDENCIES
   bundler (~> 1.10)
