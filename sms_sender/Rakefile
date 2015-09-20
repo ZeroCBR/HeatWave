@@ -25,7 +25,7 @@ namespace :test do
   # sends a real message over the API to James' phone
   task :acceptance do
     ExampleSender.new.send('0400400269', 'Heatwave acceptance tests')
-    ExampleSender.new.send_many(['0400400269','0400400269'],
+    ExampleSender.new.send_many(%w(0400400269 0400400269),
                                 'Heatwave acceptance tests - multiple texts')
   end
 end

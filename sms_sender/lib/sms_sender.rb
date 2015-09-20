@@ -9,17 +9,17 @@ require 'json'
 #
 module SmsSender
   ##
-  # uses the Telsta
+  # Uses the credentials given to us to request a short-term auth token
   #
   # ==== Parameters
   #
-  # * +c_id+ - our Client ID with he API
-  # * +c_secret+ - the passphrase associated with our account.
-  # * +rest_client+ - the object through which to post the request
+  # * +client_id+ - Our Client ID with the API.
+  # * +client_secret+ - the passphrase associated with our account.
+  # * +rest_client+ - the object through which to post the request.
   #
   # ==== Returns
   #
-  # * The token with which we may access the API
+  # * The token with which we may access the API.
   #
   def self::get_token(client_id, client_secret, rest_client)
     # get an hour-long session token
@@ -31,18 +31,18 @@ module SmsSender
     JSON.parse(resp)['access_token']
   end
   ##
-  # send_sms does the actual sending when given a token and the number/body
+  # send_sms does the actual sending when given a token and the number/body.
   #
   # ==== Parameters
   #
-  # * +token+ - the authentication token as a string.
-  # * +number+ - the phone number in '04XXXXXXXX' or '614XXXXXXXX' format.
-  # * +body+ - the text of the message.
-  # * +rest_client+ - the object through which to post the request
+  # * +token+ - The authentication token as a string.
+  # * +number+ - The phone number in '04XXXXXXXX' or '614XXXXXXXX' format.
+  # * +body+ - The text of the message.
+  # * +rest_client+ - The object through which to post the request.
   #
   # ==== Returns
   #
-  # * The message ID given by Telstra for use with replies
+  # * The message ID given by Telstra for use with replies.
   #
 
   def self::send_sms(token, number, body, rest_client)
@@ -59,19 +59,19 @@ module SmsSender
 end
 
 ##
-# an example class that implements this module
+# An example class that implements this module.
 #
 class ExampleSender
   include SmsSender
   CLIENT_ID = 'jiUppg79kSishjRu6OSkk8k2LCTm7VJE'
   CLIENT_SECRET = 'LLPYNnRboAj1pBtQ'
   ##
-  # send takes the number/body and sends it to Telstra
+  # This method takes the number/body and sends it to Telstra.
   #
   # ==== Parameters
   #
-  # * +number+ - the phone number in '04XXXXXXXX' or '614XXXXXXXX' format.
-  # * +body+ - the text of the message.
+  # * +number+ - The phone number in '04XXXXXXXX' or '614XXXXXXXX' format.
+  # * +body+ - The text of the message.
   #
   # ==== Returns
   #
