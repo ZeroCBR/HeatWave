@@ -1,4 +1,6 @@
-# Weather model
+##
+# Persists and provides access to data on weather events.
+#
 class Weather < ActiveRecord::Base
   belongs_to :location
   has_many :histories

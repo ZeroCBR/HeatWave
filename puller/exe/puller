@@ -2,14 +2,34 @@
 
 require 'puller'
 
-source = Puller::DEFAULT_SOURCE
-
 Puller::Database.initialise
-Puller::ModelMarshaler.weather_model = Weather
-Puller::ModelMarshaler.location_model = Location
 
 pipeline = { getter: Puller::Getter,
              processor: Puller::Processor,
              marshaler: Puller::ModelMarshaler }
 
-puts "Pulled #{Puller.pull_from(source, pipeline)} records."
+case ARGV[0]
+
+when nil, ''
+  Puller::ModelMarshaler.weather_model = Weather
+  Puller::ModelMarshaler.location_model = Location
+
+  count = Puller.pull_from(Puller::DEFAULT_SOURCE, pipeline)
+  puts "Pulled #{count} weather records."
+
+when 'location'
+  Puller::ModelMarshaler.weather_model = Weather
+  Puller::ModelMarshaler.location_model = Location
+  Puller::Location::ModelMarshaler.location_model = Location
+
+  location_pipeline = { getter: Puller::Location::Getter,
+                        processor: Puller::Location::Processor,
+                        marshaler: Puller::Location::ModelMarshaler }
+  location_puller = Puller::Simple.new(location_pipeline)
+  pipeline[:marshaler] = Puller::Location::Looper.new(location_puller)
+  count = Puller.pull_from(Puller::DEFAULT_SOURCE, pipeline)
+  puts "Pulled #{count} location records."
+
+else
+  puts "Unrecognised argument #{ARGV[1]}"
+end

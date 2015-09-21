@@ -1,3 +1,6 @@
+##
+# Persists and provides access to location and weather station data.
+#
 class Location < ActiveRecord::Base
   has_many :weather
 

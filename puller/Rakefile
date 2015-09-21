@@ -34,35 +34,73 @@ namespace :test do
   RSpec::Core::RakeTask.new(:fast) do |task|
     task.rspec_opts = '--tag ~speed:slow'
   end
+  namespace :acceptance do
+    ##
+    # The acceptance test just produces a human readable version
+    # of the current weather data.
+    task :weather do
+      require 'puller'
+      Puller::Database.initialise(ENV['DATABASE_ENV'] || 'production')
+      Puller::ModelMarshaler.weather_model = Weather
+      Puller::ModelMarshaler.location_model = Location
 
-  ##
-  # The acceptance test just produces a human readable version
-  # of the current weather data.
-  task :acceptance do
-    require 'puller'
-    Puller::Database.initialise(ENV['DATABASE_ENV'] || 'production')
-    Puller::ModelMarshaler.weather_model = Weather
-    Puller::ModelMarshaler.location_model = Location
+      pipeline = { getter: Puller::Getter,
+                   processor: Puller::Processor,
+                   marshaler: Puller::ModelMarshaler }
 
-    source = Puller::DEFAULT_SOURCE
-
-    pipeline = { getter: Puller::Getter,
-                 processor: Puller::Processor,
-                 marshaler: Puller::ModelMarshaler }
-
-    puts "Pulled #{Puller.pull_from(source, pipeline)} weather records."
-    puts
-    puts 'Current weather database contents:'
-    puts
-    puts '|    Date    | High | Location'
-    puts '|------------|------|-----------------------------'
-    Weather.all.each do |w|
-      puts "| #{w.date.strftime('%a %d %b')} "\
-        "| %2d*C | #{w.location.name}" % w.high_temp
+      count = Puller.pull_from(Puller::DEFAULT_SOURCE, pipeline)
+      puts "Pulled #{count} weather records."
+      puts
+      puts 'Current weather database contents:'
+      puts
+      puts '|    Date    | High | Location'
+      puts '|------------|------|-----------------------------'
+      Weather.all.each do |w|
+        format_string = \
+          "| #{w.date.strftime('%a %d %b')} | %2d*C | #{w.location.name}"
+        puts format format_string, w.high_temp
+      end
+      puts
+      puts "Total weather records: #{Weather.count}"
     end
-    puts
-    puts "Total weather records: #{Weather.count}"
+
+    ##
+    # The acceptance test just produces a human readable version
+    # of the current weather data.
+    task :location do
+      require 'puller'
+      Puller::Database.initialise(ENV['DATABASE_ENV'] || 'production')
+      Puller::ModelMarshaler.weather_model = Weather
+      Puller::ModelMarshaler.location_model = Location
+      Puller::Location::ModelMarshaler.location_model = Location
+
+      pipeline = { getter: Puller::Getter,
+                   processor: Puller::Processor,
+                   marshaler: Puller::ModelMarshaler }
+      location_pipeline = { getter: Puller::Location::Getter,
+                            processor: Puller::Location::Processor,
+                            marshaler: Puller::Location::ModelMarshaler }
+      location_puller = Puller::Simple.new(location_pipeline)
+      pipeline[:marshaler] = Puller::Location::Looper.new(location_puller)
+
+      count = Puller.pull_from(Puller::DEFAULT_SOURCE, pipeline)
+      puts "Pulled #{count} location records."
+      puts
+      puts 'Current location database contents:'
+      puts
+      puts '| ID     | Jan  | Jul  | Name'
+      puts '|--------|------|------|----------------------------'
+      Location.all.each do |l|
+        format_string = '| %06d | %4.1f | %4.1f | %s'
+        puts format format_string, l.id, l.jan_mean, l.jul_mean, l.name
+      end
+      puts
+      puts "Total location records: #{Location.count}"
+    end
   end
+
+  task acceptance: :'acceptance:location'
+  task acceptance: :'acceptance:weather'
 end
 
 task spec: :'db:test:reset' # Always reset the test db before specs

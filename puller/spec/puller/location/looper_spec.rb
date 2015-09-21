@@ -28,13 +28,14 @@ describe Puller::Location::Looper do
       before(:example) do
         data.each_key do |l_id|
           if good_ids.include? l_id
-            expect(puller).to \
-              receive(:pull_from).with(source_for(l_id))
-                                 .once { double('Location') }
+            expect(puller).to receive(:pull_from)
+              .with(source_for(l_id))
+              .once { double('Location') }
           elsif !l_id.include? ' '
-            expect(puller).to \
-              receive(:pull_from).with(source_for(l_id)).once
-                                 .and_raise(Net::HTTPBadResponse)
+            expect(puller).to receive(:pull_from)
+              .with(source_for(l_id))
+              .once
+              .and_raise(Net::HTTPBadResponse)
           end
         end
       end
@@ -94,7 +95,7 @@ describe Puller::Location::Looper do
       end
 
       before(:context) do
-        Location.all.each { |l| l.destroy }
+        Location.all.each(&:destroy)
       end
 
       context 'with fake weather data' do
@@ -114,7 +115,7 @@ describe Puller::Location::Looper do
         MINIMUM_PULLED = 50 # Arbitrary
 
         let(:data) do
-          Puller::Processor::data_in(Puller::Getter.get(Puller::DEFAULT_SOURCE))
+          Puller::Processor.data_in(Puller::Getter.get(Puller::DEFAULT_SOURCE))
         end
 
         it 'should successfully pull each real location' do

@@ -1,6 +1,6 @@
 #:nodoc:
 module Puller
   ##
-  # Version 0.2.0 - finished location puller
-  VERSION = '0.2.0'
+  # Version 0.3.0 - Added locations to executable and acceptance tests.
+  VERSION = '0.3.0'
 end
