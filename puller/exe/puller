@@ -2,10 +2,7 @@
 
 require 'puller'
 
-source = { hostname: 'ftp2.bom.gov.au',
-           filename: '/anon/gen/fwo/IDA00003.dat',
-           user: 'ftp',
-           passwd: '' }
+source = Puller::DEFAULT_SOURCE
 
 Puller::Database.initialise
 Puller::ModelMarshaler.weather_model = Weather

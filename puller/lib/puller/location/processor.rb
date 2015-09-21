@@ -1,5 +1,3 @@
-require 'date'
-
 module Puller
   module Location
     ##
@@ -7,7 +5,11 @@ module Puller
     # a form suitable for marshaling.
     #
     module Processor
-      MARKER = '"Mean maximum temperature (Degrees C)"'
+      # Matches the location name in the first group and
+      # location id in the second group.
+      HEADER = /"[a-zA-Z ]+ '([a-zA-Z() ]+)' \[(\d{6})\]"/
+
+      MARKER = '"Mean maximum temperature (Degrees C)'
 
       FIRST_TEMPERATURE_FIELD = 1
 
@@ -41,11 +43,11 @@ module Puller
       #   no marked data line.
       #
       def self.data_in(lines)
-        match_data = HEADER.match lines[0]
-        fail FormatError, 'header missing' unless match_data
+        match_data = HEADER.match lines.first
+        fail FormatError, "bad header: #{lines.first}" unless match_data
 
         data_line = lines.find { |line| line.include?(MARKER) }
-        fail FormatError, 'no marked data line' unless data_line
+        fail FormatError, "no marked data line: #{lines}" unless data_line
 
         data_for(match_data, data_line)
       end
@@ -69,10 +71,6 @@ module Puller
           jul_mean: fields[6], aug_mean: fields[7], sep_mean: fields[8],
           oct_mean: fields[9], nov_mean: fields[10], dec_mean: fields[11] }
       end
-
-      # Matches the location name in the first group and
-      # location id in the second group.
-      HEADER = /"[a-zA-Z ]+ '([a-zA-Z ]+)' \[(\d{6})\]"/
     end
   end
 end

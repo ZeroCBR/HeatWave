@@ -44,10 +44,7 @@ namespace :test do
     Puller::ModelMarshaler.weather_model = Weather
     Puller::ModelMarshaler.location_model = Location
 
-    source = { hostname: 'ftp2.bom.gov.au',
-               filename: '/anon/gen/fwo/IDA00003.dat',
-               user: 'ftp',
-               passwd: '' }
+    source = Puller::DEFAULT_SOURCE
 
     pipeline = { getter: Puller::Getter,
                  processor: Puller::Processor,
@@ -61,7 +58,7 @@ namespace :test do
     puts '|------------|------|-----------------------------'
     Weather.all.each do |w|
       puts "| #{w.date.strftime('%a %d %b')} "\
-           "| #{w.high_temp}*C | #{w.location.name}"
+        "| %2d*C | #{w.location.name}" % w.high_temp
     end
     puts
     puts "Total weather records: #{Weather.count}"

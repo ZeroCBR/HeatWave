@@ -6,6 +6,11 @@
 # so they may be replaced with other implementations if needed.
 #
 module Puller
+  DEFAULT_SOURCE = { hostname: 'ftp2.bom.gov.au',
+                     filename: '/anon/gen/fwo/IDA00003.dat',
+                     user: 'ftp',
+                     passwd: '' }
+
   ##
   # Pulls weather data from the specified source using the provided
   # pipeline.
@@ -30,5 +35,18 @@ module Puller
     content = pipeline[:getter].get(source)
     data = pipeline[:processor].data_in(content)
     pipeline[:marshaler].dump(data)
+  end
+
+  ##
+  # Basic instantiable Puller which stores a pipeline.
+  #
+  class Simple
+    def initialize(pipeline)
+      @pipeline = pipeline
+    end
+
+    def pull_from(source)
+      Puller.pull_from(source, @pipeline)
+    end
   end
 end

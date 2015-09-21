@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    puller (0.1.9)
+    puller (0.2.0)
       active_record_migrations
       sqlite3
 

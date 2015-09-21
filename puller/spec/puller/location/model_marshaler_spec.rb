@@ -1,8 +1,6 @@
 require 'spec_helper'
 require 'puller/location/spec_helper'
 
-Puller::Database.initialise
-
 describe Puller::Location::ModelMarshaler do
   describe '@location_model' do
     it 'is expected to be accessible' do
@@ -57,6 +55,9 @@ describe Puller::Location::ModelMarshaler do
     end
 
     context 'with real models', speed: 'slow' do
+      Puller::Database.initialise
+      subject { Puller::Location::ModelMarshaler.dump(location) }
+
       before(:context) do
         Puller::Location::ModelMarshaler.location_model = Location
 
@@ -70,15 +71,17 @@ describe Puller::Location::ModelMarshaler do
 
       context 'with a known location' do
         let(:location) { AIREYS }
-        it "is expected to update the location reporting that it's known" do
-          expect(Puller::Location::ModelMarshaler.dump(location)).to be(true)
+        it 'is expected to update and return the Location' do
+          is_expected.to be_a Location
+          expect(Location.exists?(AIREYS[:id])).to be true
         end
       end
 
       context 'with an unknown location' do
         let(:location) { WOOP_WOOP }
-        it "is expected to update the location reporting that it's unknown" do
-          expect(Puller::Location::ModelMarshaler.dump(location)).to be(true)
+        it 'is expected to create and return the Location' do
+          is_expected.to be_a Location
+          expect(Location.exists?(WOOP_WOOP[:id])).to be true
         end
       end
     end

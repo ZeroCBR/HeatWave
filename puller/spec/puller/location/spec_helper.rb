@@ -13,6 +13,21 @@ AIREYS = { id: '090180',
            nov_mean: 19.6,
            dec_mean: 21.1 }
 
+MORTLAKE = { id: '090176',
+             name: 'MORTLAKE',
+             jan_mean: 25.9,
+             feb_mean: 26.4,
+             mar_mean: 23.8,
+             apr_mean: 19.9,
+             may_mean: 16.2,
+             jun_mean: 13.5,
+             jul_mean: 12.9,
+             aug_mean: 13.9,
+             sep_mean: 15.8,
+             oct_mean: 17.9,
+             nov_mean: 20.8,
+             dec_mean: 23.2 }
+
 WOOP_WOOP = { id: '999999',
               name: 'WOOP WOOP',
               jan_mean: 1.0,

@@ -1,6 +1,6 @@
 #:nodoc:
 module Puller
   ##
-  # Version 0.1.9 - just before finishing the location populator.
-  VERSION = '0.1.9'
+  # Version 0.2.0 - finished location puller
+  VERSION = '0.2.0'
 end

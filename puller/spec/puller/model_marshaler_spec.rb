@@ -1,7 +1,5 @@
 require 'spec_helper'
 
-Puller::Database.initialise
-
 describe Puller::ModelMarshaler do
   describe '@@weather_model' do
     subject { Puller::ModelMarshaler.weather_model }
@@ -171,6 +169,8 @@ describe Puller::ModelMarshaler do
     end
 
     context 'with real models', speed: 'slow' do
+      Puller::Database.initialise
+
       before(:context) do
         Puller::ModelMarshaler.weather_model = Weather
         Puller::ModelMarshaler.location_model = Location

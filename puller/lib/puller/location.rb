@@ -1,3 +1,5 @@
+require 'puller/location/getter'
 require 'puller/location/location'
 require 'puller/location/processor'
 require 'puller/location/model_marshaler'
+require 'puller/location/looper'
