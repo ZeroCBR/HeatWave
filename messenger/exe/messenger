@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require 'messenger'
+
+Messenger::Database.initialise
+
+fail 'This application is not yet implemented!'
