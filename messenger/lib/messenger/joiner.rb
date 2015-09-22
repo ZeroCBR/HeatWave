@@ -15,18 +15,26 @@ module Messenger
     #   * +:user+ - the user model class
     #   * +:message+ - the message model class
     # * +rule+ - the rule of interest.
-    # * +date_range+ - TODO
+    # * +start_date+ - TODO
     #
     # ==== Returns:
     #
     # * An array of message model objects which need to be sent.
     #
-    def messages(models, rules, date_range)
-      fail 'not implemented'
+    def self.messages(models, rules, start_date)
+      rule_triggerings = Hash[
+        rules.map { |rule| [rule, triggerings(models, rule, start_date)] }]
+
+      messages = rule_triggerings.map do |rule, ts|
+        ts.map do |t|
+          recipients = recipients(rule, t.location)
+          recipients.map { |r| models[:message].new(rule, t, r) }
+        end
+      end
+      messages.flatten
     end
 
-    private
-
+    ##
     # Produces a list of triggerings for a particular rule over
     # a particular date range.
     #
@@ -34,34 +42,47 @@ module Messenger
     #
     # * +models+ - a hash containing:
     #   * +:weather+ - the weather model class
-    # * +date_range+ - TODO
+    #   * +:location+ - the weather model class
+    # * +start_date+ - TODO
     #
     # ==== Returns:
     #
-    # * An array of hashes, one per rule trigger, containing:
-    #   * +:rule+ - the model object for the triggered rule
-    #   * +:weather+ - the model object for the earliest
-    #     triggering weather event.
+    # * An array of weather model objects for the start of each
+    #   weather sequence which triggers the rule.
     #
-    def triggerings(models, rules, date_range)
-      fail 'not implemented'
+    def self.triggerings(models, rule, start_date)
+      date_range = start_date...(start_date + rule.duration)
+
+      # for each location:
+      #   list all weather events at that location in the date range
+      runs = models[:location].all
+             .map { |location| location.run(date_range) }
+             .select { |run| run.size >= rule.duration }
+
+      # for each event list:
+      #   for each event:
+      #      if it doesn't satisfy the rule, go to next list
+      #   record the triggering
+      runs.select { |run| run.all? { |w| rule.satisfied_by w } }
+        .map(&:first)
     end
 
+    ##
     # Produces a list of recipients for messages triggered by
     # a particular rule at a particular location.
     #
     # ==== Parameters:
     #
-    # * +models+ - a hash containing:
-    #   * +:user+ - the user model class
-    # * +date_range+ - TODO
+    # * +rule+ - the rule triggering the message.
+    # * +location+ - the location where the potential recipients live.
     #
     # ==== Returns:
     #
     # * An array of user model objects for the required recipients.
     #
-    def recipients(models, rule, location)
-      fail 'not implemented'
+    def self.recipients(_rule, location)
+      # Note, _rule is not currently used, because attributes are not checked.
+      location.users
     end
   end
 end
