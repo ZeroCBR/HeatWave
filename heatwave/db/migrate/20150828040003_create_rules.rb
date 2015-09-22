@@ -5,6 +5,9 @@ class CreateRules < ActiveRecord::Migration
       t.string :name, null: false
       t.string :annotation, null: false
 
+      t.integer :delta, limit: 1, null: false
+      t.integer :duration, limit: 1, null: false
+
       t.timestamps null: false
     end
   end

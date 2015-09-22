@@ -82,6 +82,7 @@ describe Puller::Location::Looper do
     context 'with a real internal pipeline', speed: 'slow' do
       Puller::Database.initialise
 
+      let(:minimum_pulled) { 50 }
       let(:pipeline) do
         { getter: Puller::Location::Getter,
           processor: Puller::Location::Processor,
@@ -112,23 +113,20 @@ describe Puller::Location::Looper do
       end
 
       context 'with real weather data' do
-        MINIMUM_PULLED = 50 # Arbitrary
-
         let(:data) do
           Puller::Processor.data_in(Puller::Getter.get(Puller::DEFAULT_SOURCE))
         end
 
         it 'should successfully pull each real location' do
           is_expected.to eq Location.count
-          is_expected.to be > MINIMUM_PULLED
+          is_expected.to be > minimum_pulled
         end
       end
 
       context 'within a real pipeline' do
-        MINIMUM_PULLED = 50 # Arbitrary
-
         subject { Puller.pull_from(Puller::DEFAULT_SOURCE, weather_pipeline) }
 
+        let(:minimum_pulled) { 50 }
         let(:weather_pipeline) do
           { getter: Puller::Getter,
             processor: Puller::Processor,
@@ -145,7 +143,7 @@ describe Puller::Location::Looper do
 
         it 'should pull lots of locations' do
           is_expected.to eq Location.count
-          is_expected.to be > MINIMUM_PULLED
+          is_expected.to be > minimum_pulled
         end
       end
     end

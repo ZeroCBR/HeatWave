@@ -62,12 +62,12 @@ ActiveRecord::Schema.define(version: 20150913050319) do
   end
 
   create_table "rules", force: :cascade do |t|
-    t.string   "name",       null: false
-    t.string   "annotation", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string   "delta"
-    t.string   "duration"
+    t.string   "name",                 null: false
+    t.string   "annotation",           null: false
+    t.integer  "delta",      limit: 1, null: false
+    t.integer  "duration",   limit: 1, null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
   create_table "users", force: :cascade do |t|

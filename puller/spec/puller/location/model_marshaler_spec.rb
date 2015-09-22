@@ -29,11 +29,11 @@ describe Puller::Location::ModelMarshaler do
         # Make sure we test both the create and update case.
         case location
         when AIREYS
-          allow(location_model).to receive(:update_or_create)
-            .with(location).once { 1 }
+          allow(location_model).to receive(:update_or_create_by)
+            .with({ id: location[:id] }, location).once { 1 }
         when WOOP_WOOP
-          allow(location_model).to receive(:update_or_create)
-            .with(location).once { 'two' }
+          allow(location_model).to receive(:update_or_create_by)
+            .with({ id: location[:id] }, location).once { 'two' }
         else
           fail 'incomplete branch coverage'
         end
@@ -62,18 +62,18 @@ describe Puller::Location::ModelMarshaler do
         Puller::Location::ModelMarshaler.location_model = Location
 
         Location.create(AIREYS) unless Location.exists?(AIREYS)
-        Location.destroy(WOOP_WOOP[:id]) if Location.exists?(WOOP_WOOP[:id])
+        Location.destroy(WOOP_WOOP[:id]) if Location.exists?(WOOP_WOOP)
       end
 
       after(:example) do
-        Location.destroy(WOOP_WOOP[:id]) if Location.exists?(WOOP_WOOP[:id])
+        Location.destroy(WOOP_WOOP[:id]) if Location.exists?(WOOP_WOOP)
       end
 
       context 'with a known location' do
         let(:location) { AIREYS }
         it 'is expected to update and return the Location' do
           is_expected.to be_a Location
-          expect(Location.exists?(AIREYS[:id])).to be true
+          expect(Location.exists?(AIREYS)).to be true
         end
       end
 
@@ -81,7 +81,7 @@ describe Puller::Location::ModelMarshaler do
         let(:location) { WOOP_WOOP }
         it 'is expected to create and return the Location' do
           is_expected.to be_a Location
-          expect(Location.exists?(WOOP_WOOP[:id])).to be true
+          expect(Location.exists?(WOOP_WOOP)).to be true
         end
       end
     end

@@ -71,7 +71,7 @@ describe Puller::ModelMarshaler do
 
           # Make sure we test both the create and update case.
           data[location_id].each_pair do |date, high_temp|
-            allow(weather_model).to receive(:find_and_update_or_create_by)
+            allow(weather_model).to receive(:update_or_create_by)
               .with({ location: location, date: date }, high_temp: high_temp)
               .once
           end

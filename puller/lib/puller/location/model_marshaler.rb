@@ -33,10 +33,10 @@ module Puller
       #
       # ==== Returns
       #
-      # The result of the model's #update_or_create(..) method
+      # The result of the model's #update_or_create_by(..) method
       #
       def self.dump(data)
-        @location_model.update_or_create(data)
+        @location_model.update_or_create_by({ id: data[:id] }, data)
       end
     end
   end

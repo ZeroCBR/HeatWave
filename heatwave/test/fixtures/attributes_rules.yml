@@ -5,5 +5,5 @@ one:
   rule_id: 1
 
 two:
-  attribute_id: 1
-  rule_id: 1
+  attribute_id: 2
+  rule_id: 2
