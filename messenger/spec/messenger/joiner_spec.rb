@@ -50,31 +50,39 @@ describe Messenger::Joiner do
             .with(date_range) { [woop_woop_weather[:spike]] }
 
           allow(models[:message]).to receive(:new)
-            .with(wave_rule, woop_woop_weather[:spike], carrol)
+            .with(rule: wave_rule, weather: woop_woop_weather[:spike],
+                  user: carrol, content: Messenger::Joiner::CONTENT)
           allow(models[:message]).to receive(:new)
-            .with(spike_rule, mildura_weather[:spike], alice)
+            .with(rule: spike_rule, weather: mildura_weather[:spike],
+                  user: alice, content: Messenger::Joiner::CONTENT)
           allow(models[:message]).to receive(:new)
-            .with(spike_rule, mildura_weather[:spike], dave)
+            .with(rule: spike_rule, weather: mildura_weather[:spike],
+                  user: dave, content: Messenger::Joiner::CONTENT)
           allow(models[:message]).to receive(:new)
-            .with(spike_rule, woop_woop_weather[:spike], carrol)
+            .with(rule: spike_rule, weather: woop_woop_weather[:spike],
+                  user: carrol, content: Messenger::Joiner::CONTENT)
         end
 
         it 'should send a message for the heatwaves' do
           expect(models[:message]).to receive(:new)
-            .with(wave_rule, woop_woop_weather[:spike], carrol)
+            .with(rule: wave_rule, weather: woop_woop_weather[:spike],
+                  user: carrol, content: Messenger::Joiner::CONTENT)
             .once { message4 }
           is_expected.to include message4
         end
 
         it 'should send a message for the heat spikes' do
           expect(models[:message]).to receive(:new)
-            .with(spike_rule, mildura_weather[:spike], alice)
+            .with(rule: spike_rule, weather: mildura_weather[:spike],
+                  user: alice, content: Messenger::Joiner::CONTENT)
             .once { message1 }
           expect(models[:message]).to receive(:new)
-            .with(spike_rule, mildura_weather[:spike], dave)
+            .with(rule: spike_rule, weather: mildura_weather[:spike],
+                  user: dave, content: Messenger::Joiner::CONTENT)
             .once { message2 }
           expect(models[:message]).to receive(:new)
-            .with(spike_rule, woop_woop_weather[:spike], carrol)
+            .with(rule: spike_rule, weather: woop_woop_weather[:spike],
+                  user: carrol, content: Messenger::Joiner::CONTENT)
             .once { message3 }
           is_expected.to include message1, message2, message3
         end
@@ -109,11 +117,14 @@ describe Messenger::Joiner do
             .with(date_range) { [:a] }
 
           allow(models[:message]).to receive(:new)
-            .with(wave_rule, mildura_weather[:hot1], alice)
+            .with(rule: wave_rule, weather: mildura_weather[:hot1],
+                  user: alice, content: Messenger::Joiner::CONTENT)
           allow(models[:message]).to receive(:new)
-            .with(wave_rule, mildura_weather[:hot1], dave)
+            .with(rule: wave_rule, weather: mildura_weather[:hot1],
+                  user: dave, content: Messenger::Joiner::CONTENT)
           allow(models[:message]).to receive(:new)
-            .with(wave_rule, aireys_weather[:hot1], bob)
+            .with(rule: wave_rule, weather: aireys_weather[:hot1],
+                  user: bob, content: Messenger::Joiner::CONTENT)
         end
 
         let(:rules) { [spike_rule, wave_rule] }
@@ -121,15 +132,21 @@ describe Messenger::Joiner do
 
         it 'should send messages for the first heatwave' do
           expect(models[:message]).to receive(:new)
-            .with(wave_rule, mildura_weather[:hot1], alice) { message1 }
+            .with(rule: wave_rule, weather: mildura_weather[:hot1],
+                  user: alice, content: Messenger::Joiner::CONTENT)
+            .once { message1 }
           expect(models[:message]).to receive(:new)
-            .with(wave_rule, mildura_weather[:hot1], dave) { message2 }
+            .with(rule: wave_rule, weather: mildura_weather[:hot1],
+                  user: dave, content: Messenger::Joiner::CONTENT)
+            .once { message2 }
           is_expected.to include message1, message2
         end
 
         it 'should send messages for the second heatwave' do
           expect(models[:message]).to receive(:new)
-            .with(wave_rule, aireys_weather[:hot1], bob) { message3 }
+            .with(rule: wave_rule, weather: aireys_weather[:hot1],
+                  user: bob, content: Messenger::Joiner::CONTENT)
+            .once { message3 }
           is_expected.to include message3
         end
       end
@@ -392,7 +409,7 @@ describe Messenger::Joiner do
 
   context 'with real models' do
     subject { Messenger::Joiner.triggerings(models, rule, start_date) }
-    let(:models) { { weather: Weather, user: User, message: Message } }
+    let(:models) { { weather: Weather, user: User, message: nil } }
 
     describe '.triggerings' do
       let(:rule) { @rule || fail('no rule') }

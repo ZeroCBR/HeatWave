@@ -4,6 +4,8 @@ module Messenger
   # who needs to be sent a warning message.
   #
   module Joiner
+    CONTENT = 'Heatwave Alert!' # TODO customise
+
     ##
     # Produces a list of messages which currently need to be sent
     # according to a particular rule.
@@ -25,10 +27,9 @@ module Messenger
       rule_triggerings = Hash[
         rules.map { |rule| [rule, triggerings(models, rule, start_date)] }]
 
-      messages = rule_triggerings.map do |rule, ts|
-        ts.map do |t|
-          recipients = recipients(rule, t.location)
-          recipients.map { |r| models[:message].new(rule, t, r) }
+      messages = rule_triggerings.map do |rule, weathers|
+        weathers.map do |w|
+          send_messages_for(models, rule, w)
         end
       end
       messages.flatten
@@ -83,6 +84,18 @@ module Messenger
     def self.recipients(_rule, location)
       # Note, _rule is not currently used, because attributes are not checked.
       location.users
+    end
+
+    private
+
+    def self.send_messages_for(models, rule, weather)
+      recipients = recipients(rule, weather.location)
+      recipients.map do |r|
+        models[:message].new(rule: rule,
+                             weather: weather,
+                             user: r,
+                             content: CONTENT)
+      end
     end
   end
 end
