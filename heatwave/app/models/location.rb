@@ -2,7 +2,8 @@
 # Persists and provides access to location and weather station data.
 #
 class Location < ActiveRecord::Base
-  has_many :weather
+  has_many :users
+  has_many :weathers
 
   ##
   # The weather events at this location for the given date range,

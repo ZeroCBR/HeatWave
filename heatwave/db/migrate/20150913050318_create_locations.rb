@@ -17,5 +17,7 @@ class CreateLocations < ActiveRecord::Migration
 
       t.timestamps null: false
     end
+
+    add_foreign_key :users, :locations
   end
 end

@@ -2,6 +2,8 @@
 # Persists and provides access to data on weather events.
 #
 class Weather < ActiveRecord::Base
+  validates :location, presence: true
+
   belongs_to :location
   has_many :histories
   has_many :messages

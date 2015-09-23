@@ -6,10 +6,8 @@ one:
   password: MyString
   admin_access: false
   gender: MyString
-  address: MyString
   phone: MyString
   age: 1
   email: MyString
-  suscribed: false
-  birthday: 2015-08-28
-  postcode: 3053
+  message_type: 'email'
+  location_id: 1

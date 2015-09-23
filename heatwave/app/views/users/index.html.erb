@@ -6,18 +6,16 @@
   <thead>
     <tr>
       <th>Username</th>
-      <th>F name</th>
-      <th>L name</th>
+      <th>First name</th>
+      <th>Last name</th>
       <th>Password</th>
       <th>Admin_access</th>
       <th>Gender</th>
-      <th>Address</th>
       <th>Phone</th>
       <th>Age</th>
       <th>Email</th>
-      <th>Suscribed</th>
-      <th>Birthday</th>
-      <th>Postcode</th>
+      <th>Prefered Message Type</th>
+      <th>Location</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -31,13 +29,11 @@
         <td><%= user.password %></td>
         <td><%= user.admin_access %></td>
         <td><%= user.gender %></td>
-        <td><%= user.address %></td>
         <td><%= user.phone %></td>
         <td><%= user.age %></td>
         <td><%= user.email %></td>
-        <td><%= user.suscribed %></td>
-        <td><%= user.birthday %></td>
-        <td><%= user.postcode %></td>
+        <td><%= user.message_type %></td>
+        <td><%= user.location.name %></td>
         <td><%= link_to 'Show', user %></td>
         <td><%= link_to 'Edit', edit_user_path(user) %></td>
         <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>

@@ -27,8 +27,8 @@ describe Messenger::Joiner do
       context 'with two spikes and a heatwave for one day' do
         let(:message1) { double '<Message for Alice>' }
         let(:message2) { double '<Message for Dave>' }
-        let(:message3) { double '<Message for Carrol>' }
-        let(:message4) { double '<Message for Carrol>' }
+        let(:message3) { double '<Message for Carol>' }
+        let(:message4) { double '<Message for Carol>' }
         let(:rules) { [spike_rule, wave_rule] }
         let(:start_date) { Date.today + 3 }
 
@@ -51,7 +51,7 @@ describe Messenger::Joiner do
 
           allow(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: woop_woop_weather[:spike],
-                  user: carrol, content: Messenger::Joiner::CONTENT)
+                  user: carol, content: Messenger::Joiner::CONTENT)
           allow(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: mildura_weather[:spike],
                   user: alice, content: Messenger::Joiner::CONTENT)
@@ -60,13 +60,13 @@ describe Messenger::Joiner do
                   user: dave, content: Messenger::Joiner::CONTENT)
           allow(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: woop_woop_weather[:spike],
-                  user: carrol, content: Messenger::Joiner::CONTENT)
+                  user: carol, content: Messenger::Joiner::CONTENT)
         end
 
         it 'should send a message for the heatwaves' do
           expect(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: woop_woop_weather[:spike],
-                  user: carrol, content: Messenger::Joiner::CONTENT)
+                  user: carol, content: Messenger::Joiner::CONTENT)
             .once { message4 }
           is_expected.to include message4
         end
@@ -82,7 +82,7 @@ describe Messenger::Joiner do
             .once { message2 }
           expect(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: woop_woop_weather[:spike],
-                  user: carrol, content: Messenger::Joiner::CONTENT)
+                  user: carol, content: Messenger::Joiner::CONTENT)
             .once { message3 }
           is_expected.to include message1, message2, message3
         end
@@ -289,19 +289,19 @@ describe Messenger::Joiner do
 
       context 'when one user is in the location' do
         let(:location) { woop_woop } # Arbitrary
-        before(:example) { allow(location).to receive(:users) { [carrol] } }
+        before(:example) { allow(location).to receive(:users) { [carol] } }
         it 'is expected to have just that user as a recipient' do
-          is_expected.to eq [carrol]
+          is_expected.to eq [carol]
         end
       end
 
       context 'when many users are in the location' do
         let(:location) { aireys } # Arbitrary
         before(:example) do
-          allow(location).to receive(:users) { [alice, bob, carrol] }
+          allow(location).to receive(:users) { [alice, bob, carol] }
         end
         it 'is expected to have each user in the location as a recipient' do
-          is_expected.to eq [alice, bob, carrol]
+          is_expected.to eq [alice, bob, carol]
         end
       end
     end
@@ -313,7 +313,7 @@ describe Messenger::Joiner do
 
       let(:alice) { double '<User Alice>' }
       let(:bob) { double '<User Bob>' }
-      let(:carrol) { double '<User Carrol>' }
+      let(:carol) { double '<User Carol>' }
       let(:dave) { double '<User Dave>' }
 
       let(:mildura) { double '<Location MILDURA RACECOURSE>' }
@@ -364,8 +364,8 @@ describe Messenger::Joiner do
         woop_woop_weather.values.each do |w|
           allow(w).to receive(:location) { woop_woop }
         end
-        allow(carrol).to receive(:location) { woop_woop }
-        allow(woop_woop).to receive(:users) { [carrol] }
+        allow(carol).to receive(:location) { woop_woop }
+        allow(woop_woop).to receive(:users) { [carol] }
 
         # Rules
         allow(wave_rule).to \
@@ -405,10 +405,10 @@ describe Messenger::Joiner do
   end
 
   context 'with real models', speed: 'slow' do
-    subject { Messenger::Joiner.triggerings(models, rule, start_date) }
     let(:models) { { location: Location, message: Message } }
 
     describe '.triggerings' do
+      subject { Messenger::Joiner.triggerings(models, rule, start_date) }
       let(:rule) { @rule || fail('no rule') }
 
       context 'with the heat spike rule' do
@@ -475,6 +475,31 @@ describe Messenger::Joiner do
       end
     end
 
+    describe '.recipients' do
+      subject { Messenger::Joiner.recipients(rule, location) }
+
+      let(:rule) { nil } # Currently the rule is not used.
+
+      context 'when no users are in the location' do
+        let(:location) { @woop_woop }
+        it { is_expected.to be_empty }
+      end
+
+      context 'when one user is in the location' do
+        let(:location) { @aireys }
+        it 'is expected to have just that user as a recipient' do
+          is_expected.to eq [@bob]
+        end
+      end
+
+      context 'when many users are in the location' do
+        let(:location) { @mildura }
+        it 'is expected to have each user in the location as a recipient' do
+          is_expected.to contain_exactly @alice, @carol
+        end
+      end
+    end
+
     def make_weather
       (0..2).each { |i| make_weather_for(@mildura, i, i) }
       (0..2).each { |i| make_weather_for(@aireys, i, i - 1) }
@@ -498,36 +523,45 @@ describe Messenger::Joiner do
                                   high_temp: temp)
     end
 
-    before(:context) do
+    before(:context) do # Database
       Messenger::Database.initialise
       @mildura = Location.find_or_create_by(
         name: 'MILDURA RACECOURSE',
-        jan_mean: 25.0,
-        feb_mean: 22.1,
-        mar_mean: 18.2,
-        apr_mean: 14.3,
-        may_mean: 12.4,
-        jun_mean: 10.5,
-        jul_mean: 8.6,
-        aug_mean: 12.7,
-        sep_mean: 14.8,
-        oct_mean: 18.9,
-        nov_mean: 20.0,
-        dec_mean: 24.1)
+        jan_mean: 25.0, feb_mean: 22.1, mar_mean: 18.2, apr_mean: 14.3,
+        may_mean: 12.4, jun_mean: 10.5, jul_mean: 8.6, aug_mean: 12.7,
+        sep_mean: 14.8, oct_mean: 18.9, nov_mean: 20.0, dec_mean: 24.1)
       @aireys = Location.find_or_create_by(
         name: 'AIREYS INLET',
-        jan_mean: 22.5,
-        feb_mean: 20.4,
-        mar_mean: 17.3,
-        apr_mean: 12.2,
-        may_mean: 9.1,
-        jun_mean: 8.0,
-        jul_mean: 7.9,
-        aug_mean: 10.8,
-        sep_mean: 11.7,
-        oct_mean: 16.6,
-        nov_mean: 19.5,
-        dec_mean: 21.4)
+        jan_mean: 22.5, feb_mean: 20.4, mar_mean: 17.3, apr_mean: 12.2,
+        may_mean: 9.1, jun_mean: 8.0, jul_mean: 7.9, aug_mean: 10.8,
+        sep_mean: 11.7, oct_mean: 16.6, nov_mean: 19.5, dec_mean: 21.4)
+      @woop_woop = Location.find_or_create_by(
+        name: 'WOOP WOOP',
+        jan_mean: 0.0, feb_mean: 0.0, mar_mean: 0.0, apr_mean: 0.0,
+        may_mean: 0.0, jun_mean: 0.0, jul_mean: 0.0, aug_mean: 0.0,
+        sep_mean: 0.0, oct_mean: 0.0, nov_mean: 0.0, dec_mean: 0.0)
+      User.destroy_all
+      @alice = User.create(username: 'asanchez',
+                           password: '123',
+                           f_name: 'Alice',
+                           l_name: 'Sanchez',
+                           gender: 'F',
+                           age: 1,
+                           location: @mildura)
+      @bob = User.create(username: 'bobr',
+                         password: 'abc',
+                         f_name: 'Bob',
+                         l_name: 'Roberts',
+                         gender: 'M',
+                         age: 2,
+                         location: @aireys)
+      @carol = User.create(username: 'cadav',
+                           password: '!@#',
+                           f_name: 'Carol',
+                           l_name: 'Davids',
+                           gender: 'F',
+                           age: 3,
+                           location: @mildura)
     end
   end
 end

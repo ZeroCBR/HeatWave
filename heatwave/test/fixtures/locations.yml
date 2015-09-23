@@ -1,6 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  id: 1
   name: MyString
   jan_mean: 9.99
   feb_mean: 9.99
@@ -16,6 +17,7 @@ one:
   dec_mean: 9.99
 
 two:
+  id: 2
   name: MyString
   jan_mean: 9.99
   feb_mean: 9.99

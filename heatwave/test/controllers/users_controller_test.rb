@@ -28,18 +28,17 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'should update user' do
-    patch :update, id: @user, user: { address: @user.address,
-                                      admin_access: @user.admin_access,
+    location = Location.find(@user.location_id)
+    patch :update, id: @user, user: { admin_access: @user.admin_access,
                                       age: @user.age,
-                                      birthday: @user.birthday,
                                       email: @user.email,
                                       f_name: @user.f_name,
                                       gender: @user.gender,
                                       l_name: @user.l_name,
                                       password: @user.password,
                                       phone: @user.phone,
-                                      postcode: @user.postcode,
-                                      suscribed: @user.suscribed,
+                                      location: location,
+                                      message_type: @user.message_type,
                                       username: @user.username }
     assert_redirected_to user_path(assigns(:user))
   end

@@ -8,13 +8,11 @@ class CreateUsers < ActiveRecord::Migration
       t.string :password, null: false
       t.boolean :admin_access
       t.string :gender, null: false
-      t.string :address, null: false
       t.string :phone
-      t.integer :age, null: false
       t.string :email
-      t.boolean :suscribed
-      t.date :birthday, null: false
-      t.integer :postcode, null: false
+      t.integer :age, null: false
+      t.string :message_type # 'phone', 'email', or NULL
+      t.integer :location_id, null: false
 
       t.timestamps null: false
     end
