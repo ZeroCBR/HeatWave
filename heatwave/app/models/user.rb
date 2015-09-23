@@ -5,4 +5,5 @@ class User < ActiveRecord::Base
   has_many :u_a, through: :users_attributes, class_name: 'Attribute'
   has_many :feedbacks
   has_many :histories
+  has_many :messages
 end

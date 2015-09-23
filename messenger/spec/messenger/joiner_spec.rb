@@ -14,9 +14,9 @@ describe Messenger::Joiner do
 
       context 'with no weather' do
         before(:example) do
-          allow(mildura).to receive(:run) { [] }
-          allow(aireys).to receive(:run) { [] }
-          allow(woop_woop).to receive(:run) { [] }
+          allow(mildura).to receive(:weather_run) { [] }
+          allow(aireys).to receive(:weather_run) { [] }
+          allow(woop_woop).to receive(:weather_run) { [] }
         end
 
         let(:rules) { [spike_rule, wave_rule] }
@@ -34,19 +34,19 @@ describe Messenger::Joiner do
 
         before(:example) do
           date_range = start_date...(start_date + 3)
-          allow(mildura).to receive(:run).with(date_range) { [] }
-          allow(aireys).to receive(:run).with(date_range) { [] }
-          allow(woop_woop).to receive(:run)
+          allow(mildura).to receive(:weather_run).with(date_range) { [] }
+          allow(aireys).to receive(:weather_run).with(date_range) { [] }
+          allow(woop_woop).to receive(:weather_run)
             .with(date_range) do
             woop_woop_weather.values_at :spike, :hot1, :hot2
           end
 
           date_range = start_date...(start_date + 1)
-          allow(mildura).to receive(:run)
+          allow(mildura).to receive(:weather_run)
             .with(date_range) { [mildura_weather[:spike]] }
-          allow(aireys).to receive(:run)
+          allow(aireys).to receive(:weather_run)
             .with(date_range) { [aireys_weather[:hot2]] }
-          allow(woop_woop).to receive(:run)
+          allow(woop_woop).to receive(:weather_run)
             .with(date_range) { [woop_woop_weather[:spike]] }
 
           allow(models[:message]).to receive(:new)
@@ -97,23 +97,23 @@ describe Messenger::Joiner do
 
         before(:example) do
           date_range = start_date...(start_date + 3)
-          allow(mildura).to receive(:run)
+          allow(mildura).to receive(:weather_run)
             .with(date_range) do
             mildura_weather.values_at :hot1, :hot2, :spike
           end
-          allow(aireys).to receive(:run)
+          allow(aireys).to receive(:weather_run)
             .with(date_range) do
             aireys_weather.values_at :hot1, :spike, :hot2
           end
-          allow(woop_woop).to receive(:run)
+          allow(woop_woop).to receive(:weather_run)
             .with(date_range) { [:a, :b] }
 
           date_range = start_date...(start_date + 1)
-          allow(mildura).to receive(:run)
+          allow(mildura).to receive(:weather_run)
             .with(date_range) { [mildura_weather[:hot1]] }
-          allow(aireys).to receive(:run)
+          allow(aireys).to receive(:weather_run)
             .with(date_range) { [aireys_weather[:hot1]] }
-          allow(woop_woop).to receive(:run)
+          allow(woop_woop).to receive(:weather_run)
             .with(date_range) { [:a] }
 
           allow(models[:message]).to receive(:new)
@@ -163,15 +163,15 @@ describe Messenger::Joiner do
 
           before(:example) do
             date_range = start_date...(start_date + 3)
-            allow(mildura).to receive(:run)
+            allow(mildura).to receive(:weather_run)
               .with(date_range) do
               mildura_weather.values_at :cold, :hot1, :hot2
             end
-            allow(aireys).to receive(:run)
+            allow(aireys).to receive(:weather_run)
               .with(date_range) do
               aireys_weather.values_at :cold, :hot1, :spike
             end
-            allow(woop_woop).to receive(:run).with(date_range) { [] }
+            allow(woop_woop).to receive(:weather_run).with(date_range) { [] }
           end
 
           it { is_expected.to be_empty }
@@ -181,11 +181,11 @@ describe Messenger::Joiner do
           let(:start_date) { Date.today + 4 }
           before(:example) do
             date_range = start_date...(start_date + 3)
-            allow(mildura).to receive(:run)
+            allow(mildura).to receive(:weather_run)
               .with(date_range) { [] }
-            allow(aireys).to receive(:run)
+            allow(aireys).to receive(:weather_run)
               .with(date_range) { %w(1 2) }
-            allow(woop_woop).to receive(:run)
+            allow(woop_woop).to receive(:weather_run)
               .with(date_range) do
               woop_woop_weather.values_at :spike, :hot1, :hot2
             end
@@ -200,15 +200,15 @@ describe Messenger::Joiner do
           let(:start_date) { Date.today + 1 }
           before(:example) do
             date_range = start_date...(start_date + 3)
-            allow(mildura).to receive(:run)
+            allow(mildura).to receive(:weather_run)
               .with(date_range) do
               mildura_weather.values_at :hot1, :hot2, :spike
             end
-            allow(aireys).to receive(:run)
+            allow(aireys).to receive(:weather_run)
               .with(date_range) do
               aireys_weather.values_at :hot1, :spike, :hot2
             end
-            allow(woop_woop).to receive(:run)
+            allow(woop_woop).to receive(:weather_run)
               .with(date_range) { [] }
           end
 
@@ -227,11 +227,11 @@ describe Messenger::Joiner do
 
           before(:example) do
             date_range = start_date...(start_date + 1)
-            allow(mildura).to receive(:run)
+            allow(mildura).to receive(:weather_run)
               .with(date_range) { [mildura_weather[:cold]] }
-            allow(aireys).to receive(:run)
+            allow(aireys).to receive(:weather_run)
               .with(date_range) { [aireys_weather[:cold]] }
-            allow(woop_woop).to receive(:run)
+            allow(woop_woop).to receive(:weather_run)
               .with(date_range) { [] }
           end
 
@@ -242,11 +242,11 @@ describe Messenger::Joiner do
           let(:start_date) { Date.today + 2 }
           before(:example) do
             date_range = start_date...(start_date + 1)
-            allow(mildura).to receive(:run)
+            allow(mildura).to receive(:weather_run)
               .with(date_range) { [mildura_weather[:hot2]] }
-            allow(aireys).to receive(:run)
+            allow(aireys).to receive(:weather_run)
               .with(date_range) { [aireys_weather[:spike]] }
-            allow(woop_woop).to receive(:run)
+            allow(woop_woop).to receive(:weather_run)
               .with(date_range) { [] }
           end
 
@@ -259,11 +259,11 @@ describe Messenger::Joiner do
           let(:start_date) { Date.today + 3 }
           before(:example) do
             date_range = start_date...(start_date + 1)
-            allow(mildura).to receive(:run)
+            allow(mildura).to receive(:weather_run)
               .with(date_range) { [mildura_weather[:spike]] }
-            allow(aireys).to receive(:run)
+            allow(aireys).to receive(:weather_run)
               .with(date_range) { [aireys_weather[:hot2]] }
-            allow(woop_woop).to receive(:run)
+            allow(woop_woop).to receive(:weather_run)
               .with(date_range) { [woop_woop_weather[:spike]] }
           end
 
@@ -308,10 +308,7 @@ describe Messenger::Joiner do
 
     begin # Stubs
       let(:models) do
-        { weather: double('Weather'),
-          user: double('User'),
-          message: double('Message'),
-          location: double('Location') }
+        { message: double('Message'), location: double('Location') }
       end
 
       let(:alice) { double '<User Alice>' }
@@ -409,7 +406,7 @@ describe Messenger::Joiner do
 
   context 'with real models' do
     subject { Messenger::Joiner.triggerings(models, rule, start_date) }
-    let(:models) { { weather: Weather, user: User, message: nil } }
+    let(:models) { { location: Location, message: Message } }
 
     describe '.triggerings' do
       let(:rule) { @rule || fail('no rule') }
@@ -451,7 +448,7 @@ describe Messenger::Joiner do
       (start...finish).each do |d|
         temp = location.mean_for(d) + @rule.delta * deltas + 1
         Weather.update_or_create_by({ location: location, date: d },
-                                    { high_temp: temp })
+                                    high_temp: temp)
       end
     end
 

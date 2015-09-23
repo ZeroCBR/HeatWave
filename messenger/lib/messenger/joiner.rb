@@ -4,7 +4,7 @@ module Messenger
   # who needs to be sent a warning message.
   #
   module Joiner
-    CONTENT = 'Heatwave Alert!' # TODO customise
+    CONTENT = 'Heatwave Alert!' # TODO: customise in rule table.
 
     ##
     # Produces a list of messages which currently need to be sent
@@ -42,7 +42,6 @@ module Messenger
     # ==== Parameters:
     #
     # * +models+ - a hash containing:
-    #   * +:weather+ - the weather model class
     #   * +:location+ - the weather model class
     # * +start_date+ - TODO
     #
@@ -57,8 +56,8 @@ module Messenger
       # for each location:
       #   list all weather events at that location in the date range
       runs = models[:location].all
-             .map { |location| location.run(date_range) }
-             .select { |run| run.size >= rule.duration }
+             .map { |location| location.weather_run(date_range) }
+             .select { |run| run.size == rule.duration }
 
       # for each event list:
       #   for each event:

@@ -21,7 +21,7 @@ class Location < ActiveRecord::Base
   # That is, the result will just be shorter than the date range,
   # it won't have nil elements.
   #
-  def weather_runs(date_range)
+  def weather_run(date_range)
     Weather.where(date: date_range, location: self)
   end
 
@@ -65,8 +65,6 @@ class Location < ActiveRecord::Base
   def mean_for(date)
     MONTH_MEANS[date.month - 1].call(self)
   end
-
-  private
 
   MONTH_MEANS = [lambda(&:jan_mean), lambda(&:feb_mean), lambda(&:mar_mean),
                  lambda(&:apr_mean), lambda(&:may_mean), lambda(&:jun_mean),

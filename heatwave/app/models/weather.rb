@@ -4,6 +4,7 @@
 class Weather < ActiveRecord::Base
   belongs_to :location
   has_many :histories
+  has_many :messages
 
   def self.update_or_create_by(target, change)
     weather = find_by target

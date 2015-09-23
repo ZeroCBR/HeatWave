@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150913050319) do
+ActiveRecord::Schema.define(version: 20150923012419) do
 
   create_table "attributes", force: :cascade do |t|
     t.string   "name",       null: false
@@ -59,6 +59,16 @@ ActiveRecord::Schema.define(version: 20150913050319) do
     t.decimal  "dec_mean",   precision: 4, scale: 1, null: false
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.integer  "weather_id", null: false
+    t.integer  "rule_id",    null: false
+    t.integer  "user_id",    null: false
+    t.datetime "send_time"
+    t.string   "contents",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "rules", force: :cascade do |t|
