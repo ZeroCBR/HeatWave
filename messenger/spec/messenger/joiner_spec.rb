@@ -369,9 +369,9 @@ describe Messenger::Joiner do
 
         # Rules
         allow(wave_rule).to \
-          receive(:satisfied_by) { |w| wave_satisfied_by(w) }
+          receive(:satisfied_by?) { |w| wave_satisfied_by?(w) }
         allow(spike_rule).to \
-          receive(:satisfied_by) { |w| spike_satisfied_by(w) }
+          receive(:satisfied_by?) { |w| spike_satisfied_by?(w) }
         allow(wave_rule).to receive(:duration) { 3 }
         allow(spike_rule).to receive(:duration) { 1 }
 
@@ -380,7 +380,7 @@ describe Messenger::Joiner do
         end
       end
 
-      def spike_satisfied_by(weather)
+      def spike_satisfied_by?(weather)
         case weather
         when mildura_weather[:spike],
           aireys_weather[:spike],
@@ -391,7 +391,7 @@ describe Messenger::Joiner do
         end
       end
 
-      def wave_satisfied_by(weather)
+      def wave_satisfied_by?(weather)
         case weather
         when mildura_weather[:cold],
           aireys_weather[:cold],
@@ -404,16 +404,16 @@ describe Messenger::Joiner do
     end
   end
 
-  context 'with real models' do
+  context 'with real models', speed: 'slow' do
     subject { Messenger::Joiner.triggerings(models, rule, start_date) }
     let(:models) { { location: Location, message: Message } }
 
     describe '.triggerings' do
       let(:rule) { @rule || fail('no rule') }
 
-      context 'with the spike rule' do
+      context 'with the heat spike rule' do
         before(:context) do
-          @rule = Rule.find_or_create_by(name: 'Heatwave detection',
+          @rule = Rule.find_or_create_by(name: 'Heat spike detection',
                                          annotation: '',
                                          duration: 1,
                                          delta: 15)
@@ -427,19 +427,58 @@ describe Messenger::Joiner do
 
         context 'with one spike' do
           let(:start_date) { Date.today + 1 }
-          it { is_expected.to have_size 1 }
+          it 'should have a message for the spike' do
+            is_expected.to have_attributes size: 1
+          end
         end
 
         context 'with two spikes' do
           let(:start_date) { Date.today + 2 }
-          it { is_expected.to have_size 2 }
+          it 'should have a message for both spikes' do
+            is_expected.to have_attributes size: 2
+          end
+        end
+      end
+
+      context 'with the heatwave rule' do
+        before(:context) do
+          @rule = Rule.find_or_create_by(name: 'Heatwave detection',
+                                         annotation: '',
+                                         duration: 3,
+                                         delta: 10)
+          make_weather # Set up the spikes per day as required.
+        end
+
+        context 'with no heatwave' do
+          let(:start_date) { Date.today }
+          it { is_expected.to be_empty }
+        end
+
+        context 'with a heat spike but no heatwave' do
+          let(:start_date) { Date.today - 1 }
+          it { is_expected.to be_empty }
+        end
+
+        context 'with one heatwave' do
+          let(:start_date) { Date.today + 3 }
+          it 'should have a message for the spike' do
+            is_expected.to have_attributes size: 1
+          end
+        end
+
+        context 'with two heatwaves' do
+          let(:start_date) { Date.today + 6 }
+          it 'should have a message for both spikes' do
+            is_expected.to have_attributes size: 2
+          end
         end
       end
     end
 
     def make_weather
       (0..2).each { |i| make_weather_for(@mildura, i, i) }
-      (1..2).each { |i| make_weather_for(@aireys, i, 1) }
+      (0..2).each { |i| make_weather_for(@aireys, i, i - 1) }
+      make_heat_spike(@aireys)
     end
 
     def make_weather_for(location, cycle, deltas)
@@ -450,6 +489,13 @@ describe Messenger::Joiner do
         Weather.update_or_create_by({ location: location, date: d },
                                     high_temp: temp)
       end
+    end
+
+    def make_heat_spike(location)
+      date = Date.today - 1
+      temp = location.mean_for(date) + @rule.delta * 2 + 1 # Fragile
+      Weather.update_or_create_by({ location: location, date: date },
+                                  high_temp: temp)
     end
 
     before(:context) do

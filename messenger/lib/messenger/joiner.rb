@@ -63,7 +63,7 @@ module Messenger
       #   for each event:
       #      if it doesn't satisfy the rule, go to next list
       #   record the triggering
-      runs.select { |run| run.all? { |w| rule.satisfied_by w } }
+      runs.select { |run| run.all? { |w| rule.satisfied_by? w } }
         .map(&:first)
     end
 
