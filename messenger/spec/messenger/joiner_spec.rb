@@ -51,22 +51,22 @@ describe Messenger::Joiner do
 
           allow(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: woop_woop_weather[:spike],
-                  user: carol, content: Messenger::Joiner::CONTENT)
+                  user: carol, contents: Messenger::Joiner::CONTENT)
           allow(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: mildura_weather[:spike],
-                  user: alice, content: Messenger::Joiner::CONTENT)
+                  user: alice, contents: Messenger::Joiner::CONTENT)
           allow(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: mildura_weather[:spike],
-                  user: dave, content: Messenger::Joiner::CONTENT)
+                  user: dave, contents: Messenger::Joiner::CONTENT)
           allow(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: woop_woop_weather[:spike],
-                  user: carol, content: Messenger::Joiner::CONTENT)
+                  user: carol, contents: Messenger::Joiner::CONTENT)
         end
 
         it 'should send a message for the heatwaves' do
           expect(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: woop_woop_weather[:spike],
-                  user: carol, content: Messenger::Joiner::CONTENT)
+                  user: carol, contents: Messenger::Joiner::CONTENT)
             .once { message4 }
           is_expected.to include message4
         end
@@ -74,15 +74,15 @@ describe Messenger::Joiner do
         it 'should send a message for the heat spikes' do
           expect(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: mildura_weather[:spike],
-                  user: alice, content: Messenger::Joiner::CONTENT)
+                  user: alice, contents: Messenger::Joiner::CONTENT)
             .once { message1 }
           expect(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: mildura_weather[:spike],
-                  user: dave, content: Messenger::Joiner::CONTENT)
+                  user: dave, contents: Messenger::Joiner::CONTENT)
             .once { message2 }
           expect(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: woop_woop_weather[:spike],
-                  user: carol, content: Messenger::Joiner::CONTENT)
+                  user: carol, contents: Messenger::Joiner::CONTENT)
             .once { message3 }
           is_expected.to include message1, message2, message3
         end
@@ -118,13 +118,13 @@ describe Messenger::Joiner do
 
           allow(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: mildura_weather[:hot1],
-                  user: alice, content: Messenger::Joiner::CONTENT)
+                  user: alice, contents: Messenger::Joiner::CONTENT)
           allow(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: mildura_weather[:hot1],
-                  user: dave, content: Messenger::Joiner::CONTENT)
+                  user: dave, contents: Messenger::Joiner::CONTENT)
           allow(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: aireys_weather[:hot1],
-                  user: bob, content: Messenger::Joiner::CONTENT)
+                  user: bob, contents: Messenger::Joiner::CONTENT)
         end
 
         let(:rules) { [spike_rule, wave_rule] }
@@ -133,11 +133,11 @@ describe Messenger::Joiner do
         it 'should send messages for the first heatwave' do
           expect(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: mildura_weather[:hot1],
-                  user: alice, content: Messenger::Joiner::CONTENT)
+                  user: alice, contents: Messenger::Joiner::CONTENT)
             .once { message1 }
           expect(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: mildura_weather[:hot1],
-                  user: dave, content: Messenger::Joiner::CONTENT)
+                  user: dave, contents: Messenger::Joiner::CONTENT)
             .once { message2 }
           is_expected.to include message1, message2
         end
@@ -145,7 +145,7 @@ describe Messenger::Joiner do
         it 'should send messages for the second heatwave' do
           expect(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: aireys_weather[:hot1],
-                  user: bob, content: Messenger::Joiner::CONTENT)
+                  user: bob, contents: Messenger::Joiner::CONTENT)
             .once { message3 }
           is_expected.to include message3
         end
@@ -407,16 +407,82 @@ describe Messenger::Joiner do
   context 'with real models', speed: 'slow' do
     let(:models) { { location: Location, message: Message } }
 
+    describe '.messages' do
+      subject { Messenger::Joiner.messages(models, rules, start_date) }
+      let(:start_date) { Date.today - 10 }
+
+      context 'with no rules' do
+        let(:rules) { [] }
+        let(:start_date) { Date.today }
+        it { is_expected.to be_empty }
+      end
+
+      context 'with no weather' do
+        let(:rules) { [@spike_rule, @wave_rule] }
+        it { is_expected.to be_empty }
+      end
+
+      context 'with two spikes and a heatwave for one day' do
+        let(:rules) { [@spike_rule, @wave_rule] }
+
+        before(:example) do
+          temp = @mildura.mean_for(start_date) + @spike_rule.delta + 1
+          Weather.update_or_create_by(
+            { location: @mildura, date: start_date }, high_temp: temp)
+          Weather.update_or_create_by(
+            { location: @mildura, date: start_date + 1 }, high_temp: temp)
+          Weather.update_or_create_by(
+            { location: @mildura, date: start_date + 2 }, high_temp: temp)
+          temp = @aireys.mean_for(start_date) + @spike_rule.delta + 1
+          Weather.update_or_create_by(
+            { location: @aireys, date: start_date }, high_temp: temp)
+          w = Weather.find_by(location: @aireys, date: start_date + 1)
+          w.destroy if w
+        end
+
+        it 'should send spike and heatwave messages to all affected users' do
+          # 2 affected by spike in mildura
+          # 2 affected by heatwave in mildura
+          # 1 affected by spike in aireys
+          is_expected.to have_attributes size: 5
+        end
+      end
+
+      context 'with two heatwaves at different locations for one day' do
+        let(:rules) { [@spike_rule, @wave_rule] }
+
+        before(:example) do
+          temp = @mildura.mean_for(start_date) + @spike_rule.delta - 1
+          Weather.update_or_create_by(
+            { location: @mildura, date: start_date }, high_temp: temp)
+          Weather.update_or_create_by(
+            { location: @mildura, date: start_date + 1 }, high_temp: temp)
+          Weather.update_or_create_by(
+            { location: @mildura, date: start_date + 2 }, high_temp: temp)
+          temp = @aireys.mean_for(start_date) + @spike_rule.delta - 1
+          Weather.update_or_create_by(
+            { location: @aireys, date: start_date }, high_temp: temp)
+          Weather.update_or_create_by(
+            { location: @aireys, date: start_date + 1 }, high_temp: temp)
+          Weather.update_or_create_by(
+            { location: @aireys, date: start_date + 2 }, high_temp: temp)
+        end
+
+        it 'should send heatwave messages to all affected users' do
+          # 2 affected by spike in mildura
+          # 1 affected by heatwave in aireys
+          is_expected.to have_attributes size: 3
+        end
+      end
+    end
+
     describe '.triggerings' do
       subject { Messenger::Joiner.triggerings(models, rule, start_date) }
       let(:rule) { @rule || fail('no rule') }
 
       context 'with the heat spike rule' do
         before(:context) do
-          @rule = Rule.find_or_create_by(name: 'Heat spike detection',
-                                         annotation: '',
-                                         duration: 1,
-                                         delta: 15)
+          @rule = @spike_rule
           make_weather # Set up the spikes per day as required.
         end
 
@@ -442,10 +508,7 @@ describe Messenger::Joiner do
 
       context 'with the heatwave rule' do
         before(:context) do
-          @rule = Rule.find_or_create_by(name: 'Heatwave detection',
-                                         annotation: '',
-                                         duration: 3,
-                                         delta: 10)
+          @rule = @wave_rule
           make_weather # Set up the spikes per day as required.
         end
 
@@ -562,6 +625,14 @@ describe Messenger::Joiner do
                            gender: 'F',
                            age: 3,
                            location: @mildura)
+      @spike_rule = Rule.find_or_create_by(name: 'Heat spike detection',
+                                           annotation: '',
+                                           duration: 1,
+                                           delta: 15)
+      @wave_rule = Rule.find_or_create_by(name: 'Heatwave detection',
+                                          annotation: '',
+                                          duration: 3,
+                                          delta: 10)
     end
   end
 end

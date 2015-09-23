@@ -93,7 +93,7 @@ module Messenger
         models[:message].new(rule: rule,
                              weather: weather,
                              user: r,
-                             content: CONTENT)
+                             contents: CONTENT)
       end
     end
   end
