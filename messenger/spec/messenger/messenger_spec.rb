@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'messenger'
 
 describe Messenger do
 
@@ -12,18 +13,18 @@ describe Messenger do
     end
 
     context 'with mock sender' do
-      let(:message_1) { [ {
+      let(:message_1) { {
           user:     {
             messages_type: 'phone',
             phone:         '0400400269'
             },
-          contents: 'CONTENT' }] }
-      let(:message_2) { [ {
+          contents: 'CONTENT' } }
+      let(:message_2) { {
           user:     {
             messages_type: 'email',
             email:         'a@a.a'
             },
-          contents: 'CONTENT' }] }
+          contents: 'CONTENT' }}
 
       let(:messages) { [message_1, message_2] }
       
