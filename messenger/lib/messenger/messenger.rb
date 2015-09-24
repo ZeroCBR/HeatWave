@@ -13,4 +13,37 @@ module Messenger
   def not_implemented
     fail 'not implemented yet'
   end
+
+  def send_messages
+    retrieve_messages.each do |msg|
+      user = msg[:user]
+      if user[:messages_type] == 'email'
+        send_via_email(msg)
+      elsif user[:messages_type] == 'phone'
+        send_via_sms(msg)
+      end
+      msg.save!
+    end
+  end
+
+  def retrieve_messages
+    models = {
+      location: Messenger::Models::Location,
+      message:  Messenger::Models::Message,
+      user:     Messenger::Models::User
+    }
+    Messenger::Joiner.messages(models, Rule.all, nil)
+  end
+
+  private
+  
+  def send_via_sms(msg)
+    SmsSender::ExampleSender.send(msg[:user][:phone], msg[:contents])
+    msg[:send_time] = DateTime.now
+  end
+
+  def send_via_email(msg)
+    MailExample.example_send(msg[:user][:email], msg[:contents])
+    msg[:send_time] = DateTime.now
+  end
 end
