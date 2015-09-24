@@ -52,8 +52,11 @@ describe Messenger do
   describe '.retrieve_messages' do
     context 'with real weather' do
       it 'should retrieve messages' do
-        expect(Messenger.retrieve_messages).not_to be_empty
-
+        expect(Messenger.retrieve_messages true).to eq(
+          location: Location,
+          message:  Message,
+          user:     User
+        )
       end
     end
   end
