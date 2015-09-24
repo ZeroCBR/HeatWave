@@ -48,9 +48,12 @@ describe Messenger do
         Messenger.send_messages(messages, sender)
       end
     end
+  end
+  describe '.retrieve_messages' do
     context 'with real weather' do
-      it 'should retrieve weather' do
-        Messenger.retrieve_messages
+      it 'should retrieve messages' do
+        expect(Messenger.retrieve_messages).not_to be_empty
+
       end
     end
   end

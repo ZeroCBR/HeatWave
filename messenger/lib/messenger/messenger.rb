@@ -66,7 +66,7 @@ module Messenger
       message:  Message,
       user:     User
     }
-    Messenger::Joiner.messages(models, Rule.all, nil)
+    Messenger::Joiner.messages(models, Rule.all, Date.today)
   end
 
   ##
