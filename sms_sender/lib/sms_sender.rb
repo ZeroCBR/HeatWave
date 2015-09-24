@@ -8,6 +8,8 @@ require 'json'
 # SmsSender interacts with Telstra's Dev Sms gateway API.
 #
 module SmsSender
+  
+
   ##
   # Uses the credentials given to us to request a short-term auth token
   #
@@ -56,6 +58,10 @@ module SmsSender
 
     JSON.parse(resp)['messageId']
   end
+  def self::sender_object
+    ExampleSender.new()
+  end
+
 end
 
 ##

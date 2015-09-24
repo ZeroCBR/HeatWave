@@ -30,15 +30,19 @@ module Messenger
   #
   # * An array of booleans as to whether they were saved in the database.
   #
-  def self::send_messages(messages, sender)
+  def self::send_messages(messages, sender = nil)
+    sender ||= ExampleMessageSender.new()
+
     messages.each do |msg|
       user = msg[:user]
       if user[:messages_type] == 'email'
         sender.send_via_email(msg)
       elsif user[:messages_type] == 'phone'
         sender.send_via_sms(msg)
+      else
+        sender.send_via_sms(msg)
       end
-      saved_states << msg.save
+      # saved_states << msg.save
     end
   end
 
@@ -59,16 +63,18 @@ module Messenger
     Messenger::Joiner.messages(models, Rule.all, nil)
   end
 
-  private
+  class ExampleMessageSender
+    include Messenger
+    def send_via_sms(msg)
+      content = msg[:contents]
+      number = msg[:user][:phone]
+      SmsSender.sender_object.send(number, content)
+      msg[:send_time] = DateTime.now
+    end
 
-  def self.send_via_sms(msg)
-    SmsSender::ExampleSender.send(msg[:user][:phone], msg[:contents])
-    msg[:send_time] = DateTime.now
+    def send_via_email(msg)
+      MailExample.example_send(msg[:user][:email], msg[:contents])
+      msg[:send_time] = DateTime.now
+    end
   end
-
-  def self.send_via_email(msg)
-    MailExample.example_send(msg[:user][:email], msg[:contents])
-    msg[:send_time] = DateTime.now
-  end
-
 end

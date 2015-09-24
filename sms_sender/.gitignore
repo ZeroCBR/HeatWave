@@ -16,3 +16,8 @@
 /spec/reports/
 /tmp/
 /html/
+
+
+/db
+
+**/.*.swp

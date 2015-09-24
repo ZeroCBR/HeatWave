@@ -4,12 +4,16 @@ require 'messenger'
 describe Messenger do
 
   describe '.send_messages' do
-    subject { Messenger.send_messages(messages, sender) }
 
     context 'with no messages' do
       let(:messages) { [] }
       let(:sender ) { double('Sender') }
-      it { is_expected.to be_empty }
+      it 'is expected to be empty ' do
+        expect(
+        Messenger.send_messages(messages, sender)
+        ).to be_empty
+      end
+
     end
 
     context 'with mock sender' do
@@ -35,9 +39,10 @@ describe Messenger do
         allow(sender).to receive(:send_via_email)
       end
 
-      it 'should pass the message to the right sender' do
+      it 'should pass each message to the right sender' do
         expect(sender).to receive(:send_via_sms).with(message_1)
         expect(sender).to receive(:send_via_email).with(message_2)
+        Messenger.send_messages(messages, sender)
 
       end
     end
