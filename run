@@ -22,6 +22,7 @@ if [[ -z "$WD" ]]; then
 fi
 
 # Configure paths.
+
 export RAILS_HOME="$PWD/heatwave"
 export PULLER_HOME="$PWD/puller"
 export MESSENGER_HOME="$PWD/messenger"
@@ -43,7 +44,7 @@ elif [[ -e /etc/heatwave.conf ]]; then
     echo -e "${info}from /etc/.heatwave.conf${NC}"
     source /etc/heatwave.conf
 else
-    echo -e "using defaults relative to ${PWD}"
+    echo -e "using defaults relative to ${PWD}${NC}"
 fi
 
 echo -e "${info}RAILS_HOME=${RAILS_HOME}${NC}"
@@ -54,54 +55,39 @@ echo -e "${info}SENDER_HOME=${SENDER_HOME}${NC}"
 
 # Configure database
 
-RAILS_ENV=test
+RAILS_ENV=production
 echo -e "${info}RAILS_ENV=${RAILS_ENV}${NC}"
-DATABASE_ENV=test
+DATABASE_ENV=production
 echo -e "${info}DATABASE_ENV=${DATABASE_ENV}${NC}"
 
-# Validate components.
-echo
-echo -e "${bold}Validating the Heatwave rails application...${NC}"
-cd "$RAILS_HOME"
-FAIL=''
-bunalde exec rake db:migrate RAILS_ENV=test
-bundle exec rake validate || FAIL=1
-echo
-if [[ -z "$FAIL" ]]; then
-    echo -e "${bold}Heatwave rails application validated.${NC}"
-else
-    echo -e "${error}FAILURE - Heatwave rails application is invalid.${NC}"
-fi
+# Set up components.
+echo -e "\
+${error}The application is not ready to run yet;
+instead, acceptance test scripts will be run.${NC}\
+"
 
 echo
-echo -e "${bold}Validating the Heatwave data puller...${NC}"
+echo -e "${bold}Demonstrating the Heatwave data puller...${NC}"
 cd "$PULLER_HOME"
-FAIL=''
-bundle exec rake validate || FAIL=1
+bundle exec rake test:acceptance || echo -e "${error}FAILED${NC}"
 echo
-if [[ -z "$FAIL" ]]; then
-    echo -e "${bold}Heatwave data puller validated.${NC}"
-else
-    echo -e "${error}FAILURE - Heatwave data puller is invalid.${NC}"
-fi
+
+echo -e "\
+${error}TODO: Replace the mailer and SMS sender demos
+with the messenger demo.${NC}\
+"
 
 echo
-echo -e "${bold}Validating the Heatwave SMS sender...${NC}"
+echo -e "${bold}Demonstrating the Heatwave mailer...${NC}"
+cd "$MAILER_HOME"
+bundle exec rake test:acceptance || echo -e "${error}FAILED${NC}"
+
+echo
+echo -e "${bold}Demonstrating the Heatwave SMS sender...${NC}"
 cd "$SENDER_HOME"
-FAIL=''
-bundle exec rake validate || FAIL=1
-echo
-if [[ -z "$FAIL" ]]; then
-    echo -e "${bold}Heatwave SMS sender validated.${NC}"
-else
-    echo -e "${error}FAILURE - Heatwave SMS sender is invalid.${NC}"
-fi
+bundle exec rake test:acceptance || echo -e "${error}FAILED${NC}"
 
 echo
-echo -e "${error}TODO: set up messenger validation${NC}"
-# echo
-# echo -e "${bold}Validating the Heatwave messenger...${NC}"
-# cd "$MESSENGER_HOME"
-# bundle exec rake validate || exit
-# echo
-# echo -e "${bold}Heatwave messenger validated.${NC}"
+echo -e "${bold}Demonstrating the Heatwave rails application...${NC}"
+cd "$RAILS_HOME"
+bundle exec rails s || echo -e "${error}FAILED${NC}"
