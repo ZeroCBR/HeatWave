@@ -5,4 +5,3 @@ require 'messenger'
 Messenger::Database.initialise
 
 Messenger.send_messages(Messenger.retrieve_messages)
-

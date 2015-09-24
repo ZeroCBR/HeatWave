@@ -2,6 +2,7 @@ require 'date'
 require 'sms_sender'
 require 'mail_example'
 require 'messenger/version'
+require 'messenger/models'
 
 ##
 # Sends the messages at the core of this application.
@@ -15,9 +16,8 @@ require 'messenger/version'
 # * which occur in the same location the recipients live in.
 #
 module Messenger
-
   ##
-  # Retreives a list of messages to be sent, and then 
+  # Retreives a list of messages to be sent, and then
   # sends each message to its recipient via the method
   # that the recipient has requested.
   #
@@ -31,18 +31,24 @@ module Messenger
   # * An array of booleans as to whether they were saved in the database.
   #
   def self::send_messages(messages, sender = nil)
-    sender ||= ExampleMessageSender.new()
-
+    saved_states = []
     messages.each do |msg|
-      user = msg[:user]
-      if user[:messages_type] == 'email'
-        sender.send_via_email(msg)
-      elsif user[:messages_type] == 'phone'
-        sender.send_via_sms(msg)
+      switch_method(msg, sender)
+      if msg.methods.include? :save
+        saved_states << msg.save
       else
-        sender.send_via_sms(msg)
+        saved_states << false
       end
-      # saved_states << msg.save
+    end
+  end
+
+  def self::switch_method(msg, sender = nil)
+    sender ||= ExampleMessageSender.new
+    user = msg[:user]
+    if user[:messages_type] == 'email'
+      sender.send_via_email(msg)
+    elsif user[:messages_type] == 'phone'
+      sender.send_via_sms(msg)
     end
   end
 
@@ -50,19 +56,22 @@ module Messenger
   # Retrieves a list of messages to be sent from the Big Join algorithm,
   # For each rule in the database.
   #
-  # ==== Returns: 
+  # ==== Returns:
   #
   # * An array of message hashes which haven't been sent yet.
-  # 
+  #
   def self::retrieve_messages
     models = {
-      location: Messenger::Models::Location,
-      message:  Messenger::Models::Message,
-      user:     Messenger::Models::User
+      location: Location,
+      message:  Message,
+      user:     User
     }
     Messenger::Joiner.messages(models, Rule.all, nil)
   end
 
+  ##
+  # Example class with the two send methods.
+  #
   class ExampleMessageSender
     include Messenger
     def send_via_sms(msg)

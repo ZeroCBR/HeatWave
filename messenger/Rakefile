@@ -39,7 +39,21 @@ namespace :test do
   ##
   # TODO
   task :acceptance do
-    fail 'not implemented'
+    message_1 = {
+      user: {
+        messages_type: 'phone',
+        phone:         '0400400269'
+      },
+      contents: 'Messenger Acceptance Testing' }
+    message_2 = {
+      user: {
+        messages_type: 'email',
+        email:         'jmcma@stident.unimelb.edu.au'
+      },
+      contents: 'Messenger Acceptance Testing' }
+
+    messages = [message_1, message_2]
+    Messenger.send_messages(messages)
   end
 end
 
