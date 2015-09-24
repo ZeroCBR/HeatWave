@@ -1,0 +1,142 @@
+#!/bin/bash
+bold='\e[1;36m'
+info='\e[0;36m'
+error='\e[1;31m'
+NC='\e[0m'
+
+# Install dependencies
+echo
+echo -e "${bold}Installing Ruby and Sqlite3${NC}"
+
+if `command -v yum 2>&1 >/dev/null`; then
+    echo '... using yum'
+    sudo yum install ruby || exit
+    sudo yum install rubygems || exit
+    sudo yum install sqlite || exit
+elif `command -v pacman 2>&1 >/dev/null`; then
+    echo '... using pacman'
+    if `command -v sudo 2>&1 >/dev/null`; then
+        echo '... using sudo'
+        sudo pacman -S ruby || exit
+        sudo pacman -S sqlite || exit
+    else
+        echo '... not using sudo'
+        if [[ -n "$WD" ]]; then
+            if `command -v ruby 2>&1 >/dev/null`; then
+                echo -e "${info}Windows Ruby installation detected${NC}"
+            else
+                echo -e "\
+${error}You seem to be using windows.
+Please install Ruby using RubyInstaller from http://rubyinstaller.org
+as per the instructions in the project README.${NC}\
+"
+                exit
+            fi
+        else
+            pacman -S ruby || exit
+        fi
+        pacman -S sqlite || exit
+    fi
+elif `command -v apt-get 2>&1 >/dev/null`; then
+    echo -e '... using apt-get'
+    sudo apt-get install ruby || exit
+    sudo apt-get install sqlite || exit
+else
+    echo "${error}\
+This application depends on the presence of yum, pacman, or apt-get.
+If a suitable alternative package managers is available, please examine
+this script and edit it to use the alternative.${NC}\
+"
+    exit
+fi
+
+echo
+echo -e "${bold}Ruby and Sqlite3 installed.${NC}"
+
+if [[ -z "$WD" ]]; then
+    echo
+    echo -e "${bold}Setting rubygems home${NC}"
+    if [[ "$(type ruby)" ]]; then
+        PATH="$PATH:$(ruby -rubygems -e 'puts Gem.user_dir')/bin"
+    fi
+    export GEM_HOME="$(ruby -rubygems -e 'puts Gem.user_dir')"
+    echo
+    echo -e "${info}GEM_HOME=$GEM_HOME${NC}"
+fi
+
+echo
+echo -e "${bold}Installing bundle${NC}"
+gem install bundle || exit
+echo
+echo -e "${bold}bundle installed.${NC}"
+
+# Configure paths.
+export RAILS_HOME="$PWD/heatwave"
+export PULLER_HOME="$PWD/puller"
+export MESSENGER_HOME="$PWD/messenger"
+export MAILER_HOME="$PWD/mail_example"
+export SENDER_HOME="$PWD/sms_sender"
+
+echo
+echo -e "${bold}Loading configuration${NC}"
+if [[ -e ~/.heatwave.conf ]]; then
+    echo -e "${info}from $HOME/.heatwave.conf${NC}"
+    source "$HOME/.heatwave.conf"
+elif [[ -e /usr/local/etc/heatwave.conf ]]; then
+    echo -e "${info}from /usr/local/etc/.heatwave.conf${NC}"
+    source /usr/local/etc/heatwave.conf
+elif [[ -e /usr/etc/heatwave.conf ]]; then
+    echo -e "${info}from /usr/etc/.heatwave.conf${NC}"
+    source /usr/etc/heatwave.conf
+elif [[ -e /etc/heatwave.conf ]]; then
+    echo -e "${info}from /etc/.heatwave.conf${NC}"
+    source /etc/heatwave.conf
+else
+    echo -e "using defaults relative to ${PWD}"
+fi
+
+echo -e "${info}RAILS_HOME=${RAILS_HOME}${NC}"
+echo -e "${info}PULLER_HOME=${PULLER_HOME}${NC}"
+echo -e "${info}MESSENGER_HOME=${MESSENGER_HOME}${NC}"
+echo -e "${info}MAILER_HOME=${MAILER_HOME}${NC}"
+echo -e "${info}SENDER_HOME=${SENDER_HOME}${NC}"
+
+# Set up components.
+echo
+echo -e "${bold}Installing the Heatwave rails application...${NC}"
+cd "$RAILS_HOME"
+bundle install --path vendor || exit
+bundle exec rake db:migrate || exit
+bundle exec rake db:create || exit
+echo
+echo -e "${bold}Heatwave rails application installed.${NC}"
+
+echo
+echo -e "${bold}Installing the Heatwave data puller...${NC}"
+cd "$PULLER_HOME"
+bundle install --path vendor || exit
+bundle exec rake install || exit
+bundle exec rake db:migrate || exit
+bundle exec rake db:create || exit
+echo
+echo -e "${bold}Heatwave data puller installed.${NC}"
+
+echo
+echo -e "${bold}Installing the Heatwave SMS sender...${NC}"
+cd "$SENDER_HOME"
+bundle install --path vendor || exit
+bundle exec rake install || exit
+echo
+echo -e "${bold}Heatwave SMS sender installed.${NC}"
+
+echo
+echo -e "${error}TODO: set up messenger installation.${NC}"
+# echo
+# echo -e "${bold}Installing the Heatwave messenger...${NC}"
+# cd "$MESSENGER_HOME"
+# bundle install --path vendor || exit
+# bundle exec rake install || exit
+# bundle exec rake db:migrate || exit
+# bundle exec rake db:create || exit
+# echo
+# echo -e "${bold}Heatwave messenger installed.${NC}"

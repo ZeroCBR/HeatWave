@@ -1,0 +1,79 @@
+#!/bin/bash
+bold='\e[1;36m'
+info='\e[0;36m'
+error='\e[1;31m'
+NC='\e[0m'
+
+echo -e "\
+${info}Note: this script assumes the components have been installed
+with the install script first.$NC\
+"
+
+# Configure paths.
+export RAILS_HOME="$PWD/heatwave"
+export PULLER_HOME="$PWD/puller"
+export MESSENGER_HOME="$PWD/messenger"
+export MAILER_HOME="$PWD/mail_example"
+export SENDER_HOME="$PWD/sms_sender"
+
+echo
+echo -e "${bold}Loading configuration${NC}"
+if [[ -e ~/.heatwave.conf ]]; then
+    echo -e "${info}from $HOME/.heatwave.conf${NC}"
+    source "$HOME/.heatwave.conf"
+elif [[ -e /usr/local/etc/heatwave.conf ]]; then
+    echo -e "${info}from /usr/local/etc/.heatwave.conf${NC}"
+    source /usr/local/etc/heatwave.conf
+elif [[ -e /usr/etc/heatwave.conf ]]; then
+    echo -e "${info}from /usr/etc/.heatwave.conf${NC}"
+    source /usr/etc/heatwave.conf
+elif [[ -e /etc/heatwave.conf ]]; then
+    echo -e "${info}from /etc/.heatwave.conf${NC}"
+    source /etc/heatwave.conf
+else
+    echo -e "using defaults relative to ${PWD}"
+fi
+
+echo -e "${info}RAILS_HOME=${RAILS_HOME}${NC}"
+echo -e "${info}PULLER_HOME=${PULLER_HOME}${NC}"
+echo -e "${info}MESSENGER_HOME=${MESSENGER_HOME}${NC}"
+echo -e "${info}MAILER_HOME=${MAILER_HOME}${NC}"
+echo -e "${info}SENDER_HOME=${SENDER_HOME}${NC}"
+
+# Configure database
+
+RAILS_ENV=test
+echo -e "${info}RAILS_ENV=${RAILS_ENV}${NC}"
+DATABASE_ENV=test
+echo -e "${info}DATABASE_ENV=${DATABASE_ENV}${NC}"
+
+# Set up components.
+echo
+echo -e "${bold}Validating the Heatwave rails application...${NC}"
+cd "$RAILS_HOME"
+bundle exec rake validate || echo -e "${error}FAILED${NC}"
+echo
+echo -e "${bold}Heatwave rails application validated.${NC}"
+
+echo
+echo -e "${bold}Validating the Heatwave data puller...${NC}"
+cd "$PULLER_HOME"
+bundle exec rake validate || echo -e "${error}FAILED${NC}"
+echo
+echo -e "${bold}Heatwave data puller validated.${NC}"
+
+echo
+echo -e "${bold}Validating the Heatwave SMS sender...${NC}"
+cd "$SENDER_HOME"
+bundle exec rake validate || echo -e "${error}FAILED${NC}"
+echo
+echo -e "${bold}Heatwave SMS sender validated.${NC}"
+
+echo
+echo -e "${error}TODO: set up messenger validation${NC}"
+# echo
+# echo -e "${bold}Validating the Heatwave messenger...${NC}"
+# cd "$MESSENGER_HOME"
+# bundle exec rake validate || exit
+# echo
+# echo -e "${bold}Heatwave messenger validated.${NC}"
