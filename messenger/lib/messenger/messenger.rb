@@ -60,17 +60,13 @@ module Messenger
   #
   # * An array of message hashes which haven't been sent yet.
   #
-  def self::retrieve_messages(stub = false)
+  def self::retrieve_messages(joiner = Messenger::Joiner)
     models = {
       location: Location,
       message:  Message,
       user:     User
     }
-    if !stub
-      Messenger::Joiner.messages(models, Rule.all, Date.today)
-    else
-      return models
-    end
+    joiner.messages(models, Rule.all, Date.today)
   end
 
   ##

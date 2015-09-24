@@ -51,12 +51,17 @@ describe Messenger do
   end
   describe '.retrieve_messages' do
     context 'with real weather' do
+      let(:joiner) { double('Joiner') }
       it 'should retrieve messages' do
-        expect(Messenger.retrieve_messages true).to eq(
-          location: Location,
-          message:  Message,
-          user:     User
+        expect(joiner).to receive(:messages).with(
+          { location: Location,
+            message:  Message,
+            user:     User },
+          Rule.all,
+          Date.today
         )
+
+        Messenger.retrieve_messages joiner
       end
     end
   end
