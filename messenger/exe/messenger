@@ -4,4 +4,5 @@ require 'messenger'
 
 Messenger::Database.initialise
 
-fail 'This application is not yet implemented!'
+Messenger.send_messages(Messenger.retrieve_messages)
+
