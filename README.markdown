@@ -13,6 +13,19 @@ This project is being completed in semester 2 of 2015 for The
 University of Melbourne subject SWEN90014 Masters Software
 Engineering Project.
 
+## Simple Setup
+
+Installation, validation, and the application itself can be run via
+scripts in the repository root.
+
+`$REPOSITORY_ROOT` stands for wherever the repository is cloned to.
+
+**Installation:** `$REPOSITORY_ROOT/install`
+**Validation:** `$REPOSITORY_ROOT/validate`
+**Execution:** `$REPOSITORY_ROOT/run`
+
+The scripts assume that they will be run with `$PWD` being `$REPOSITORY_ROOT`.
+
 # Contributing
 
 To contribute to this project, make a JIRA issue for whatever
@@ -65,7 +78,7 @@ Make every effort to adhere to
 for Ruby code, as well as
 [the Rails Style Guide](https://github.com/bbatsov/rails-style-guide)
 for the Ruby on Rails application.
-    
+
 Use both Rubocop and other team members' code reviews to verify this.
 Committing to `master` without justifying all deviations from the styleguide
 will result in commits being reverted.
@@ -201,7 +214,7 @@ Create a gem using bundle from the repository root:
 
 TODO integrate with rake
 
-### Testing 
+### Testing
 
 TODO integrate with rake
 
