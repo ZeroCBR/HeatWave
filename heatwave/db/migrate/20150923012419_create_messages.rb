@@ -14,8 +14,7 @@ class CreateMessages < ActiveRecord::Migration
     end
 
     add_foreign_key :messages, :weathers
-    add_foreign_key :messages, :weathers
-
+    add_foreign_key :messages, :rules
     add_foreign_key :messages, :users
   end
 end

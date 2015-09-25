@@ -36,13 +36,6 @@ ActiveRecord::Schema.define(version: 20150923012419) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "histories", force: :cascade do |t|
-    t.string   "title"
-    t.string   "content"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "locations", force: :cascade do |t|
     t.string   "name",                               null: false
     t.decimal  "jan_mean",   precision: 4, scale: 1, null: false
