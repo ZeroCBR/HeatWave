@@ -7,8 +7,11 @@ module Messenger
     CONTENT = 'Heatwave Alert!' # TODO: customise in rule table.
 
     ##
-    # Produces a list of messages which currently need to be sent
-    # according to a particular rule.
+    # Produces an array of messages which currently need to be sent
+    # according to the rules in an array.
+    #
+    # All messages required for any of the rules will be included
+    # in the output.
     #
     # ==== Parameters:
     #
@@ -16,8 +19,10 @@ module Messenger
     #   * +:weather+ - the weather model class
     #   * +:user+ - the user model class
     #   * +:message+ - the message model class
-    # * +rule+ - the rule of interest.
-    # * +start_date+ - TODO
+    # * +rules+ - an array containing all of the rules of interest.
+    # * +start_date+ - the start date for rule application.
+    #   The method checks whether each rule is satisfied by the sequences
+    #   of weather events starting at this date.
     #
     # ==== Returns:
     #
@@ -36,14 +41,17 @@ module Messenger
     end
 
     ##
-    # Produces a list of triggerings for a particular rule over
-    # a particular date range.
+    # Produces a list of triggerings for a particular rule starting at
+    # a particular date.
     #
     # ==== Parameters:
     #
     # * +models+ - a hash containing:
     #   * +:location+ - the weather model class
-    # * +start_date+ - TODO
+    # * +rule+ - a single Rule model object.
+    # * +start_date+ - the start date for rule application.
+    #   The method checks whether each rule is satisfied by the sequences
+    #   of weather events starting at this date.
     #
     # ==== Returns:
     #
@@ -73,7 +81,7 @@ module Messenger
     #
     # ==== Parameters:
     #
-    # * +rule+ - the rule triggering the message.
+    # * +_rule+ - TODO not yet used, but it will be used eventually.
     # * +location+ - the location where the potential recipients live.
     #
     # ==== Returns:
