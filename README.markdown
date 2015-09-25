@@ -149,23 +149,16 @@ top level directory in the repository.
 ## Windows
 
 If using windows, perform the following steps (shell commands
-should be entered in the MinGW shell):
+should be entered in the **MSYS** shell):
 
-1. Download [MinGW](http://mingw.org/) using
-   [mingw-get-setup](http://sourceforge.net/projects/mingw/files/Installer/mingw-get-setup.exe/download).
-   Mark for installation the packages:
-    * mingw-developer-toolkit
-    * mingw32-base
-    * msys-base
-   Install the packages using Installation > Apply Changes.
-2. Install Ruby v2.1.6, RubyGems v2.4.5, and Rake using
-   [RubyInstaller](http://rubyinstaller.org/).
-3. Update your MinGW mirrorlist according to
-   [https://github.com/Alexpux/MINGW-packages/issues/702].
-   `$ vim /path/to/file` will allow you to edit files in the MinGW file tree.
-4. Install the gcc bits for windows using (both):
-    1. `$ pacman -S gcc`.
-    2. `$ pacman -S mingw64/mingw-w64-x86_64-gcc`.
+1. Install [MSYS](https://msys2.github.io/).
+2. Install Ruby v2.1.6, RubyGems v2.4.5, Rake, and build dependencies
+   using [RubyInstaller and Ruby DevKit](http://rubyinstaller.org/downloads).
+3. Add the Ruby DevKit's bin directory to your bash (MSYS) $PATH
+   environment variable.
+4. Install gcc using:
+   * `$ pacman -S gcc`
+   * `$ pacman -S mingw64/mingw-w64-x86_64-gcc`
 5. Install SQLite v3.8.8.2 using `$ pacman -S sqlite`.
 6. Install other dependencies normally as specified below.
 

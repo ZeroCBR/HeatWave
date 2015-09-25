@@ -64,7 +64,7 @@ echo
 echo -e "${bold}Validating the Heatwave rails application...${NC}"
 cd "$RAILS_HOME"
 FAIL=''
-bunalde exec rake db:migrate RAILS_ENV=test
+bundle exec rake db:migrate RAILS_ENV=test
 bundle exec rake validate || FAIL=1
 echo
 if [[ -z "$FAIL" ]]; then

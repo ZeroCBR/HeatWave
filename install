@@ -106,6 +106,7 @@ echo
 echo -e "${bold}Installing the Heatwave rails application...${NC}"
 cd "$RAILS_HOME"
 bundle install --path vendor || exit
+bundle exec rake db:drop || exit
 bundle exec rake db:migrate || exit
 bundle exec rake db:create || exit
 echo
@@ -116,6 +117,7 @@ echo -e "${bold}Installing the Heatwave data puller...${NC}"
 cd "$PULLER_HOME"
 bundle install --path vendor || exit
 bundle exec rake install || exit
+bundle exec rake db:drop || exit
 bundle exec rake db:migrate || exit
 bundle exec rake db:create || exit
 echo
