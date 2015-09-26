@@ -105,28 +105,25 @@ echo -e "${info}SENDER_HOME=${SENDER_HOME}${NC}"
 echo
 echo -e "${bold}Installing the Heatwave rails application...${NC}"
 cd "$RAILS_HOME"
-bundle install --path vendor || exit
-bundle exec rake db:drop || exit
-bundle exec rake db:migrate || exit
-bundle exec rake db:create || exit
+bundle install --path ../vendor || exit
+bundle exec rake db:migrate:reset || exit
+RAILS_ENV=production bundle exec rake db:migrate:reset || exit
 echo
 echo -e "${bold}Heatwave rails application installed.${NC}"
 
 echo
 echo -e "${bold}Installing the Heatwave data puller...${NC}"
 cd "$PULLER_HOME"
-bundle install --path vendor || exit
+bundle install --path ../vendor || exit
 bundle exec rake install || exit
-bundle exec rake db:drop || exit
-bundle exec rake db:migrate || exit
-bundle exec rake db:create || exit
+bundle exec rake db:migrate:reset || exit
 echo
 echo -e "${bold}Heatwave data puller installed.${NC}"
 
 echo
 echo -e "${bold}Installing the Heatwave SMS sender...${NC}"
 cd "$SENDER_HOME"
-bundle install --path vendor || exit
+bundle install --path ../vendor || exit
 bundle exec rake install || exit
 echo
 echo -e "${bold}Heatwave SMS sender installed.${NC}"
@@ -134,10 +131,8 @@ echo -e "${bold}Heatwave SMS sender installed.${NC}"
 echo
 echo -e "${bold}Installing the Heatwave messenger...${NC}"
 cd "$MESSENGER_HOME"
-bundle install --path vendor || exit
+bundle install --path ../vendor || exit
 bundle exec rake install || exit
-bundle exec rake db:drop || exit
-bundle exec rake db:migrate || exit
-bundle exec rake db:create || exit
+bundle exec rake db:migrate:reset || exit
 echo
 echo -e "${bold}Heatwave messenger installed.${NC}"
