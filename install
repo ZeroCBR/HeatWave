@@ -132,13 +132,12 @@ echo
 echo -e "${bold}Heatwave SMS sender installed.${NC}"
 
 echo
-echo -e "${error}TODO: set up messenger installation.${NC}"
-# echo
-# echo -e "${bold}Installing the Heatwave messenger...${NC}"
-# cd "$MESSENGER_HOME"
-# bundle install --path vendor || exit
-# bundle exec rake install || exit
-# bundle exec rake db:migrate || exit
-# bundle exec rake db:create || exit
-# echo
-# echo -e "${bold}Heatwave messenger installed.${NC}"
+echo -e "${bold}Installing the Heatwave messenger...${NC}"
+cd "$MESSENGER_HOME"
+bundle install --path vendor || exit
+bundle exec rake install || exit
+bundle exec rake db:drop || exit
+bundle exec rake db:migrate || exit
+bundle exec rake db:create || exit
+echo
+echo -e "${bold}Heatwave messenger installed.${NC}"
