@@ -30,7 +30,7 @@ gem 'coffee-script-source', '1.8.0'
 #  use scheduler
 gem 'rufus-scheduler'
 # use puller
-gem 'puller'
+gem 'puller', path: '../puller'
 # Use Unicorn as the app server
 # gem 'unicorn'
 
