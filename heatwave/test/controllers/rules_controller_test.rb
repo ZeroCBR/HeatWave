@@ -22,7 +22,9 @@ class RulesControllerTest < ActionController::TestCase
       post :create, rule: { annotation: @rule.annotation,
                             name: @rule.name,
                             delta: @rule.delta,
-                            duration: @rule.duration }
+                            duration: @rule.duration,
+                            key_advice: @rule.key_advice,
+                            full_advice: @rule.full_advice }
     end
 
     assert_redirected_to rule_path(assigns(:rule))
@@ -42,7 +44,9 @@ class RulesControllerTest < ActionController::TestCase
     patch :update, id: @rule, rule: { annotation: @rule.annotation,
                                       name: @rule.name,
                                       delta: @rule.delta,
-                                      duration: @rule.duration }
+                                      duration: @rule.duration,
+                                      key_advice: @rule.key_advice,
+                                      full_advice: @rule.full_advice }
     assert_redirected_to rule_path(assigns(:rule))
   end
 

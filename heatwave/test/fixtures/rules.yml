@@ -5,9 +5,13 @@ one:
   annotation: MyString
   duration: 1
   delta: 15
+  key_advice: keyAdvice
+  full_advice: fullAdvice
 
 two:
   name: MyString
   annotation: MyString
   duration: 3
   delta: 10
+  key_advice: keyAdvice
+  full_advice: fullAdvice
