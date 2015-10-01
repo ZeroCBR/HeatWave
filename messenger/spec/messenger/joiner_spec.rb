@@ -628,11 +628,15 @@ describe Messenger::Joiner do
       @spike_rule = Rule.find_or_create_by(name: 'Heat spike detection',
                                            annotation: '',
                                            duration: 1,
-                                           delta: 15)
+                                           delta: 15,
+                                           key_advice: 'spike key advice',
+                                           full_advice: 'spike full advice')
       @wave_rule = Rule.find_or_create_by(name: 'Heatwave detection',
                                           annotation: '',
                                           duration: 3,
-                                          delta: 10)
+                                          delta: 10,
+                                          key_advice: 'wave key advice',
+                                          full_advice: 'wave full advice')
     end
   end
 end

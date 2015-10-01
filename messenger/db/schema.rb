@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150923012419) do
+ActiveRecord::Schema.define(version: 20150928092038) do
 
   create_table "attributes", force: :cascade do |t|
     t.string   "name",       null: false
@@ -65,12 +65,14 @@ ActiveRecord::Schema.define(version: 20150923012419) do
   end
 
   create_table "rules", force: :cascade do |t|
-    t.string   "name",                 null: false
-    t.string   "annotation",           null: false
-    t.integer  "delta",      limit: 1, null: false
-    t.integer  "duration",   limit: 1, null: false
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.string   "name",                  null: false
+    t.string   "annotation",            null: false
+    t.integer  "delta",       limit: 1, null: false
+    t.integer  "duration",    limit: 1, null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+    t.text     "key_advice",            null: false
+    t.text     "full_advice",           null: false
   end
 
   create_table "users", force: :cascade do |t|
