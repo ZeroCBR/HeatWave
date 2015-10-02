@@ -46,7 +46,6 @@ module SmsSender
   #
   # * The message ID given by Telstra for use with replies.
   #
-
   def self::send_sms(token, number, body, rest_client)
     header = { authorization: "Bearer #{token}",
                'Content-Type' => 'application/json',
@@ -58,6 +57,10 @@ module SmsSender
 
     JSON.parse(resp)['messageId']
   end
+
+  ##
+  # returns: a new example sender object
+  #
   def self::sender_object
     ExampleSender.new()
   end

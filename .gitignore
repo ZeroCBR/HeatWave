@@ -1,2 +1,4 @@
 # Vendor files.
 /vendor/
+**/vendor/
+
