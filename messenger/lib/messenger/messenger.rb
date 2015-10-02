@@ -28,18 +28,20 @@ module Messenger
   #
   # ==== Returns:
   #
-  # * An array of booleans as to whether they were saved in the database.
+  # * A list of hashes of the form {message, error}
+  #    i.e. a message that could not be sent and the relevant error
   #
   def self::send_messages(messages, sender = nil)
-    saved_states = []
+    errors = []
     messages.each do |message|
-      send_one_message(message, sender)
-      if message.methods.include? :save
-        saved_states << message.save
-      else
-        saved_states << false
+      begin send_one_message(message, sender)
+      rescue MessengerError => e
+        errors << { message: message, error: e }
+        next
       end
+      message.save
     end
+    return errors
   end
 
   ##
@@ -63,24 +65,28 @@ module Messenger
     joiner.messages(models, Rule.all, Date.today)
   end
 
+  class MessengerError < StandardError; end
+  class MessageTypeError < Messenger::MessengerError; end
+
   private
 
-  # text for the error message when messages_type is set wrong
-  WRONGMETHODERROR = "'messages_type' must be set to 'email' or 'phone'."\
+  # text for the error message when message_type is set wrong
+  WRONGMETHODERROR = "'message_type' must be set to 'email' or 'phone'."\
     ' In this case it was: '
 
   def self::send_one_message(message, sender = nil)
-    case message.user.messages_type
-    when 'email'
+    case message.user.message_type
+    when 'phone'
       sender ||= SmsWrapper
       sender.send_via_sms(message)
-    when 'phone'
+    when 'email'
       sender ||= EmailWrapper
       sender.send_via_email(message)
     else
-      fail WRONGMETHODERROR + message.user.messages_type
+      fail MessageTypeError, WRONGMETHODERROR + message.user.message_type
     end
   end
+
   ##
   # module for sending sms
   #
@@ -99,13 +105,15 @@ module Messenger
     def self::send_via_sms(message)
       content = message.contents
       if content.length > 160
-        fail 'message too long to send via SMS'
+        fail SmsTooLongError, "Sms length: #{content.length}"
       else
         number = message.user.phone
         message.send_time = DateTime.now
         SmsSender.sender_object.send(number, content)
       end
     end
+
+    class SmsTooLongError < Messenger::MessengerError; end
   end
 
   ##
