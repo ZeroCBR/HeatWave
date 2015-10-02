@@ -1,4 +1,6 @@
 require 'messenger/messenger'
+require 'messenger/email_wrapper'
+require 'messenger/sms_wrapper'
 require 'messenger/version'
 require 'messenger/database'
 require 'messenger/joiner'
