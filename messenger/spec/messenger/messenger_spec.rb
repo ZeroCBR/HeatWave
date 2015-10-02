@@ -40,7 +40,7 @@ describe Messenger do
           expect(result.length).to be 1
           expect(result.at(0)[:message]).to be message_3
           expect(result.at(0)[:error].class).to \
-            eq Messenger::SmsWrapper::SmsWrapper::SmsTooLongError
+            eq Messenger::SmsWrapper::SmsTooLongError
         end
       end
 
