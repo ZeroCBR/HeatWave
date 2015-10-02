@@ -18,7 +18,7 @@ end
 namespace :db do
   namespace :test do
     task :reset do
-      system('rake db:reset RAILS_ENV=test')
+      `rake db:reset RAILS_ENV=test`
     end
     task reset: :'db:test'
   end

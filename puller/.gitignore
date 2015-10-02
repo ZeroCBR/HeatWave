@@ -1,4 +1,13 @@
-/.bundle/
+# Ignore bundler config.
+/.bundle
+
+# Ignore vendor files
+/vendor
+
+# Ignore the default SQLite database.
+/db/*.sqlite3
+/db/*.sqlite3-journal
+
 /.yardoc
 /_yardoc/
 /coverage/
@@ -7,7 +16,3 @@
 /spec/reports/
 /tmp/
 /html/
-
-/db
-
-**/.*.swp
