@@ -2,7 +2,7 @@
 
 one:
   name: MyString
-  annotation: MyString
+  activated: true
   duration: 1
   delta: 15
   key_advice: keyAdvice
@@ -10,7 +10,7 @@ one:
 
 two:
   name: MyString
-  annotation: MyString
+  activated: false
   duration: 3
   delta: 10
   key_advice: keyAdvice

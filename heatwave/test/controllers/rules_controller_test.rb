@@ -19,7 +19,7 @@ class RulesControllerTest < ActionController::TestCase
 
   test 'should create rule' do
     assert_difference('Rule.count') do
-      post :create, rule: { annotation: @rule.annotation,
+      post :create, rule: { activated: @rule.activated,
                             name: @rule.name,
                             delta: @rule.delta,
                             duration: @rule.duration,
@@ -41,7 +41,7 @@ class RulesControllerTest < ActionController::TestCase
   end
 
   test 'should update rule' do
-    patch :update, id: @rule, rule: { annotation: @rule.annotation,
+    patch :update, id: @rule, rule: { activated: @rule.activated,
                                       name: @rule.name,
                                       delta: @rule.delta,
                                       duration: @rule.duration,

@@ -626,13 +626,13 @@ describe Messenger::Joiner do
                            age: 3,
                            location: @mildura)
       @spike_rule = Rule.find_or_create_by(name: 'Heat spike detection',
-                                           annotation: '',
+                                           activated: false,
                                            duration: 1,
                                            delta: 15,
                                            key_advice: 'spike key advice',
                                            full_advice: 'spike full advice')
       @wave_rule = Rule.find_or_create_by(name: 'Heatwave detection',
-                                          annotation: '',
+                                          activated: false,
                                           duration: 3,
                                           delta: 10,
                                           key_advice: 'wave key advice',

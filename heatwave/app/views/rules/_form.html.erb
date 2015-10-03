@@ -1,8 +1,9 @@
 <%= form_for(@rule) do |f| %>
   <% if @rule.errors.any? %>
     <div id="error_explanation">
+      <div class="alert alert-error">
       <h2><%= pluralize(@rule.errors.count, "error") %> prohibited this rule from being saved:</h2>
-
+    </div>
       <ul>
       <% @rule.errors.full_messages.each do |message| %>
         <li><%= message %></li>
@@ -12,28 +13,29 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :name %><br>
+    <%= f.label :name, "Name" %><br>
     <%= f.text_field :name %>
   </div>
   <div class="field">
-    <%= f.label :annotation %><br>
-    <%= f.text_field :annotation %>
+    <%= f.label :activated, "Status (activated or not)"%><br>
+    <%= f.check_box :activated %>
   </div>
   <div class="field">
-    <%= f.label :delta %><br>
-    <%= f.text_field :delta %>
+    <%= f.label :delta, "Difference of temperature from monthly average" %>
+    <br>
+    <%= f.number_field :delta, style:"width:50px" %>&#8451;
   </div>
    <div class="field">
-    <%= f.label :duration %><br>
-    <%= f.text_field :duration %>
+    <%= f.label :duration, "Duration (number of days)" %><br>
+    <%= f.number_field :duration, style:"width:50px" %>
   </div>
   <div class="field">
     <%= f.label :key_advice %><br>
-    <%= f.text_field :key_advice %>
+    <%= f.text_area :key_advice, size: "60x4" %>
   </div>
      <div class="field">
     <%= f.label :full_advice %><br>
-    <%= f.text_field :full_advice %>
+    <%= f.text_area :full_advice, size: "60x8" %>
   </div>
   <div class="actions">
     <%= f.submit %>

@@ -9,7 +9,6 @@ class RulesController < ApplicationController
   end
 
   # GET /rules/1
-  # GET /rules/1.json
   def show
   end
 
@@ -23,7 +22,6 @@ class RulesController < ApplicationController
   end
 
   # POST /rules
-  # POST /rules.json
   def create
     @rule = Rule.new(rule_params)
     respond_to do |format|
@@ -38,7 +36,6 @@ class RulesController < ApplicationController
   end
 
   # PATCH/PUT /rules/1
-  # PATCH/PUT /rules/1.json
   def update
     respond_to do |format|
       if @rule.update(rule_params)
@@ -52,7 +49,6 @@ class RulesController < ApplicationController
   end
 
   # DELETE /rules/1
-  # DELETE /rules/1.json
   def destroy
     @rule.destroy
     respond_to do |format|
@@ -72,7 +68,7 @@ class RulesController < ApplicationController
   # Never trust parameters from the scary internet, only allow the
   # white list through.
   def rule_params
-    params.require(:rule).permit(:name, :annotation, :delta, :duration,
+    params.require(:rule).permit(:name, :activated, :delta, :duration,
                                  :key_advice, :full_advice)
   end
 end

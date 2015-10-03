@@ -65,14 +65,14 @@ ActiveRecord::Schema.define(version: 20150928092038) do
   end
 
   create_table "rules", force: :cascade do |t|
-    t.string   "name",                  null: false
-    t.string   "annotation",            null: false
-    t.integer  "delta",       limit: 1, null: false
-    t.integer  "duration",    limit: 1, null: false
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
-    t.text     "key_advice",            null: false
-    t.text     "full_advice",           null: false
+    t.string   "name",                                  null: false
+    t.boolean  "activated",             default: false
+    t.integer  "delta",       limit: 1,                 null: false
+    t.integer  "duration",    limit: 1,                 null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.text     "key_advice",                            null: false
+    t.text     "full_advice",                           null: false
   end
 
   create_table "users", force: :cascade do |t|
