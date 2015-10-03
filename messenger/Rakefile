@@ -39,20 +39,54 @@ namespace :test do
   ##
   # TODO
   task :acceptance do
-    message_1 = {
-      user: {
-        messages_type: 'phone',
-        phone:         '0400400269'
-      },
-      contents: 'Messenger Acceptance Testing' }
-    message_2 = {
-      user: {
-        messages_type: 'email',
-        email:         'jmcma@stident.unimelb.edu.au'
-      },
-      contents: 'Messenger Acceptance Testing' }
-
-    messages = [message_1, message_2]
+    Messenger::Database.initialise
+    spike_rule = Rule.find_or_create_by(
+      name: 'Heat spike detection',
+      annotation: '',
+      duration: 1,
+      delta: 15)
+    mildura = Location.find_or_create_by(
+      name: 'MILDURA RACECOURSE',
+      jan_mean: 25.0, feb_mean: 22.1, mar_mean: 18.2, apr_mean: 14.3,
+      may_mean: 12.4, jun_mean: 10.5, jul_mean: 8.6, aug_mean: 12.7,
+      sep_mean: 14.8, oct_mean: 18.9, nov_mean: 20.0, dec_mean: 24.1)
+    weather = Weather.update_or_create_by(
+      { location: mildura, date: Date.today }, high_temp: 100)
+    User.destroy_all
+    alice = User.create(
+      username: 'asanchez',
+      password: '123',
+      f_name: 'Alice',
+      l_name: 'Sanchez',
+      gender: 'F',
+      age: 1,
+      phone: '0400400269',
+      message_type: 'phone',
+      location: mildura)
+    bob = User.create(
+      username: 'bobr',
+      password: 'abc',
+      f_name: 'Bob',
+      l_name: 'Roberts',
+      gender: 'M',
+      age: 2,
+      message_type: 'email',
+      email: 'jmcma@student.unimelb.edu.au',
+      location: mildura)
+    Message.destroy_all
+    message_model_1 = Message.create(
+      user: alice,
+      contents: 'Hello, you\'re getting a text from Heatwave',
+      rule: spike_rule,
+      weather: weather
+    )
+    message_model_2 = Message.create(
+      user: bob,
+      contents: 'Hello, you\'re getting an email from Heatwave',
+      rule: spike_rule,
+      weather: weather
+    )
+    messages = [message_model_1, message_model_2]
     Messenger.send_messages(messages)
   end
 end

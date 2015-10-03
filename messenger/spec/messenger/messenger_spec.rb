@@ -50,24 +50,27 @@ describe Messenger do
           allow(message_1).to receive(:user) { phone_user }
           allow(message_1).to receive(:contents) { 'CONTENT' }
           allow(message_1).to receive(:save) { true }
+          allow(message_1).to receive(:send_time=) { true }
           allow(phone_user).to receive(:phone) { '0400400269' }
           allow(phone_user).to receive(:message_type) { 'phone' }
 
           allow(message_2).to receive(:user) { email_user }
           allow(message_2).to receive(:contents) { 'CONTENT' }
           allow(message_2).to receive(:save) { true }
+          allow(message_2).to receive(:send_time=) { true }
           allow(email_user).to receive(:email) { 'a@a.a' }
           allow(email_user).to receive(:message_type) { 'email' }
 
           allow(message_4).to receive(:user) { bad_user }
           allow(message_4).to receive(:save) { true }
+          allow(message_4).to receive(:send_time=) { true }
           allow(bad_user).to receive(:message_type) { 'carrier_pigeon' }
         end
 
         it 'should pass each message to the right sender' do
           expect(sender).to receive(:send_via_sms).with(message_1).once
           expect(sender).to receive(:send_via_email).with(message_2).once
-          Messenger.send_messages(messages, sender)
+          expect(Messenger.send_messages(messages, sender)).to be_empty
         end
 
         it 'should fail if message_type is not email or phone' do
@@ -138,10 +141,12 @@ describe Messenger do
         expect(sender).to receive(:send_via_sms).with(@message_model_1).once
         expect(sender).to receive(:send_via_email).with(@message_model_2).once
         expect(Messenger.send_messages(messages, sender)).to be_empty
+        expect(Message.find(@message_model_2.id).send_time).not_to be nil
+        expect(Message.find(@message_model_1.id).send_time).not_to be nil
       end
     end
   end
-  describe '.retrieve_messages' do
+  describe '.retrieve_messages', speed: 'slow' do
     context 'with real weather' do
       let(:joiner) { double('Joiner') }
       it 'should retrieve messages' do

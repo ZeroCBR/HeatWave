@@ -1,6 +1,4 @@
 require 'date'
-require 'sms_sender'
-require 'mail'
 require 'messenger/version'
 require 'messenger/models'
 require 'messenger/sms_wrapper'
@@ -40,10 +38,10 @@ module Messenger
       rescue MessageTypeError, SmsWrapper::SmsTooLongError => e
         errors << { message: message, error: e }
         next
+      else message.send_time = DateTime.now
       end
       message.save
-    end
-    return errors
+    end; errors
   end
 
   ##

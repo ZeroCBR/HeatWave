@@ -1,18 +1,19 @@
+require 'sms_sender'
 module Messenger
   ##
-  # module for sending sms
+  # Module for sending sms messages
   #
   module SmsWrapper
     ##
-    # sends a given message by sms
+    # Sends a given message by sms
     #
     # ==== Parameters
     #
-    # * An ActiverRecord for a Message
+    # * An ActiveRecord for a Message
     #
     # ==== Returns:
     #
-    # * the response code for that message from telstra
+    # * The Telstra ID of that message for use with responses
     #
     def self::send_via_sms(message)
       content = message.contents
@@ -20,7 +21,6 @@ module Messenger
         fail SmsTooLongError, "Sms length: #{content.length}"
       else
         number = message.user.phone
-        message.send_time = DateTime.now
         SmsSender.sender_object.send(number, content)
       end
     end
