@@ -4,6 +4,14 @@ class Rule < ActiveRecord::Base
   has_many :a_r, through: :attributes_rules, class_name: 'Attribute'
   has_many :messages
 
+  validates :name, presence: true
+  validates :activated, presence: true
+  validates :delta, presence: true
+  validates :duration, presence: true, numericality: { only_integer: true,
+                                                       greater_than: 0 }
+  validates :key_advice, presence: true
+  validates :full_advice, presence: true
+
   ##
   # Determines whether a particular weather event satisfies
   # this rule.
