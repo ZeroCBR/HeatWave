@@ -37,23 +37,42 @@ namespace :test do
   end
 
   ##
-  # TODO
+  # sends example messages to James' phone and uni email
   task :acceptance do
-    Messenger::Database.initialise
-    spike_rule = Rule.find_or_create_by(
-      name: 'Heat spike detection',
+    puts 'Running example scenario with two users in Mildura on a hot day'
+
+    Messenger::Database.initialise('test' || 'production')
+    Rule.destroy_all
+    puts 'Adding a rule: '
+    p Rule.find_or_create_by(
+      name: 'This rule is almost guaranteed to cause a heatwave',
       annotation: '',
       duration: 1,
-      delta: 15)
-    mildura = Location.find_or_create_by(
+      delta: -100)
+    puts ''
+    puts 'Adding a location: '
+    p mildura = Location.find_or_create_by(
       name: 'MILDURA RACECOURSE',
       jan_mean: 25.0, feb_mean: 22.1, mar_mean: 18.2, apr_mean: 14.3,
       may_mean: 12.4, jun_mean: 10.5, jul_mean: 8.6, aug_mean: 12.7,
       sep_mean: 14.8, oct_mean: 18.9, nov_mean: 20.0, dec_mean: 24.1)
-    weather = Weather.update_or_create_by(
+    Weather.destroy_all
+    puts ''
+    puts 'Adding today\'s weather for the location: '
+    p Weather.update_or_create_by(
       { location: mildura, date: Date.today }, high_temp: 100)
+    puts ''
+    puts 'Adding tomorrow\'s weather for the location: '
+    p Weather.update_or_create_by(
+      { location: mildura, date: Date.today + 1.day }, high_temp: 100)
+    puts ''
+    puts 'Adding the next day\'s weather for the location: '
+    p Weather.update_or_create_by(
+      { location: mildura, date: Date.today + 2.day }, high_temp: 100)
     User.destroy_all
-    alice = User.create(
+    puts ''
+    puts 'Adding a phone user'
+    p User.create(
       username: 'asanchez',
       password: '123',
       f_name: 'Alice',
@@ -63,7 +82,9 @@ namespace :test do
       phone: '0400400269',
       message_type: 'phone',
       location: mildura)
-    bob = User.create(
+    puts ''
+    puts 'Adding an email user'
+    p User.create(
       username: 'bobr',
       password: 'abc',
       f_name: 'Bob',
@@ -74,20 +95,15 @@ namespace :test do
       email: 'jmcma@student.unimelb.edu.au',
       location: mildura)
     Message.destroy_all
-    message_model_1 = Message.create(
-      user: alice,
-      contents: 'Hello, you\'re getting a text from Heatwave',
-      rule: spike_rule,
-      weather: weather
-    )
-    message_model_2 = Message.create(
-      user: bob,
-      contents: 'Hello, you\'re getting an email from Heatwave',
-      rule: spike_rule,
-      weather: weather
-    )
-    messages = [message_model_1, message_model_2]
-    Messenger.send_messages(messages)
+
+    puts ''
+    puts 'Generating messages'
+    p messages = Messenger.retrieve_messages
+    puts ''
+    puts 'Sending ' + messages.size.to_s + ' messages with... '
+    errors = Messenger.send_messages(messages)
+    puts errors.to_s
+    puts errors.size.to_s + ' errors'
   end
 end
 
