@@ -40,6 +40,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'active_record_migrations'
   spec.add_dependency 'sqlite3'
-  spec.add_dependency 'sms_sender'
+  spec.add_dependency 'sms_sender', '~> 0.1.1'
   spec.add_dependency 'mail'
 end

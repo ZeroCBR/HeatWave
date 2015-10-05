@@ -4,7 +4,7 @@ PATH
     messenger (0.0.3)
       active_record_migrations
       mail
-      sms_sender
+      sms_sender (~> 0.1.1)
       sqlite3
 
 GEM
@@ -60,7 +60,7 @@ GEM
       mime-types (>= 1.16, < 3)
     mime-types (2.6.2)
     mini_portile (0.6.2)
-    minitest (5.8.0)
+    minitest (5.8.1)
     netrc (0.10.3)
     nokogiri (1.6.6.2-x64-mingw32)
       mini_portile (~> 0.6.0)
