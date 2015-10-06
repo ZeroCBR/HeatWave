@@ -49,24 +49,27 @@ describe Messenger::Joiner do
           allow(woop_woop).to receive(:weather_run)
             .with(date_range) { [woop_woop_weather[:spike]] }
 
+          allow(spike_rule).to receive(:key_advice) { :advice }
+          allow(wave_rule).to receive(:key_advice) { :advice }
+
           allow(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: woop_woop_weather[:spike],
-                  user: carol, contents: Messenger::Joiner::CONTENT)
+                  user: carol, contents: :advice)
           allow(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: mildura_weather[:spike],
-                  user: alice, contents: Messenger::Joiner::CONTENT)
+                  user: alice, contents: :advice)
           allow(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: mildura_weather[:spike],
-                  user: dave, contents: Messenger::Joiner::CONTENT)
+                  user: dave, contents: :advice)
           allow(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: woop_woop_weather[:spike],
-                  user: carol, contents: Messenger::Joiner::CONTENT)
+                  user: carol, contents: :advice)
         end
 
         it 'should send a message for the heatwaves' do
           expect(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: woop_woop_weather[:spike],
-                  user: carol, contents: Messenger::Joiner::CONTENT)
+                  user: carol, contents: :advice)
             .once { message4 }
           is_expected.to include message4
         end
@@ -74,15 +77,15 @@ describe Messenger::Joiner do
         it 'should send a message for the heat spikes' do
           expect(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: mildura_weather[:spike],
-                  user: alice, contents: Messenger::Joiner::CONTENT)
+                  user: alice, contents: :advice)
             .once { message1 }
           expect(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: mildura_weather[:spike],
-                  user: dave, contents: Messenger::Joiner::CONTENT)
+                  user: dave, contents: :advice)
             .once { message2 }
           expect(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: woop_woop_weather[:spike],
-                  user: carol, contents: Messenger::Joiner::CONTENT)
+                  user: carol, contents: :advice)
             .once { message3 }
           is_expected.to include message1, message2, message3
         end
@@ -116,15 +119,18 @@ describe Messenger::Joiner do
           allow(woop_woop).to receive(:weather_run)
             .with(date_range) { [:a] }
 
+          allow(spike_rule).to receive(:key_advice) { :advice }
+          allow(wave_rule).to receive(:key_advice) { :advice }
+
           allow(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: mildura_weather[:hot1],
-                  user: alice, contents: Messenger::Joiner::CONTENT)
+                  user: alice, contents: :advice)
           allow(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: mildura_weather[:hot1],
-                  user: dave, contents: Messenger::Joiner::CONTENT)
+                  user: dave, contents: :advice)
           allow(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: aireys_weather[:hot1],
-                  user: bob, contents: Messenger::Joiner::CONTENT)
+                  user: bob, contents: :advice)
         end
 
         let(:rules) { [spike_rule, wave_rule] }
@@ -133,11 +139,11 @@ describe Messenger::Joiner do
         it 'should send messages for the first heatwave' do
           expect(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: mildura_weather[:hot1],
-                  user: alice, contents: Messenger::Joiner::CONTENT)
+                  user: alice, contents: :advice)
             .once { message1 }
           expect(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: mildura_weather[:hot1],
-                  user: dave, contents: Messenger::Joiner::CONTENT)
+                  user: dave, contents: :advice)
             .once { message2 }
           is_expected.to include message1, message2
         end
@@ -145,7 +151,7 @@ describe Messenger::Joiner do
         it 'should send messages for the second heatwave' do
           expect(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: aireys_weather[:hot1],
-                  user: bob, contents: Messenger::Joiner::CONTENT)
+                  user: bob, contents: :advice)
             .once { message3 }
           is_expected.to include message3
         end
@@ -632,13 +638,13 @@ describe Messenger::Joiner do
                            age: 3,
                            location: @mildura)
       @spike_rule = Rule.find_or_create_by(name: 'Heat spike detection',
-                                           activated: false,
+                                           activated: true,
                                            duration: 1,
                                            delta: 15,
                                            key_advice: 'spike key advice',
                                            full_advice: 'spike full advice')
       @wave_rule = Rule.find_or_create_by(name: 'Heatwave detection',
-                                          activated: false,
+                                          activated: true,
                                           duration: 3,
                                           delta: 10,
                                           key_advice: 'wave key advice',

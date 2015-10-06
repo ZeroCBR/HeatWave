@@ -25,6 +25,7 @@ class Rule < ActiveRecord::Base
   # +true+ if +weather+ satisfies this, otherwise +false+.
   #
   def satisfied_by?(weather)
+    return false unless activated
     mean = weather.location.mean_for(weather.date)
     weather.high_temp >= mean + delta
   end

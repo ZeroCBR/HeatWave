@@ -86,9 +86,12 @@ describe Messenger do
     context 'with real database objects', speed: 'slow' do
       before(:example) do
         Messenger::Database.initialise
+        Rule.destroy_all
         @spike_rule = Rule.find_or_create_by(
-          name: 'Heat spike detection',
-          annotation: '',
+          name: 'Testing: Heat spike detection',
+          key_advice: 'Hello, this is a test message from HeatWave',
+          full_advice: 'full advice text',
+          activated: true,
           duration: 1,
           delta: 15)
         @mildura = Location.find_or_create_by(
@@ -120,15 +123,16 @@ describe Messenger do
           email: 'a@a.a',
           location: @mildura)
         Message.destroy_all
+        message_content = 'Hello, this is a test message from HeatWave'
         @message_model_1 = Message.create(
           user: @alice,
-          contents: 'hello',
+          contents: message_content,
           rule: @spike_rule,
           weather: @weather
         )
         @message_model_2 = Message.create(
           user: @bob,
-          contents: 'hello',
+          contents: message_content,
           rule: @spike_rule,
           weather: @weather
         )
@@ -141,8 +145,8 @@ describe Messenger do
         expect(sender).to receive(:send_via_sms).with(@message_model_1).once
         expect(sender).to receive(:send_via_email).with(@message_model_2).once
         expect(Messenger.send_messages(messages, sender)).to be_empty
-        expect(Message.find(@message_model_2.id).send_time).not_to be nil
         expect(Message.find(@message_model_1.id).send_time).not_to be nil
+        expect(Message.find(@message_model_2.id).send_time).not_to be nil
       end
     end
   end

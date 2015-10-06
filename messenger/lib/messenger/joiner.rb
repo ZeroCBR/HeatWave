@@ -4,8 +4,6 @@ module Messenger
   # who needs to be sent a warning message.
   #
   module Joiner
-    CONTENT = 'Heatwave Alert!' # TODO: customise in rule table.
-
     ##
     # Produces an array of messages which currently need to be sent
     # according to the rules in an array.
@@ -101,7 +99,7 @@ module Messenger
         models[:message].new(rule: rule,
                              weather: weather,
                              user: r,
-                             contents: CONTENT)
+                             contents: rule.key_advice)
       end
     end
   end
