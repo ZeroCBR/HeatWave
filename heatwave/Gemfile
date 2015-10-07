@@ -29,8 +29,12 @@ gem 'coffee-script-source', '1.8.0'
 # gem 'bcrypt', '~> 3.1.7'
 #  use scheduler
 gem 'rufus-scheduler'
+# Devise provides user authentication.
+gem 'devise'
+
 # use puller
 gem 'puller', path: '../puller'
+
 # Use Unicorn as the app server
 # gem 'unicorn'
 

@@ -1,9 +1,8 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 one:
-  username: MyString
   f_name: MyString
   l_name: MyString
-  password: MyString
+  encrypted_password: MyString
   admin_access: false
   gender: MyString
   phone: MyString
