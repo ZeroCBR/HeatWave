@@ -4,7 +4,7 @@ class CreateUsers < ActiveRecord::Migration
     create_table :users do |t|
       t.string :f_name, null: false
       t.string :l_name, null: false
-      t.boolean :admin_access, null: false
+      t.boolean :admin_access, null: false, default: false
       t.string :gender, null: false
       t.string :phone
       t.integer :age, null: false

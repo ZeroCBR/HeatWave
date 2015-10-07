@@ -4,8 +4,18 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-  validates :username, uniqueness: true
+
+  validates :email, presence: true, allow_blank: false,
+                    uniqueness: { case_sensitive: false }
   validates :location, presence: true
+  validates :f_name, presence: true, allow_blank: false
+  validates :l_name, presence: true, allow_blank: false
+  validates :gender, presence: true, allow_blank: false
+  validates :age, presence: true
+  validates :age, numericality: { only_integer: true,
+                                  greater_than_or_equal_to: 18,
+                                  message: 'must be at least 18 to register.' }
+  validates :message_type, inclusion: { in: %w(email phone) }
 
   belongs_to :location
   has_many :users_attributes

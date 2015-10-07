@@ -11,14 +11,48 @@
   <div class="field">
     <%= f.label :password %>
     <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
+      <em>(<%= @minimum_password_length %> characters minimum)</em>
+    <% end %>
+    <br />
     <%= f.password_field :password, autocomplete: "off" %>
   </div>
 
   <div class="field">
     <%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation, autocomplete: "off" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :f_name %><br>
+    <%= f.text_field :f_name %>
+  </div>
+  <div class="field">
+    <%= f.label :l_name %><br>
+    <%= f.text_field :l_name %>
+  </div>
+  <div class="field">
+    <%= f.label :gender %><br>
+    <%= f.text_field :gender %>
+  </div>
+  <div class="field">
+    <%= f.label :phone %><br>
+    <%= f.text_field :phone %>
+  </div>
+  <div class="field">
+    <%= f.label :age %><br>
+    <%= f.number_field :age %>
+  </div>
+  <div class="field">
+    <%= f.label :message_type %><br>
+    <%= f.select :message_type,
+                 [['SMS', 'phone'], ['Email', 'email']],
+                 prompt: 'Select your prefered message type' %>
+  </div>
+  <div class="field">
+    <%= f.label :location_id %><br>
+    <%= f.select :location_id,
+                 @locations.map{ |l| [l.name, l.id] },
+                 prompt: 'Select your nearest weather station' %>
   </div>
 
   <div class="actions">
