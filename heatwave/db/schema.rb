@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(version: 20151007035200) do
 
   create_table "rules", force: :cascade do |t|
     t.string   "name",                                  null: false
-    t.boolean  "activated",             default: false
+    t.boolean  "activated",             default: false, null: false
     t.integer  "delta",       limit: 1,                 null: false
     t.integer  "duration",    limit: 1,                 null: false
     t.datetime "created_at",                            null: false
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 20151007035200) do
   create_table "users", force: :cascade do |t|
     t.string   "f_name",                              null: false
     t.string   "l_name",                              null: false
-    t.boolean  "admin_access"
+    t.boolean  "admin_access",                        null: false
     t.string   "gender",                              null: false
     t.string   "phone"
     t.integer  "age",                                 null: false

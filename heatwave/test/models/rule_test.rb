@@ -10,15 +10,6 @@ class RuleTest < ActiveSupport::TestCase
     assert_not rule.save, 'Saved the rule without a name'
   end
 
-  test 'should not save rule without activated' do
-    rule = Rule.new('name' => 'High temperature', 'delta' => 1,
-                    'duration' => 1, 'key_advice' => 'key_advice',
-                    'full_advice' => 'full_advice',
-                    'created_at' => Time.zone.now,
-                    'updated_at' => Time.zone.now)
-    assert_not rule.save, 'Saved the rule without a activated'
-  end
-
   test 'should not save rule without delta' do
     rule = Rule.new('name' => 'High temperature', 'activated' => 't',
                     'duration' => 1, 'key_advice' => 'key_advice',
