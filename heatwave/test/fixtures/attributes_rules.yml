@@ -1,9 +1,0 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  attribute_id: 1
-  rule_id: 1
-
-two:
-  attribute_id: 2
-  rule_id: 2

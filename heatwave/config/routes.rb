@@ -4,7 +4,6 @@ Rails.application.routes.draw do
   resources :users
   resources :feedbacks
   resources :rules
-  resources :attributes
   # The priority is based upon order of creation:
   # first created -> highest priority.
   # See how all your routes lay out with "rake routes".

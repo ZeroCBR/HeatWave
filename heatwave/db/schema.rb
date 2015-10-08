@@ -13,20 +13,6 @@
 
 ActiveRecord::Schema.define(version: 20151007035200) do
 
-  create_table "attributes", force: :cascade do |t|
-    t.string   "name",       null: false
-    t.string   "annotation", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "attributes_rules", force: :cascade do |t|
-    t.integer  "attribute_id", null: false
-    t.integer  "rule_id",      null: false
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-  end
-
   create_table "feedbacks", force: :cascade do |t|
     t.string   "title",      null: false
     t.string   "content",    null: false
@@ -100,13 +86,6 @@ ActiveRecord::Schema.define(version: 20151007035200) do
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-
-  create_table "users_attributes", force: :cascade do |t|
-    t.integer  "user_id",      null: false
-    t.integer  "attribute_id", null: false
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-  end
 
   create_table "weathers", force: :cascade do |t|
     t.integer  "location_id",           null: false
