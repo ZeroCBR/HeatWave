@@ -1,4 +1,4 @@
-# Usermodel
+## Model for storing users, including admins and vulnerable individuals.
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
