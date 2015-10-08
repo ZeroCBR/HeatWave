@@ -429,8 +429,10 @@ describe Messenger::Joiner do
           temp = @mildura.mean_for(start_date) + @spike_rule.delta + 1
           Weather.update_or_create_by(
             { location: @mildura, date: start_date }, high_temp: temp)
+          temp = @mildura.mean_for(start_date + 1) + @spike_rule.delta + 1
           Weather.update_or_create_by(
             { location: @mildura, date: start_date + 1 }, high_temp: temp)
+          temp = @mildura.mean_for(start_date + 2) + @spike_rule.delta + 1
           Weather.update_or_create_by(
             { location: @mildura, date: start_date + 2 }, high_temp: temp)
           temp = @aireys.mean_for(start_date) + @spike_rule.delta + 1
@@ -455,15 +457,19 @@ describe Messenger::Joiner do
           temp = @mildura.mean_for(start_date) + @spike_rule.delta - 1
           Weather.update_or_create_by(
             { location: @mildura, date: start_date }, high_temp: temp)
+          temp = @mildura.mean_for(start_date + 1) + @spike_rule.delta - 1
           Weather.update_or_create_by(
             { location: @mildura, date: start_date + 1 }, high_temp: temp)
+          temp = @mildura.mean_for(start_date + 2) + @spike_rule.delta - 1
           Weather.update_or_create_by(
             { location: @mildura, date: start_date + 2 }, high_temp: temp)
           temp = @aireys.mean_for(start_date) + @spike_rule.delta - 1
           Weather.update_or_create_by(
             { location: @aireys, date: start_date }, high_temp: temp)
+          temp = @aireys.mean_for(start_date + 1) + @spike_rule.delta - 1
           Weather.update_or_create_by(
             { location: @aireys, date: start_date + 1 }, high_temp: temp)
+          temp = @aireys.mean_for(start_date + 2) + @spike_rule.delta - 1
           Weather.update_or_create_by(
             { location: @aireys, date: start_date + 2 }, high_temp: temp)
         end
