@@ -46,7 +46,9 @@ namespace :test do
     puts 'Adding a rule: '
     p Rule.find_or_create_by(
       name: 'This rule is almost guaranteed to cause a heatwave',
-      annotation: '',
+      key_advice: 'Hello, this is a test message from HeatWave',
+      full_advice: 'full advice text',
+      activated: true,
       duration: 1,
       delta: -100)
     puts ''
