@@ -5,7 +5,7 @@ class CreateFeedbacks < ActiveRecord::Migration
       t.string :title, null: false
       t.string :content, null: false
       t.string :comment
-      t.boolean :responded
+      t.boolean :responded, null: false
 
       t.timestamps null: false
     end

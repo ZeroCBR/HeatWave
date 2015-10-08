@@ -66,11 +66,11 @@ class NormalRulesControllerTest < ActionController::TestCase
   end
 
   test 'rule#destroy should prevent access for normal users' do
+    Rule.find(@rule.id).update(activated: true)
     assert_difference('Rule.count', 0) do
       delete :destroy, id: @rule.id
     end
-
-    assert_equal Rule.find(@rule.id).activated, @rule.activated
+    assert_equal true, Rule.find(@rule.id).activated
 
     assert_response :redirect
   end
@@ -87,8 +87,8 @@ class AdminRulesControllerTest < ActionController::TestCase
   test 'rule#index should succeed providing rules for admins' do
     get :index
     assert_response :success
-
     assert_not_nil assigns(:rules)
+    assert_equal Rule.count, assigns(:rules).length
   end
 
   test 'rule#new should succeed providing an empty rule for admins' do
@@ -164,13 +164,12 @@ class AdminRulesControllerTest < ActionController::TestCase
   end
 
   test 'rule#destroy should deactivate the rule for admins' do
+    Rule.find(@rule.id).update(activated: true)
     assert_difference('Rule.count', 0) do
       delete :destroy, id: @rule.id
     end
     assert_response :redirect
-
     assert_equal false, Rule.find(@rule.id).activated
-
     assert_redirected_to rule_path(@rule)
   end
 end

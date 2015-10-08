@@ -1,6 +1,7 @@
 # Control the feedback page
 class FeedbacksController < ApplicationController
-  before_action :set_feedback, only: [:show, :edit, :update, :destroy]
+  before_action :set_feedback, only: [:show, :destroy]
+  before_action :admin_user!, only: [:index, :show, :destroy]
 
   # GET /feedbacks
   # GET /feedbacks.json
@@ -10,16 +11,11 @@ class FeedbacksController < ApplicationController
 
   # GET /feedbacks/1
   # GET /feedbacks/1.json
-  def show
-  end
+  def show; end
 
   # GET /feedbacks/new
   def new
     @feedback = Feedback.new
-  end
-
-  # GET /feedbacks/1/edit
-  def edit
   end
 
   # POST /feedbacks
@@ -37,28 +33,16 @@ class FeedbacksController < ApplicationController
     end
   end
 
-  # PATCH/PUT /feedbacks/1
-  # PATCH/PUT /feedbacks/1.json
-  def update
-    respond_to do |format|
-      if @feedback.update(feedback_params)
-        format.html do
-          redirect_to @feedback, notice: 'Feedback was successfully updated.'
-        end
-      else
-        format.html { render :edit }
-      end
-    end
-  end
-
   # DELETE /feedbacks/1
-  # DELETE /feedbacks/1.json
   def destroy
-    @feedback.destroy
     respond_to do |format|
       format.html do
-        redirect_to(feedbacks_url,
-                    notice: 'Feedback was successfully destroyed.')
+        if @feedback.update responded: true
+          redirect_to @feedback, notice: 'Feedback marked as responded to.'
+        else
+          flash.now[:alert] = 'Failed to mark feedback as responded to.'
+          render :index
+        end
       end
     end
   end

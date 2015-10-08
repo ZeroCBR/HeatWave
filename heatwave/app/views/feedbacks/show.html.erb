@@ -18,5 +18,6 @@
   <%= @feedback.responded %>
 </p>
 
-<%= link_to 'Edit', edit_feedback_path(@feedback) %> |
+<td><%= link_to 'Mark as responded to', @feedback,
+                method: :delete, data: { confirm: 'Are you sure?' } %></td>
 <%= link_to 'Back', feedbacks_path %>

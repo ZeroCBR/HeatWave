@@ -24,4 +24,8 @@ class ApplicationController < ActionController::Base
         { |u| u.permit(registration_params) }
     end
   end
+
+  def admin_user!
+    redirect_to(root_path) unless current_user.admin_access
+  end
 end

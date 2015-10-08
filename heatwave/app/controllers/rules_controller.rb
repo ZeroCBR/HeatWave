@@ -54,10 +54,6 @@ class RulesController < ApplicationController
     @rule = Rule.find(params[:id])
   end
 
-  def admin_user!
-    redirect_to(root_path) unless current_user.admin_access
-  end
-
   # Never trust parameters from the scary internet, only allow the
   # white list through.
   def rule_params

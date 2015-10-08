@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20151007035200) do
     t.string   "title",      null: false
     t.string   "content",    null: false
     t.string   "comment"
-    t.boolean  "responded"
+    t.boolean  "responded",  null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
