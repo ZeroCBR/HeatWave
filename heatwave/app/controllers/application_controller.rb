@@ -26,6 +26,17 @@ class ApplicationController < ActionController::Base
   end
 
   def admin_user!
-    redirect_to(root_path) unless current_user.admin_access
+    return if current_user.admin_access
+
+    flash[:alert] = 'Only administrators may view this page!'
+    redirect_to root_path
+  end
+
+  def current_or_admin_user!
+    return if current_user.admin_access
+    return if current_user.id == @user.id
+
+    flash[:alert] = "You don't have permission to view that page!"
+    redirect_to root_path
   end
 end

@@ -1,53 +1,82 @@
 require 'test_helper'
 
-# Test user
-class UsersControllerTest < ActionController::TestCase
+## Tests for the users controller as a normal user.
+class NormalUsersControllerTest < ActionController::TestCase
   setup do
+    sign_in(users(:one))
     @user = users(:one)
+    @controller = UsersController.new
   end
 
-  test 'should get index' do
+  test 'users#index should be blocked for normal users' do
+    get :index
+    assert_response :redirect
+  end
+
+  test 'users#show should show for the current user' do
+    get :show, id: @user.id
+    assert_response :success
+    assert_not_nil assigns(:user)
+    assert_equal @user.email, assigns(:user).email
+    assert_equal @user.f_name, assigns(:user).f_name
+    assert_equal @user.l_name, assigns(:user).l_name
+    assert_equal @user.admin_access, assigns(:user).admin_access
+    assert_equal @user.gender, assigns(:user).gender
+    assert_equal @user.phone, assigns(:user).phone
+    assert_equal @user.age, assigns(:user).age
+    assert_equal @user.message_type, assigns(:user).message_type
+    assert_equal @user.location, assigns(:user).location
+  end
+
+  test 'users#show should not show a different user for a normal user' do
+    get :show, id: users(:two).id
+    assert_response :redirect
+  end
+end
+
+## Tests for the users controller as an admin.
+class AdminUsersControllerTest < ActionController::TestCase
+  setup do
+    sign_in(users(:two))
+    @user = users(:two)
+    @controller = UsersController.new
+  end
+
+  test 'users#index should show all users for admins' do
     get :index
     assert_response :success
     assert_not_nil assigns(:users)
+    assert_equal User.count, assigns(:users).length
   end
 
-  test 'should get new' do
-    get :new
+  test 'users#show should show for the current user' do
+    get :show, id: @user.id
     assert_response :success
+    assert_not_nil assigns(:user)
+    assert_equal @user.email, assigns(:user).email
+    assert_equal @user.f_name, assigns(:user).f_name
+    assert_equal @user.l_name, assigns(:user).l_name
+    assert_equal @user.admin_access, assigns(:user).admin_access
+    assert_equal @user.gender, assigns(:user).gender
+    assert_equal @user.phone, assigns(:user).phone
+    assert_equal @user.age, assigns(:user).age
+    assert_equal @user.message_type, assigns(:user).message_type
+    assert_equal @user.location, assigns(:user).location
   end
 
-  test 'should show user' do
-    get :show, id: @user
+  test 'users#show should show a any user for an admin user' do
+    @user = users(:one)
+    get :show, id: @user.id
     assert_response :success
-  end
-
-  test 'should get edit' do
-    get :edit, id: @user
-    assert_response :success
-  end
-
-  test 'should update user' do
-    location = Location.find(@user.location_id)
-    patch :update, id: @user, user: { admin_access: @user.admin_access,
-                                      age: @user.age,
-                                      email: @user.email,
-                                      f_name: @user.f_name,
-                                      gender: @user.gender,
-                                      l_name: @user.l_name,
-                                      password: @user.password,
-                                      phone: @user.phone,
-                                      location: location,
-                                      message_type: @user.message_type,
-                                      username: @user.username }
-    assert_redirected_to user_path(assigns(:user))
-  end
-
-  test 'should destroy user' do
-    assert_difference('User.count', -1) do
-      delete :destroy, id: @user
-    end
-
-    assert_redirected_to users_path
+    assert_not_nil assigns(:user)
+    assert_equal @user.email, assigns(:user).email
+    assert_equal @user.f_name, assigns(:user).f_name
+    assert_equal @user.l_name, assigns(:user).l_name
+    assert_equal @user.admin_access, assigns(:user).admin_access
+    assert_equal @user.gender, assigns(:user).gender
+    assert_equal @user.phone, assigns(:user).phone
+    assert_equal @user.age, assigns(:user).age
+    assert_equal @user.message_type, assigns(:user).message_type
+    assert_equal @user.location, assigns(:user).location
   end
 end
