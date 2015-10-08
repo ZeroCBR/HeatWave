@@ -23,6 +23,37 @@
   </div>
 
   <div class="field">
+    <%= f.label :f_name %><br>
+    <%= f.text_field :f_name %>
+  </div>
+  <div class="field">
+    <%= f.label :l_name %><br>
+    <%= f.text_field :l_name %>
+  </div>
+  <div class="field">
+    <%= f.label :gender %><br>
+    <%= f.text_field :gender %>
+  </div>
+  <div class="field">
+    <%= f.label :phone %><br>
+    <%= f.text_field :phone %>
+  </div>
+  <div class="field">
+    <%= f.label :age %><br>
+    <%= f.number_field :age %>
+  </div>
+  <div class="field">
+    <%= f.label :message_type %><br>
+    <%= f.select :message_type,
+      [['SMS', 'phone'], ['Email', 'email']] %>
+  </div>
+  <div class="field">
+    <%= f.label :location_id %><br>
+    <%= f.select :location_id,
+      @locations.map{ |l| [l.name, l.id] } %>
+  </div>
+
+  <div class="field">
     <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
     <%= f.password_field :current_password, autocomplete: "off" %>
   </div>

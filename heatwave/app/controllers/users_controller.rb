@@ -1,7 +1,7 @@
 # Control the user page
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show]
-  before_action :admin_user!, only: [:index]
+  before_action :set_user, only: [:show, :edit, :update]
+  before_action :admin_user!, except: [:profile, :show]
   before_action :current_or_admin_user!, only: [:show]
 
   # GET /users
@@ -14,6 +14,35 @@ class UsersController < ApplicationController
   def show
   end
 
+  # GET /users/new
+  def new
+    @user = User.new
+    @locations = Location.all.sort_by(&:name)
+  end
+
+  # POST /users
+  def create
+    @user = User.new(user_params)
+    @locations = Location.all.sort_by(&:name)
+    respond_to do |format|
+      html_respond_to(format, 'create', 'created', :new) { @user.save }
+    end
+  end
+
+  # GET /users/1/edit
+  def edit
+    @locations = Location.all.sort_by(&:name)
+  end
+
+  # PATCH /users/1
+  def update
+    @locations = Location.all.sort_by(&:name)
+    respond_to do |format|
+      html_respond_to(format, 'update', 'updated', :edit) \
+        { @user.update(user_params) }
+    end
+  end
+
   # GET /
   def profile
     @user = current_user
@@ -22,6 +51,12 @@ class UsersController < ApplicationController
 
   private
 
+  def successful_update_response
+    flash[:notice] = :updated if is_flashing_format?
+    sign_in :user, @user, bypass: true
+    respond_with @user, location: after_update_path_for(resource)
+  end
+
   def set_user
     @user = User.find(params[:id])
   end
@@ -29,9 +64,21 @@ class UsersController < ApplicationController
   # Never trust parameters from the scary internet, only allow the
   # white list through.
   def user_params
-    params.require(:user).permit(:username, :f_name,
-                                 :l_name, :password, :admin_access, :gender,
-                                 :address, :phone, :age, :email, :suscribed,
-                                 :birthday, :postcode)
+    params.require(:user).permit(:email, :password, :f_name, :l_name,
+                                 :gender, :phone, :age,
+                                 :message_type, :location_id)
+  end
+
+  def html_respond_to(format, present_tense, past_tense, alternative)
+    if yield
+      format.html do
+        redirect_to @user, notice: "Successfully #{past_tense} the user"
+      end
+    else
+      format.html do
+        flash.now[:alert] = "Failed to #{present_tense} the user"
+        render alternative
+      end
+    end
   end
 end

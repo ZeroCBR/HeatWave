@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_devise_permitted_parameters
-    registration_params = [:email, :password, :password_confirmation,
+    registration_params = [:id, :email, :password, :password_confirmation,
                            :f_name, :l_name, :gender, :phone, :age,
                            :message_type, :location_id]
 

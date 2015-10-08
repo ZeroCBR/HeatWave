@@ -8,9 +8,10 @@ Rails.application.routes.draw do
     root 'users#profile'
   end
 
-  devise_for :users, controllers: { registrations: 'registrations' }
+  devise_for :users, controllers: { registrations: 'registrations' },
+                     path_prefix: 'd'
 
-  resources :users, only: [:index, :show]
+  resources :users, except: [:destroy]
   resources :feedbacks, except: [:edit, :update]
   resources :rules
 

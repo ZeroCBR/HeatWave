@@ -1,13 +1,9 @@
 require 'test_helper'
 
 ##
-# Functional tests for valid uses of the registrations controller.
-class ValidRegistrationsControllerTest < ActionController::TestCase
+# Functional tests for valid creations with the registrations controller.
+class CreateRegistrationsControllerTest < ActionController::TestCase
   setup do
-    user = User.find_by(email: USER1[:email])
-    user.delete if user
-    user = User.find_by(email: USER2[:email])
-    user.delete if user
     @request.env['devise.mapping'] = Devise.mappings[:user]
     @controller = RegistrationsController.new
   end
@@ -31,28 +27,45 @@ class ValidRegistrationsControllerTest < ActionController::TestCase
   end
 
   test 'registrations#create should allow a good user' do
-    user = USER1.clone
-    assert_difference('User.count', 1) { post :create, user: user }
+    @user = users(:one)
+    assert_difference('User.count', 1) do
+      post :create, user: { email: @user.email + '1',
+                            password: '12345678',
+                            password_confirmation: '12345678',
+                            f_name: @user.f_name,
+                            l_name: @user.l_name,
+                            gender: @user.gender,
+                            age: @user.age,
+                            location_id: @user.location_id,
+                            message_type: @user.message_type,
+                            phone: @user.phone }
+    end
     assert_response :redirect
+    User.find_by(email: @user.email + '1').delete
   end
 
   test 'registrations#create should allow another good user' do
-    user = USER2.clone
-    assert_difference('User.count', 1) { post :create, user: user }
+    @user = users(:two)
+    assert_difference('User.count', 1) do
+      post :create, user: { email: @user.email + '2',
+                            password: '12345678',
+                            password_confirmation: '12345678',
+                            f_name: @user.f_name,
+                            l_name: @user.l_name,
+                            gender: @user.gender,
+                            age: @user.age,
+                            location_id: @user.location_id,
+                            message_type: @user.message_type,
+                            phone: @user.phone }
+    end
     assert_response :redirect
-  end
-
-  test 'registrations#create should allow nil admin access' do
-    user = USER1.clone
-    user[:admin_access] = nil
-
-    assert_difference('User.count', 1) { post :create, user: user }
-    assert_response :redirect
+    User.find_by(email: @user.email + '2').delete
   end
 end
 
 ##
-# Functional tests for invalid uses of the registrations controller.
+# Functional tests for invalid registration with the
+# registrations controller.
 class InvalidRegistrationsControllerTest < ActionController::TestCase
   setup do
     user = User.find_by(email: USER1[:email])

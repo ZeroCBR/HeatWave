@@ -2,6 +2,8 @@
 # Overriding controller for registration.
 # Overrides the default devise registrations controller.
 class RegistrationsController < Devise::RegistrationsController
+  before_action :set_user, only: [:edit, :update]
+
   def new
     @locations = Location.all.sort_by(&:name)
     super
@@ -11,7 +13,7 @@ class RegistrationsController < Devise::RegistrationsController
     @user = User.new(user_params)
 
     if @user.save
-      successful_user_save_response
+      successful_create_response
     else
       clean_up_passwords @user
       @locations = Location.all.sort_by(&:name)
@@ -19,33 +21,38 @@ class RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  def edit
+    @locations = Location.all.sort_by(&:name)
+    super
+  end
+
+  def update
+    @locations = Location.all.sort_by(&:name)
+    super
+  end
+
   private
 
-  def successful_user_save_response
+  def set_user
+    @user = current_user
+  end
+
+  def successful_create_response
     if @user.active_for_authentication?
-      sign_up_active
+      flash[:notice] = :signed_up if is_navigational_format?
+      sign_up :user, @user
+      respond_with @user, location: after_sign_up_path_for(@user)
     else
-      sign_up_inactive
+      flash_key = "signed_up_but_#{@user.inactive_message}"
+      flash[:notice] = flash_key if is_navigational_format?
+      expire_data_after_sign_in!
+      respond_with @user, location: after_inactive_sign_up_path_for(@user)
     end
-  end
-
-  def sign_up_active
-    flash[:notice] = :signed_up if is_navigational_format?
-    sign_up(:user, @user)
-    respond_with @user, location: after_sign_up_path_for(@user)
-  end
-
-  def sign_up_inactive
-    if is_navigational_format?
-      flash[:notice] = "signed_up_but_#{@user.inactive_message}"
-    end
-    expire_session_data_after_sign_in!
-    respond_with @user, location: after_inactive_sign_up_path_for(@user)
   end
 
   def user_params
     params.require(:user).permit(:email, :password, :password_confirmation,
                                  :f_name, :l_name, :gender, :phone, :age,
-                                 :message_type, :location_id)
+                                 :message_type, :location_id, :current_password)
   end
 end
