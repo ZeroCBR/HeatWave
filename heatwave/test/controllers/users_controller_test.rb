@@ -78,20 +78,9 @@ class BadLoginUpdateUsersControllerTest < ActionController::TestCase
     @controller = UsersController.new
   end
 
-  test 'users#update should prevent mismatched passwords' do
-    user = USER1
-    user[:password] = 'password'
-    user[:password_confirmation] = 'different'
-
-    assert_no_change(user)
-    assert_equal_personal_details @user, User.find_by(id: @user.id)
-    assert_equal_statistics @user, User.find_by(id: @user.id)
-  end
-
   test 'users#update should prevent too short passwords' do
     user = USER1
     user[:password] = 'short'
-    user[:password_confirmation] = 'short'
 
     assert_no_change(user)
     assert_equal_personal_details @user, User.find_by(id: @user.id)
@@ -161,7 +150,6 @@ class UpdateUsersControllerTest < ActionController::TestCase
     assert_not_nil assigns(:user)
     assert_equal assigns(:user).email, @user.email
     assert_equal assigns(:user).password, nil
-    assert_equal assigns(:user).password_confirmation, nil
     assert_equal assigns(:user).f_name, @user.f_name
     assert_equal assigns(:user).l_name, @user.l_name
     assert_equal assigns(:user).gender, @user.gender
