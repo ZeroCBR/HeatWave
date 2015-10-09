@@ -1,4 +1,4 @@
 #:nodoc:
 module Messenger
-  VERSION = '0.0.3' ## sending working on both paths
+  VERSION = '0.0.4' ## Updated for devise changes.
 end
