@@ -61,33 +61,8 @@ DATABASE_ENV=production
 echo -e "${info}DATABASE_ENV=${DATABASE_ENV}${NC}"
 
 # Set up components.
-echo -e "\
-${error}The application is not ready to run yet;
-instead, acceptance test scripts will be run.${NC}\
-"
 
 echo
-echo -e "${bold}Demonstrating the Heatwave data puller...${NC}"
-cd "$PULLER_HOME"
-bundle exec rake test:acceptance || echo -e "${error}FAILED${NC}"
-echo
-
-echo -e "\
-${error}TODO: Replace the mailer and SMS sender demos
-with the messenger demo.${NC}\
-"
-
-echo
-echo -e "${bold}Demonstrating the Heatwave mailer...${NC}"
-cd "$MAILER_HOME"
-bundle exec rake test:acceptance || echo -e "${error}FAILED${NC}"
-
-echo
-echo -e "${bold}Demonstrating the Heatwave SMS sender...${NC}"
-cd "$SENDER_HOME"
-bundle exec rake test:acceptance || echo -e "${error}FAILED${NC}"
-
-echo
-echo -e "${bold}Demonstrating the Heatwave rails application...${NC}"
+echo -e "${bold}Running the Heatwave rails application...${NC}"
 cd "$RAILS_HOME"
-bundle exec rails s || echo -e "${error}FAILED${NC}"
+RAILS_ENV=production bundle exec rails s || echo -e "${error}FAILED${NC}"
