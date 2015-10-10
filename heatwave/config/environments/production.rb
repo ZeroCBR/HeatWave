@@ -1,4 +1,28 @@
 Rails.application.configure do
+
+  ##
+  # This defines the mail service used for things like
+  # password recovery.
+  # The mailer for heatwave messages is defined separately
+  # in the messenger gem.
+
+  # This specifies the base url for the site, as far as the mailer
+  # is concerned.
+  # It should be set to the actual domain name and port.
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+
+  # This defines the email server and login details for the email
+  # account to use.
+  ActionMailer::Base.smtp_settings = {
+    address: 'smtp.gmail.com',
+    port: 587,
+    domain: 'gmail.com',
+    user_name: 'heatwaveorange@gmail.com',
+    password: 'heatwaveorange1234',
+    authentication: 'plain'
+    # :enable_starttls_auto => true # Don't need.
+  }
+
   # Settings specified here will take precedence over those in
   # config/application.rb.
 
