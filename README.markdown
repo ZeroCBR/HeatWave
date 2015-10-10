@@ -26,6 +26,34 @@ scripts in the repository root.
 
 The scripts assume that they will be run with `$PWD` being `$REPOSITORY_ROOT`.
 
+## Basic Configuration
+
+### Simple Setup Scripts
+
+The three scripts for installation, validation, and execution mentioned
+above define several environment variables.
+If for any reason the directory structure of the application
+needs to be changed, those environment variables provide a way
+of specifying the changes for the software system.
+
+### Configuration Files
+
+`$REPOSITORY_ROOT/heatwave/config/environments/production.rb`:
+
+* The URL to use for emailed links for account management purposes
+  is specified near the top of the file.  More precise instructions
+  are in that file.
+* The email account and server to use for account management emails
+  is specified in the same location.
+
+`$REPOSITORY_ROOT/heatwave/config/initializers/devise.rb`:
+
+* The email sender (which appears in the 'from' field of emails)
+  is specified near the top of the file.  More precise instructions
+  are in that file.
+
+TODO messenger's place
+
 # Contributing
 
 To contribute to this project, make a JIRA issue for whatever
