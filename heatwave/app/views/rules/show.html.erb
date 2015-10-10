@@ -2,7 +2,7 @@
   <strong>Name:</strong>
   <%= @rule.name %>
 </p>
-
+<% if @user.admin_access %>
 <p>
   <strong>Activated:</strong>
   <%= @rule.activated %>
@@ -17,6 +17,7 @@
   <strong>Duration:</strong>
   <%= @rule.duration %>
 </p>
+<% end %>
 
 <p>
   <strong>Key Advice:</strong>
