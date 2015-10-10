@@ -27,7 +27,8 @@
   <strong>Full Advice:</strong>
   <%= @rule.full_advice %>
 </p>
+<%= link_to 'Back', :back %> |
 <%= link_to 'Edit', edit_rule_path(@rule) %> |
 <td><%= link_to 'Disable', @rule, method: :delete,
-                                  data: { confirm: 'Are you sure?' } %></td>
-<%= link_to 'Back', rules_path %>
+                                  data: { confirm: 'Are you sure?' } %></td> |
+<%= link_to 'View all rules', rules_path %>

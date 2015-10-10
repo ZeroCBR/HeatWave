@@ -7,8 +7,6 @@
       <th>Activated</th>
       <th>Delta</th>
       <th>Duration</th>
-      <th>Key Advice</th>
-      <th>Full Advice</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -20,8 +18,6 @@
         <td><%= rule.activated %></td>
         <td><%= rule.delta %></td>
         <td><%= rule.duration %></td>
-        <td><%= rule.key_advice %></td>
-        <td><%= rule.full_advice[0..15] %>...</td>
         <td><%= link_to 'Show More', rule %></td>
         <td><%= link_to 'Edit', edit_rule_path(rule) %></td>
       </tr>
@@ -31,4 +27,5 @@
 
 <br>
 
+<%= link_to 'Back', :back %>
 <%= link_to 'New Rule', new_rule_path %>
