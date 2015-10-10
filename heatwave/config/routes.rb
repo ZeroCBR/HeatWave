@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   devise_scope :user do
     root 'users#profile'
+    get 'profile', to: 'users#profile'
   end
 
   devise_for :users, controllers: { registrations: 'registrations' },
