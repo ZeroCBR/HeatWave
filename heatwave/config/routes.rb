@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resources :users, except: [:destroy]
   resources :feedbacks, except: [:edit, :update]
   resources :rules
+  resources :messages, only: [ :show, :index ]
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
