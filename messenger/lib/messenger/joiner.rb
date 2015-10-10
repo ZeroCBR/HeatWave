@@ -4,6 +4,7 @@ module Messenger
   # who needs to be sent a warning message.
   #
   module Joiner
+    ROOT_URL = 'localhost:3000'
     ##
     # Produces an array of messages which currently need to be sent
     # according to the rules in an array.
@@ -96,10 +97,12 @@ module Messenger
     def self.send_messages_for(models, rule, weather)
       recipients = recipients(rule, weather.location)
       recipients.map do |r|
+        contents = rule.key_advice.to_s + ' Read more at: ' +
+                   ROOT_URL + '/rules/' + rule.id.to_s
         models[:message].new(rule: rule,
                              weather: weather,
                              user: r,
-                             contents: rule.key_advice)
+                             contents: contents)
       end
     end
   end

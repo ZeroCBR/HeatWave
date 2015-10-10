@@ -1,6 +1,6 @@
 require 'spec_helper'
 require 'date'
-
+ROOT_URL = 'localhost:3000'
 describe Messenger::Joiner do
   context 'with stubbed models' do
     describe '.messages' do
@@ -51,25 +51,32 @@ describe Messenger::Joiner do
 
           allow(spike_rule).to receive(:key_advice) { :advice }
           allow(wave_rule).to receive(:key_advice) { :advice }
+          allow(spike_rule).to receive(:id) { :id }
+          allow(wave_rule).to receive(:id) { :id }
 
           allow(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: woop_woop_weather[:spike],
-                  user: carol, contents: :advice)
+                  user: carol, contents: :advice.to_s + ' Read more at: ' +
+                  ROOT_URL + '/rules/' + :id.to_s)
           allow(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: mildura_weather[:spike],
-                  user: alice, contents: :advice)
+                  user: alice, contents: :advice.to_s + ' Read more at: ' +
+                  ROOT_URL + '/rules/' + :id.to_s)
           allow(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: mildura_weather[:spike],
-                  user: dave, contents: :advice)
+                  user: dave, contents: :advice.to_s + ' Read more at: ' +
+                  ROOT_URL + '/rules/' + :id.to_s)
           allow(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: woop_woop_weather[:spike],
-                  user: carol, contents: :advice)
+                  user: carol, contents: :advice.to_s + ' Read more at: ' +
+                  ROOT_URL + '/rules/' + :id.to_s)
         end
 
         it 'should send a message for the heatwaves' do
           expect(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: woop_woop_weather[:spike],
-                  user: carol, contents: :advice)
+                  user: carol, contents: :advice.to_s + ' Read more at: ' +
+                  ROOT_URL + '/rules/' + :id.to_s)
             .once { message4 }
           is_expected.to include message4
         end
@@ -77,15 +84,18 @@ describe Messenger::Joiner do
         it 'should send a message for the heat spikes' do
           expect(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: mildura_weather[:spike],
-                  user: alice, contents: :advice)
+                  user: alice, contents: :advice.to_s + ' Read more at: ' +
+                  ROOT_URL + '/rules/' + :id.to_s)
             .once { message1 }
           expect(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: mildura_weather[:spike],
-                  user: dave, contents: :advice)
+                  user: dave, contents: :advice.to_s + ' Read more at: ' +
+                  ROOT_URL + '/rules/' + :id.to_s)
             .once { message2 }
           expect(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: woop_woop_weather[:spike],
-                  user: carol, contents: :advice)
+                  user: carol, contents: :advice.to_s + ' Read more at: ' +
+                  ROOT_URL + '/rules/' + :id.to_s)
             .once { message3 }
           is_expected.to include message1, message2, message3
         end
@@ -121,16 +131,21 @@ describe Messenger::Joiner do
 
           allow(spike_rule).to receive(:key_advice) { :advice }
           allow(wave_rule).to receive(:key_advice) { :advice }
+          allow(spike_rule).to receive(:id) { :id }
+          allow(wave_rule).to receive(:id) { :id }
 
           allow(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: mildura_weather[:hot1],
-                  user: alice, contents: :advice)
+                  user: alice, contents: :advice.to_s + ' Read more at: ' +
+                  ROOT_URL + '/rules/' + :id.to_s)
           allow(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: mildura_weather[:hot1],
-                  user: dave, contents: :advice)
+                  user: dave, contents: :advice.to_s + ' Read more at: ' +
+                  ROOT_URL + '/rules/' + :id.to_s)
           allow(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: aireys_weather[:hot1],
-                  user: bob, contents: :advice)
+                  user: bob, contents: :advice.to_s + ' Read more at: ' +
+                  ROOT_URL + '/rules/' + :id.to_s)
         end
 
         let(:rules) { [spike_rule, wave_rule] }
@@ -139,11 +154,13 @@ describe Messenger::Joiner do
         it 'should send messages for the first heatwave' do
           expect(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: mildura_weather[:hot1],
-                  user: alice, contents: :advice)
+                  user: alice, contents: :advice.to_s + ' Read more at: ' +
+                  ROOT_URL + '/rules/' + :id.to_s)
             .once { message1 }
           expect(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: mildura_weather[:hot1],
-                  user: dave, contents: :advice)
+                  user: dave, contents: :advice.to_s + ' Read more at: ' +
+                  ROOT_URL + '/rules/' + :id.to_s)
             .once { message2 }
           is_expected.to include message1, message2
         end
@@ -151,7 +168,8 @@ describe Messenger::Joiner do
         it 'should send messages for the second heatwave' do
           expect(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: aireys_weather[:hot1],
-                  user: bob, contents: :advice)
+                  user: bob, contents: :advice.to_s + ' Read more at: ' +
+                  ROOT_URL + '/rules/' + :id.to_s)
             .once { message3 }
           is_expected.to include message3
         end
@@ -640,13 +658,15 @@ describe Messenger::Joiner do
                            age: 40,
                            message_type: 'phone',
                            location: @mildura)
-      @spike_rule = Rule.find_or_create_by(name: 'Heat spike detection',
+      @spike_rule = Rule.find_or_create_by(id: 1,
+                                           name: 'Heat spike detection',
                                            activated: true,
                                            duration: 1,
                                            delta: 15,
                                            key_advice: 'spike key advice',
                                            full_advice: 'spike full advice')
-      @wave_rule = Rule.find_or_create_by(name: 'Heatwave detection',
+      @wave_rule = Rule.find_or_create_by(id: 2,
+                                          name: 'Heatwave detection',
                                           activated: true,
                                           duration: 3,
                                           delta: 10,
