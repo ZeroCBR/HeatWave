@@ -55,9 +55,9 @@ echo -e "${info}SENDER_HOME=${SENDER_HOME}${NC}"
 
 # Configure database
 
-RAILS_ENV=production
+export RAILS_ENV=production
 echo -e "${info}RAILS_ENV=${RAILS_ENV}${NC}"
-DATABASE_ENV=production
+export DATABASE_ENV=production
 echo -e "${info}DATABASE_ENV=${DATABASE_ENV}${NC}"
 
 # Set up components.
@@ -65,4 +65,12 @@ echo -e "${info}DATABASE_ENV=${DATABASE_ENV}${NC}"
 echo
 echo -e "${bold}Running the Heatwave rails application...${NC}"
 cd "$RAILS_HOME"
-RAILS_ENV=production bundle exec rails s || echo -e "${error}FAILED${NC}"
+
+# The secret key needs to be set for production mode.
+# It is used for validating cookies for sessions, etc.
+# It can be changed freely but doing so will invalidate cookies
+# (such as for saved sessions).
+SECRET_KEY_BASE='fGz3zN7bxjukXksoG8olIneU4F0YN0R0nXIo3M0660FI8fV BuF6eVDyRDCyaAuyY'\
+'0ElxZvrXFC8vbKIXyMrptKoWJhxYDZO9XUuy4JhtN 9JuoWzjbOPY8UhfBf8ZPwSt'
+
+SECRET_KEY_BASE=$SECRET_KEY_BASE bundle exec rails s || echo -e "${error}FAILED${NC}"
