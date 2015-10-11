@@ -1,5 +1,4 @@
 Rails.application.configure do
-
   ##
   # This defines the mail service used for things like
   # password recovery.
@@ -9,7 +8,7 @@ Rails.application.configure do
   # This specifies the base url for the site, as far as the mailer
   # is concerned.
   # It should be set to the actual domain name and port.
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.default_url_options = { host: 'localhost:3000' }
 
   # This defines the email server and login details for the email
   # account to use.

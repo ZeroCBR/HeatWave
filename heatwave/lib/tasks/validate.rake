@@ -1,6 +1,7 @@
 # Test database and rubocop
 task :validate do
-  system 'rake db:migrate:reset RAILS_ENV=test'
-  system 'rake test'
-  system 'rubocop -R'
+  ok = system 'rake db:migrate:reset RAILS_ENV=test'
+  ok &&= system 'rake test'
+  ok &&= system 'rubocop -R'
+  return false unless ok
 end
