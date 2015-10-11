@@ -15,10 +15,19 @@ class User < ActiveRecord::Base
   validates :age, numericality: { only_integer: true,
                                   greater_than_or_equal_to: 18,
                                   message: 'must be at least 18 to register.' }
-  validates :message_type, inclusion: { in: %w(email phone) }
+  validates :message_type, inclusion: { in: %w(email phone) } 
+  validate :phone_number_appropriate?
 
   belongs_to :location
   has_many :feedbacks
   has_many :histories
   has_many :messages
+
+  def phone_number_appropriate?
+    return true unless message_type == 'phone'
+    unless phone.to_s.match /\A04\d{8}\Z/
+      errors[:phone] << " number must be Australian mobile"\
+        " number of the form 04XXXXXXXX"
+    end
+  end
 end
