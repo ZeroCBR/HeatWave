@@ -26,6 +26,26 @@ scripts in the repository root.
 
 The scripts assume that they will be run with `$PWD` being `$REPOSITORY_ROOT`.
 
+The installation script will also populate the database with a few
+very simple records:
+
+* An administrator account.
+* A location, the MELBOURNE REGIONAL OFFICE weather station.
+* An example rule, with advice explaining how the rules
+  relate to weather, what determines the message content sent to
+  users, and what users can see on the website.
+
+## Initial Administrator Account
+
+The initial administrator account has the following login details:
+
+**Email:** heatwaveorange@gmail.com
+**Password:** heatwaveorange1234
+
+This account can be used to set up accounts for real users and admins.
+It is recommended that this account be unregistered eventually for
+security purposes, but remember to make another admin account first!
+
 ## Basic Configuration
 
 ### Simple Setup Scripts
