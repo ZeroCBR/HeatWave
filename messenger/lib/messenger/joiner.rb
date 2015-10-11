@@ -97,8 +97,8 @@ module Messenger
     def self.send_messages_for(models, rule, weather)
       recipients = recipients(rule, weather.location)
       recipients.map do |r|
-        contents = rule.key_advice.to_s + ' Read more at: ' +
-                   ROOT_URL + '/rules/' + rule.id.to_s
+        contents = "#{rule.key_advice} Read more at: "\
+         "#{ROOT_URL}/rules/#{rule.id}"
         models[:message].new(rule: rule,
                              weather: weather,
                              user: r,

@@ -56,27 +56,27 @@ describe Messenger::Joiner do
 
           allow(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: woop_woop_weather[:spike],
-                  user: carol, contents: :advice.to_s + ' Read more at: ' +
-                  ROOT_URL + '/rules/' + :id.to_s)
+                  user: carol, contents: "#{:advice} Read more at: "\
+                   "#{ROOT_URL}/rules/#{:id}")
           allow(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: mildura_weather[:spike],
-                  user: alice, contents: :advice.to_s + ' Read more at: ' +
-                  ROOT_URL + '/rules/' + :id.to_s)
+                  user: alice, contents: "#{:advice} Read more at: "\
+                   "#{ROOT_URL}/rules/#{:id}")
           allow(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: mildura_weather[:spike],
-                  user: dave, contents: :advice.to_s + ' Read more at: ' +
-                  ROOT_URL + '/rules/' + :id.to_s)
+                  user: dave, contents: "#{:advice} Read more at: "\
+                   "#{ROOT_URL}/rules/#{:id}")
           allow(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: woop_woop_weather[:spike],
-                  user: carol, contents: :advice.to_s + ' Read more at: ' +
-                  ROOT_URL + '/rules/' + :id.to_s)
+                  user: carol, contents: "#{:advice} Read more at: "\
+                   "#{ROOT_URL}/rules/#{:id}")
         end
 
         it 'should send a message for the heatwaves' do
           expect(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: woop_woop_weather[:spike],
-                  user: carol, contents: :advice.to_s + ' Read more at: ' +
-                  ROOT_URL + '/rules/' + :id.to_s)
+                  user: carol, contents: "#{:advice} Read more at: "\
+                   "#{ROOT_URL}/rules/#{:id}")
             .once { message4 }
           is_expected.to include message4
         end
@@ -84,18 +84,18 @@ describe Messenger::Joiner do
         it 'should send a message for the heat spikes' do
           expect(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: mildura_weather[:spike],
-                  user: alice, contents: :advice.to_s + ' Read more at: ' +
-                  ROOT_URL + '/rules/' + :id.to_s)
+                  user: alice, contents: "#{:advice} Read more at: "\
+                   "#{ROOT_URL}/rules/#{:id}")
             .once { message1 }
           expect(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: mildura_weather[:spike],
-                  user: dave, contents: :advice.to_s + ' Read more at: ' +
-                  ROOT_URL + '/rules/' + :id.to_s)
+                  user: dave, contents: "#{:advice} Read more at: "\
+                   "#{ROOT_URL}/rules/#{:id}")
             .once { message2 }
           expect(models[:message]).to receive(:new)
             .with(rule: spike_rule, weather: woop_woop_weather[:spike],
-                  user: carol, contents: :advice.to_s + ' Read more at: ' +
-                  ROOT_URL + '/rules/' + :id.to_s)
+                  user: carol, contents: "#{:advice} Read more at: "\
+                   "#{ROOT_URL}/rules/#{:id}")
             .once { message3 }
           is_expected.to include message1, message2, message3
         end
@@ -136,16 +136,16 @@ describe Messenger::Joiner do
 
           allow(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: mildura_weather[:hot1],
-                  user: alice, contents: :advice.to_s + ' Read more at: ' +
-                  ROOT_URL + '/rules/' + :id.to_s)
+                  user: alice, contents: "#{:advice} Read more at: "\
+                   "#{ROOT_URL}/rules/#{:id}")
           allow(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: mildura_weather[:hot1],
-                  user: dave, contents: :advice.to_s + ' Read more at: ' +
-                  ROOT_URL + '/rules/' + :id.to_s)
+                  user: dave, contents: "#{:advice} Read more at: "\
+                   "#{ROOT_URL}/rules/#{:id}")
           allow(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: aireys_weather[:hot1],
-                  user: bob, contents: :advice.to_s + ' Read more at: ' +
-                  ROOT_URL + '/rules/' + :id.to_s)
+                  user: bob, contents: "#{:advice} Read more at: "\
+                   "#{ROOT_URL}/rules/#{:id}")
         end
 
         let(:rules) { [spike_rule, wave_rule] }
@@ -154,13 +154,13 @@ describe Messenger::Joiner do
         it 'should send messages for the first heatwave' do
           expect(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: mildura_weather[:hot1],
-                  user: alice, contents: :advice.to_s + ' Read more at: ' +
-                  ROOT_URL + '/rules/' + :id.to_s)
+                  user: alice, contents: "#{:advice} Read more at: "\
+                   "#{ROOT_URL}/rules/#{:id}")
             .once { message1 }
           expect(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: mildura_weather[:hot1],
-                  user: dave, contents: :advice.to_s + ' Read more at: ' +
-                  ROOT_URL + '/rules/' + :id.to_s)
+                  user: dave, contents: "#{:advice} Read more at: "\
+                   "#{ROOT_URL}/rules/#{:id}")
             .once { message2 }
           is_expected.to include message1, message2
         end
@@ -168,8 +168,8 @@ describe Messenger::Joiner do
         it 'should send messages for the second heatwave' do
           expect(models[:message]).to receive(:new)
             .with(rule: wave_rule, weather: aireys_weather[:hot1],
-                  user: bob, contents: :advice.to_s + ' Read more at: ' +
-                  ROOT_URL + '/rules/' + :id.to_s)
+                  user: bob, contents: "#{:advice} Read more at: "\
+                   "#{ROOT_URL}/rules/#{:id}")
             .once { message3 }
           is_expected.to include message3
         end

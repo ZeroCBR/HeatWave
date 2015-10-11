@@ -12,7 +12,6 @@ class RulesController < ApplicationController
 
   # GET /rules/1
   def show
-    @user = current_user
   end
 
   # GET /rules/new

@@ -1,32 +1,38 @@
-<p>
-  <strong>Name:</strong>
-  <%= @rule.name %>
-</p>
-<% if @user.admin_access %>
-<p>
-  <strong>Activated:</strong>
-  <%= @rule.activated %>
-</p>
+<% provide(:title, "Rule: "+@rule.name) %>
 
-<p>
-  <strong>Delta:</strong>
-  <%= @rule.delta %>
-</p>
+<h1>
+  <strong><%= @rule.name %></strong>
+</h1>
+  
+<% if current_user.admin_access %>
+    <strong>Status (activated or not)</strong>
+    <p>
+     <%= @rule.activated %> 
+    </p>
 
-<p>
-  <strong>Duration:</strong>
-  <%= @rule.duration %>
-</p>
+    <strong>Difference of temperature from monthly average</strong>
+    <p>
+      <%= @rule.delta %>
+    </p>
+
+    <strong>Duration (number of days)</strong>
+    <p>
+      <%= @rule.duration %>
+    </p>
 <% end %>
 
 <p>
-  <strong>Key Advice:</strong>
-  <%= @rule.key_advice %>
+  <strong>Key Advice</strong>
+  <article>
+    <i><%= @rule.key_advice %></i>
+  </article>
 </p>
 
 <p>
-  <strong>Full Advice:</strong>
-  <%= @rule.full_advice %>
+  <strong>Full Advice</strong>
+  <% @rule.full_advice.lines.each do |line| %>
+    <p><%= line %></p>
+  <% end %>
 </p>
 <%= link_to 'Back', :back %> |
 <%= link_to 'Edit', edit_rule_path(@rule) %> |
