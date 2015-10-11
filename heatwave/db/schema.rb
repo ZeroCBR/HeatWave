@@ -48,8 +48,8 @@ ActiveRecord::Schema.define(version: 20151011043649) do
     t.string   "contents",     null: false
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
-    t.string   "message_type", null: false
-    t.string   "sent_to",      null: false
+    t.string   "message_type"
+    t.string   "sent_to"
   end
 
   create_table "rules", force: :cascade do |t|
