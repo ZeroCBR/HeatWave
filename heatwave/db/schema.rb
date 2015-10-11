@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151007035200) do
+ActiveRecord::Schema.define(version: 20151011043649) do
 
   create_table "feedbacks", force: :cascade do |t|
     t.string   "title",      null: false
@@ -41,13 +41,15 @@ ActiveRecord::Schema.define(version: 20151007035200) do
   end
 
   create_table "messages", force: :cascade do |t|
-    t.integer  "weather_id", null: false
-    t.integer  "rule_id",    null: false
-    t.integer  "user_id",    null: false
+    t.integer  "weather_id",   null: false
+    t.integer  "rule_id",      null: false
+    t.integer  "user_id",      null: false
     t.datetime "send_time"
-    t.string   "contents",   null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "contents",     null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.string   "message_type", null: false
+    t.string   "sent_to",      null: false
   end
 
   create_table "rules", force: :cascade do |t|

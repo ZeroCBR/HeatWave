@@ -76,13 +76,25 @@ module Messenger
   def self::send_one_message(message, sender = nil)
     case message.user.message_type
     when 'phone'
-      sender ||= SmsWrapper
-      sender.send_via_sms(message)
+      send_sms(message, sender)
     when 'email'
-      sender ||= EmailWrapper
-      sender.send_via_email(message)
+      send_email(message, sender)
     else
       fail MessageTypeError, WRONGMETHODERROR + message.user.message_type
     end
+  end
+
+  def self::send_sms(message, sender = nil)
+    message.sent_to = message.user.phone
+    message.message_type = 'phone'
+    sender ||= SmsWrapper
+    sender.send_via_sms(message)
+  end
+
+  def self::send_email(message, sender = nil)
+    message.sent_to = message.user.email
+    message.message_type = 'email'
+    sender ||= EmailWrapper
+    sender.send_via_email(message)
   end
 end

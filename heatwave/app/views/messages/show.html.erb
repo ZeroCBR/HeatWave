@@ -1,8 +1,30 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Index:</strong>
-  <%= @message.index %>
+  <strong>User:</strong>
+  <%= @message.user %>
 </p>
 
-<%= link_to 'Back', messages_path %>
+<p>
+  <strong>Message type:</strong>
+  <%= @message.message_type %>
+</p>
+
+<p>
+  <strong>Sent to:</strong>
+  <%= @message.sent_to %>
+</p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @message.content %>
+</p>
+
+<p>
+  <strong>Send time:</strong>
+  <%= @message.send_time %>
+</p>
+
+
+
+<%= link_to 'Back', :back %>

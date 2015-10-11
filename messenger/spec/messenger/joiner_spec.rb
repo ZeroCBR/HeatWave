@@ -641,6 +641,7 @@ describe Messenger::Joiner do
                            gender: 'F',
                            age: 20,
                            message_type: 'phone',
+                           phone: '0400400000',
                            location: @mildura)
       @bob = User.create(email: 'bobr@email.com',
                          encrypted_password: 'abc',
@@ -657,6 +658,7 @@ describe Messenger::Joiner do
                            gender: 'F',
                            age: 40,
                            message_type: 'phone',
+                           phone: '0400400234',
                            location: @mildura)
       @spike_rule = Rule.find_or_create_by(id: 1,
                                            name: 'Heat spike detection',

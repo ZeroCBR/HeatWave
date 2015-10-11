@@ -30,6 +30,8 @@ describe Messenger do
         before do
           allow(message_3).to receive(:user) { phone_user }
           allow(message_3).to receive(:contents) { 'long message' * 160 }
+          allow(message_3).to receive(:sent_to=)
+          allow(message_3).to receive(:message_type=)
           allow(message_3).to receive(:save) { true }
           allow(phone_user).to receive(:phone) { '0400400269' }
           allow(phone_user).to receive(:message_type) { 'phone' }
@@ -51,6 +53,9 @@ describe Messenger do
           allow(message_1).to receive(:contents) { 'CONTENT' }
           allow(message_1).to receive(:save) { true }
           allow(message_1).to receive(:send_time=) { true }
+          allow(message_1).to receive(:sent_to=)
+          allow(message_1).to receive(:message_type=)
+
           allow(phone_user).to receive(:phone) { '0400400269' }
           allow(phone_user).to receive(:message_type) { 'phone' }
 
@@ -58,6 +63,9 @@ describe Messenger do
           allow(message_2).to receive(:contents) { 'CONTENT' }
           allow(message_2).to receive(:save) { true }
           allow(message_2).to receive(:send_time=) { true }
+          allow(message_2).to receive(:sent_to=)
+          allow(message_2).to receive(:message_type=)
+
           allow(email_user).to receive(:email) { 'a@a.a' }
           allow(email_user).to receive(:message_type) { 'email' }
 
@@ -109,6 +117,7 @@ describe Messenger do
                              gender: 'F',
                              age: 20,
                              message_type: 'phone',
+                             phone: '0400400001',
                              location: @mildura)
         @bob = User.create(email: 'bobr@email.com',
                            encrypted_password: 'abc',
@@ -143,6 +152,10 @@ describe Messenger do
         expect(Messenger.send_messages(messages, sender)).to be_empty
         expect(Message.find(@message_model_1.id).send_time).not_to be nil
         expect(Message.find(@message_model_2.id).send_time).not_to be nil
+        expect(Message.find(@message_model_1.id).sent_to).to eq '0400400001'
+        expect(Message.find(@message_model_2.id).sent_to).to eq 'bobr@email.com'
+        expect(Message.find(@message_model_1.id).message_type).to eq 'phone'
+        expect(Message.find(@message_model_2.id).message_type).to eq 'email'
       end
     end
   end

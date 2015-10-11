@@ -5,7 +5,11 @@
 <table>
   <thead>
     <tr>
-      <th>Index</th>
+      <th>User</th>
+      <th>Message type</th>
+      <th>Sent to</th>
+      <th>Content</th>
+      <th>Send time</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -13,11 +17,17 @@
   <tbody>
     <% @messages.each do |message| %>
       <tr>
-        <td><%= message.index %></td>
+        <td><%= message.user %></td>
+        <td><%= message.message_type %></td>
+        <td><%= message.sent_to %></td>
+        <td><%= message.content %></td>
+        <td><%= message.send_time %></td>
         <td><%= link_to 'Show', message %></td>
-      </tr>
+     </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
+
+<%= link_to 'Back', :back %>
