@@ -14,6 +14,15 @@ class RulesController < ApplicationController
   def show
   end
 
+  # GET /rules/new
+  def new
+    @rule = Rule.new
+  end
+
+  # GET /rules/1/edit
+  def edit
+  end
+
   # POST /rules
   def create
     @rule = Rule.new(rule_params)

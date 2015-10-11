@@ -16,7 +16,7 @@ two:
   encrypted_password: OtherPword
   admin_access: true
   gender: F
-  phone: 0412341234
+  phone: '0412341234'
   age: 23
   email: admin@heatwave.com
   message_type: 'phone'
