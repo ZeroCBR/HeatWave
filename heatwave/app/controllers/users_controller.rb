@@ -37,9 +37,11 @@ class UsersController < ApplicationController
   # PATCH /users/1
   def update
     @locations = Location.all.sort_by(&:name)
+    user = user_params
+    user.delete :password if user[:password] == ''
     respond_to do |format|
       html_respond_to(format, 'update', 'updated', :edit) \
-        { @user.update(user_params) }
+        { @user.update(user) }
     end
   end
 
@@ -65,7 +67,7 @@ class UsersController < ApplicationController
   # white list through.
   def user_params
     params.require(:user).permit(:email, :password, :f_name, :l_name,
-                                 :gender, :phone, :age,
+                                 :gender, :phone, :age, :admin_access,
                                  :message_type, :location_id)
   end
 
