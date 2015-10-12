@@ -32,7 +32,7 @@ class MessagesController < ApplicationController
   end
 
   def sort_column
-    (Message.column_names + %w(f_name, l_name, email))
+    (Message.column_names + %w(f_name l_name email))
       .include?(params[:sort]) ? params[:sort] : 'send_time'
   end
 
