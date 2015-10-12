@@ -75,8 +75,8 @@ namespace :test do
     puts ''
     puts 'Adding a phone user'
     p User.create(
-      username: 'asanchez',
-      password: '123',
+      email: 'asanchez@mail.com',
+      encrypted_password: '12345678910',
       f_name: 'Alice',
       l_name: 'Sanchez',
       gender: 'F',
@@ -87,14 +87,13 @@ namespace :test do
     puts ''
     puts 'Adding an email user'
     p User.create(
-      username: 'bobr',
-      password: 'abc',
+      email: 'jmcma@student.unimelb.edu.au',
+      encrypted_password: '12345678910',
       f_name: 'Bob',
       l_name: 'Roberts',
       gender: 'M',
       age: 2,
       message_type: 'email',
-      email: 'jmcma@student.unimelb.edu.au',
       location: mildura)
     Message.destroy_all
 
