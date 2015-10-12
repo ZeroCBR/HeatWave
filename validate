@@ -70,7 +70,7 @@ if [[ -z "$FAIL" ]]; then
     echo -e "${bold}Heatwave rails application validated.${NC}"
 else
     echo -e "${error}FAILURE - Heatwave rails application is invalid.${NC}"
-    exit
+    exit -1
 fi
 
 echo
@@ -83,7 +83,7 @@ if [[ -z "$FAIL" ]]; then
     echo -e "${bold}Heatwave data puller validated.${NC}"
 else
     echo -e "${error}FAILURE - Heatwave data puller is invalid.${NC}"
-    exit
+    exit -1
 fi
 
 echo
@@ -96,7 +96,7 @@ if [[ -z "$FAIL" ]]; then
     echo -e "${bold}Heatwave SMS sender validated.${NC}"
 else
     echo -e "${error}FAILURE - Heatwave SMS sender is invalid.${NC}"
-    exit
+    exit -1
 fi
 
 echo
@@ -108,6 +108,6 @@ if [[ -z "$FAIL" ]]; then
     echo -e "${bold}Heatwave messenger validated.${NC}"
 else
     echo -e "${error}FAILURE - Heatwave messenger is invalid.${NC}"
-    exit
+    exit -1
 fi
 
