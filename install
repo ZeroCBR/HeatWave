@@ -6,19 +6,22 @@ NC='\e[0m'
 
 # Install dependencies
 echo
-echo -e "${bold}Installing Ruby and Sqlite3${NC}"
+echo -e "${bold}Installing Ruby, Sqlite3, and Node.js...${NC}"
 
 if `command -v yum 2>&1 >/dev/null`; then
     echo '... using yum'
     sudo yum install ruby || exit
     sudo yum install rubygems || exit
     sudo yum install sqlite || exit
+    sudo curl --silent --location https://rpm.nodesource.com/setup | sudo bash - || exit
+    sudo yum -y install nodejs || exit
 elif `command -v pacman 2>&1 >/dev/null`; then
     echo '... using pacman'
     if `command -v sudo 2>&1 >/dev/null`; then
         echo '... using sudo'
         sudo pacman -S ruby || exit
         sudo pacman -S sqlite || exit
+        sudo pacman -S nodejs || exit
     else
         echo '... not using sudo'
         if [[ -n "$WD" ]]; then
@@ -32,8 +35,19 @@ as per the instructions in the project README.${NC}\
 "
                 exit
             fi
+            if `command -v node 2>&1 >/dev/null`; then
+                echo -e "${info}Windows Node.js installation detected${NC}"
+            else
+                echo -e "\
+${error}You seem to be using windows.
+Please install Node.js using the installer from https://nodejs.org/
+as per the instructions in the project README.${NC}\
+"
+                exit
+            fi
         else
             pacman -S ruby || exit
+            pacman -S nodejs || exit
         fi
         pacman -S sqlite || exit
     fi
@@ -41,17 +55,19 @@ elif `command -v apt-get 2>&1 >/dev/null`; then
     echo -e '... using apt-get'
     sudo apt-get install ruby || exit
     sudo apt-get install sqlite || exit
+    curl --silent --location https://deb.nodesource.com/setup_0.12 | sudo bash - || exit
+    sudo apt-get install nodejs || exit
 else
     echo "${error}\
 This application depends on the presence of yum, pacman, or apt-get.
-If a suitable alternative package managers is available, please examine
+If a suitable alternative package manager is available, please examine
 this script and edit it to use the alternative.${NC}\
 "
     exit
 fi
 
 echo
-echo -e "${bold}Ruby and Sqlite3 installed.${NC}"
+echo -e "${bold}Ruby, Sqlite3, and Node.js installed.${NC}"
 
 if [[ -z "$WD" ]]; then
     echo
