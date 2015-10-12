@@ -9,6 +9,24 @@ ${info}Note: this script assumes the components have been installed
 with the install script first.$NC\
 "
 
+# The secret key needs to be set for production mode.
+# It is used for validating cookies for sessions, etc.
+# It can be changed freely but doing so will invalidate cookies
+# (such as for saved sessions).
+SECRET_KEY_BASE='fGz3zN7bxjukXksoG8olIneU4F0YN0R0nXIo3M0660FI8fV BuF6eVDyRDCyaAuyY'\
+'0ElxZvrXFC8vbKIXyMrptKoWJhxYDZO9XUuy4JhtN 9JuoWzjbOPY8UhfBf8ZPwSt'
+echo -e "${info}SECRET_KEY_BASE = [HIDDEN]$NC"
+
+# This is required for the server to be able to accept connections
+# over the network.
+BINDING_ADDRESS='0.0.0.0'
+echo -e "${info}BINDING_ADDRESS = ${BINDING_ADDRESS}${NC}"
+
+# This should be changed to a different port in production,
+# depending on the runtime server environment.
+PORT=3000
+echo -e "${info}PORT = ${PORT}$NC"
+
 # Set Ruby path
 if [[ -z "$WD" ]]; then
     echo
@@ -66,11 +84,4 @@ echo
 echo -e "${bold}Running the Heatwave rails application...${NC}"
 cd "$RAILS_HOME"
 
-# The secret key needs to be set for production mode.
-# It is used for validating cookies for sessions, etc.
-# It can be changed freely but doing so will invalidate cookies
-# (such as for saved sessions).
-SECRET_KEY_BASE='fGz3zN7bxjukXksoG8olIneU4F0YN0R0nXIo3M0660FI8fV BuF6eVDyRDCyaAuyY'\
-'0ElxZvrXFC8vbKIXyMrptKoWJhxYDZO9XUuy4JhtN 9JuoWzjbOPY8UhfBf8ZPwSt'
-
-SECRET_KEY_BASE=$SECRET_KEY_BASE bundle exec rails s || echo -e "${error}FAILED${NC}"
+SECRET_KEY_BASE=$SECRET_KEY_BASE bundle exec rails s -b $BINDING_ADDRESS -p $PORT

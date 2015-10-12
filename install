@@ -6,15 +6,18 @@ NC='\e[0m'
 
 # Install dependencies
 echo
-echo -e "${bold}Installing Ruby, Sqlite3, and Node.js...${NC}"
+echo -e "${bold}Installing core build tools, Ruby, Sqlite3, and Node.js...${NC}"
 
 if `command -v yum 2>&1 >/dev/null`; then
     echo '... using yum'
     sudo yum install ruby || exit -1
+    sudo yum install gcc g++ make automake autoconf curl-devel openssl-devel \
+        zlib-devel httpd-devel apr-devel apr-util-devel sqlite-devel || exit -1
+    sudo yum install ruby-rdoc ruby-devel || exit -1
     sudo yum install rubygems || exit -1
-    sudo yum install sqlite || exit -1
-    sudo curl --silent --location https://rpm.nodesource.com/setup | sudo bash - || exit -1
-    sudo yum -y install nodejs || exit -1
+    sudo curl --silent --location https://rpm.nodesource.com/setup | sudo bash - \
+        || exit -1
+    sudo yum install nodejs || exit -1
 elif `command -v pacman 2>&1 >/dev/null`; then
     echo '... using pacman'
     if `command -v sudo 2>&1 >/dev/null`; then
@@ -22,9 +25,11 @@ elif `command -v pacman 2>&1 >/dev/null`; then
         sudo pacman -S ruby || exit -1
         sudo pacman -S sqlite || exit -1
         sudo pacman -S nodejs || exit -1
+        sudo pacman -S gcc || exit -1
     else
         echo '... not using sudo'
         if [[ -n "$WD" ]]; then
+            echo -e "${info}Windows environment detected${NC}"
             if `command -v ruby 2>&1 >/dev/null`; then
                 echo -e "${info}Windows Ruby installation detected${NC}"
             else
@@ -45,17 +50,27 @@ as per the instructions in the project README.${NC}\
 "
                 exit -1
             fi
+            # On a 32bit windows system, this won't work.
+            # Since 32 windows is not our main target,
+            # you'll need to find an alternative yourself.
+            pacman -S mingw64/mingw-w64-x86_64-gcc
         else
             pacman -S ruby || exit -1
             pacman -S nodejs || exit -1
+            pacman -S gcc || exit -1
         fi
         pacman -S sqlite || exit -1
     fi
 elif `command -v apt-get 2>&1 >/dev/null`; then
     echo -e '... using apt-get'
-    sudo apt-get install ruby || exit -1
-    sudo apt-get install sqlite || exit -1
-    curl --silent --location https://deb.nodesource.com/setup_0.12 | sudo bash - || exit -1
+    sudo apt-get update || exit -1
+    sudo apt-get install build-essential git-core curl sqlite3 libsqlite3-dev \
+        libxml2-dev libxslt1-dev libreadline-dev libyaml-dev \
+        libcurl4-openssl-dev libncurses5-dev libgdbm-dev libffi-dev || exit -1
+    sudo apt-get install ruby ruby-dev || exit -1
+    sudo apt-get install rubygems || exit -1
+    curl --silent --location https://deb.nodesource.com/setup_0.12 | sudo bash - \
+        || exit -1
     sudo apt-get install nodejs || exit -1
 else
     echo "${error}\
@@ -67,7 +82,15 @@ this script and edit it to use the alternative.${NC}\
 fi
 
 echo
-echo -e "${bold}Ruby, Sqlite3, and Node.js installed.${NC}"
+echo -e "${bold}Core build tools, Ruby, Sqlite3, and Node.js installed.${NC}"
+
+echo
+echo -e "${bold}Updating Rubygems...${NC}"
+
+sudo gem update --system
+
+echo
+echo -e "${bold}Rubygems updated.${NC}"
 
 if [[ -z "$WD" ]]; then
     echo

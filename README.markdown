@@ -13,6 +13,18 @@ This project is being completed in semester 2 of 2015 for The
 University of Melbourne subject SWEN90014 Masters Software
 Engineering Project.
 
+# Deployment
+
+To try out the system, simply run the following shell command
+from the repository root:
+
+`$ ./install && ./validate && ./run`
+
+This will allow you to quickly identify any missing dependencies or
+problems with the setup, and get an idea for how the system works.
+
+Afterwards you can configure the system to your liking.
+
 ## Simple Setup
 
 **If using windows**, see the `## Windows` section below before installing.
@@ -49,6 +61,32 @@ It is recommended that this account be unregistered eventually for
 security purposes, but remember to make another admin account first!
 
 ## Basic Configuration
+
+It is recommended that (at least to begin with), you try the simple setup
+scripts described above without changing them.
+However before making this system available to the public, there are
+particular configuration options that must be reviewed and changed.
+
+### Rails Server Runtime Configuration
+
+In the `run` script, three variables are defined at the top,
+which form the final runtime configuration for rails.
+
+`SECRET_KEY_BASE`:
+The secret key needs to be set for production mode.
+It is used for validating cookies for sessions, etc.
+It can be changed freely but doing so will invalidate cookies
+(such as for saved sessions).
+
+`BINDING_ADDRESS`:
+A binding address of 0.0.0.0 is required for the rails server
+to be able to receive connections over a network (as opposed to
+just from the same computer).
+
+`PORT`:
+The server will listen on this port.
+You may wish to change it (for example, to port 80 or another port),
+depending on how the server will fit in with your existing systems.
 
 ### Simple Setup Scripts
 
@@ -92,6 +130,10 @@ in the **MSYS** shell):
    * `$ pacman -S gcc`
    * `$ pacman -S mingw64/mingw-w64-x86_64-gcc`
 7. Install other dependencies normally as specified below.
+
+# Functionality
+
+TODO describe how the rules engine works in detail.
 
 # Contributing
 
@@ -208,60 +250,6 @@ This task should include any setup tasks required for running
 the tests.
 This ensures that running tests is not a painful process.
 
-# The Rails Application
-
-The following steps should be executed from the `heatwave`
-top level directory in the repository.
-
-## Deployment
-
-### Setup
-
-1. Install [Ruby v2.2.3](https://www.ruby-lang.org/en/downloads/).
-2. Install [RubyGems v2.4.8](https://rubygems.org/pages/download).
-3. Install Bundler v1.10.6: `$ gem install bundler`
-4. Install Rake: `$ gem install rake`
-3. (subject to change)
-   Install [SQLite3 v3.8.11.1](https://www.sqlite.org/releaselog/3_8_11_1.html)
-4. Install Rails v4.2.4: `$ gem install rails`.
-5. Install Rubocop v0.33.0: `$ gem install rubocop`.
-6. Install dependencies through Bundler:
-   `$ bundle install --path vendor/bundle --deployment`
-
-### Execution
-
-1. `$ bin/rails server`
-
-## Development
-
-TODO set up rails/rake environments
-
-### Modules
-
-The project is split into gems with minimal coupling between them.
-
-Create a gem using bundle from the repository root:
-
-```bash
-% bundle gem gem_name
-```
-
-### Setup
-
-1. Perform the setup steps for deployment.
-2. Install development dependencies through Bundler:
-   `$ bundle install --path vendor/bundle`.
-
-### Linting
-
-1. Run Rubocop with the Rails option: `$ rubocop -R`.
-
-TODO integrate with rake
-
-### Testing
-
-TODO integrate with rake
-
 # Project Team
 
 **Design Lead:** Borui Chen
@@ -273,3 +261,21 @@ TODO integrate with rake
 **Requirements Lead:** Shengshuo Zhang
 
 **Supervisor:** David (Knobby) Clarke
+
+# Troubleshooting
+
+## Ruby version is less than 2.0.0 on Ubuntu.
+
+Install Ruby using rvm instead.
+
+`$ sudo apt-get rvm`
+
+## Installation stops after refusing to allow a dependency to install.
+
+You need to accept all installation prompts, or modify the
+installation script to use suitable alternatives.
+
+## Failed to build artifacts using native extensions.
+
+Make sure that gcc, Ruby development packages (depending on your OS),
+and Node.js are all installed.
