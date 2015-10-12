@@ -1,8 +1,8 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>User ID:</strong>
-  <%= @message.user.id %>
+  <strong>User:</strong>
+  <%= link_to @message.user.email, @message.user %>
 </p>
 
 <p>
@@ -16,13 +16,13 @@
 </p>
 
 <p>
-  <strong>Rule ID that caused this message:</strong>
-  <%= @message.rule.id %>
+  <strong>Rule that caused this message:</strong>
+  <%= link_to @message.rule.name, @message.rule %>
 </p>
 
 <p>
-  <strong>Rule title</strong>
-  <%= @message.rule.name %>
+  <strong>Location of the weather event that caused this message:</strong>
+  <%= @message.weather.location.name %>
 </p>
 
 <p>
@@ -32,7 +32,11 @@
 
 <p>
   <strong>Sent to:</strong>
-  <%= @message.sent_to %>
+  <% if @message.sent_to == nil %>
+    <%= 'unsent' %>
+  <% else %>
+    <%= @message.sent_to %>
+  <% end %>  
 </p>
 
 <p>
@@ -42,7 +46,11 @@
 
 <p>
   <strong>Send time:</strong>
-  <%= @message.send_time %>
+  <% if @message.send_time == nil %>
+    <%= 'unsent' %>
+  <% else %>
+    <%= @message.send_time %>
+  <% end %>
 </p>
 
 

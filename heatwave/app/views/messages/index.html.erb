@@ -5,12 +5,12 @@
 <table>
   <thead>
     <tr>
-      <th><%= sortable 'user.id', 'User ID'%></th>
-      <th><%= sortable 'user.f_name', 'First name'%></th>
-      <th><%= sortable 'user.l_name', 'Second Same'%></th>
+      <th><%= sortable 'email', 'User Email'%></th>
+      <th><%= sortable 'f_name', 'First name'%></th>
+      <th><%= sortable 'l_name', 'Second name'%></th>
       <th><%= sortable 'message_type', 'Message type'%></th>
+      <th><%= sortable 'contents', 'Content'%></th>
       <th><%= sortable 'sent_to', 'Sent to'%></th>
-      <th><%= sortable 'content', 'Content'%></th>
       <th><%= sortable 'send_time', 'Send time'%></th>
       <th colspan="3"></th>
     </tr>
@@ -19,13 +19,21 @@
   <tbody>
     <% @messages.each do |message| %>
       <tr>
-        <td><%= message.user.id %></td>
+        <td><%= link_to message.user.email, message.user %></td>
         <td><%= message.user.f_name %></td>
         <td><%= message.user.l_name %></td>
         <td><%= message.message_type %></td>
-        <td><%= message.sent_to %></td>
         <td><%= message.contents %></td>
-        <td><%= message.send_time %></td>
+        <% if message.sent_to == nil %>
+          <td>unsent</td>
+        <% else %>
+          <td><%= message.sent_to %></td>
+        <% end %>
+        <% if message.sent_to == nil %>
+          <td>unsent</td>
+        <% else %>
+          <td><%= message.send_time %></td>
+        <% end %>
         <td><%= link_to 'Show', message %></td>
      </tr>
     <% end %>
