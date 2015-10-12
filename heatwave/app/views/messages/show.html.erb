@@ -1,8 +1,28 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>User:</strong>
-  <%= @message.user %>
+  <strong>User ID:</strong>
+  <%= @message.user.id %>
+</p>
+
+<p>
+  <strong>User First name:</strong>
+  <%= @message.user.f_name %>
+</p>
+
+<p>
+  <strong>User Second name:</strong>
+  <%= @message.user.l_name %>
+</p>
+
+<p>
+  <strong>Rule ID that caused this message:</strong>
+  <%= @message.rule.id %>
+</p>
+
+<p>
+  <strong>Rule title</strong>
+  <%= @message.rule.name %>
 </p>
 
 <p>
@@ -17,7 +37,7 @@
 
 <p>
   <strong>Content:</strong>
-  <%= @message.content %>
+  <%= @message.contents %>
 </p>
 
 <p>

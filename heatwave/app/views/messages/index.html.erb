@@ -5,7 +5,9 @@
 <table>
   <thead>
     <tr>
-      <th><%= sortable 'user', 'User'%></th>
+      <th><%= sortable 'user.id', 'User ID'%></th>
+      <th><%= sortable 'user.f_name', 'First name'%></th>
+      <th><%= sortable 'user.l_name', 'Second Same'%></th>
       <th><%= sortable 'message_type', 'Message type'%></th>
       <th><%= sortable 'sent_to', 'Sent to'%></th>
       <th><%= sortable 'content', 'Content'%></th>
@@ -17,10 +19,12 @@
   <tbody>
     <% @messages.each do |message| %>
       <tr>
-        <td><%= message.user %></td>
+        <td><%= message.user.id %></td>
+        <td><%= message.user.f_name %></td>
+        <td><%= message.user.l_name %></td>
         <td><%= message.message_type %></td>
         <td><%= message.sent_to %></td>
-        <td><%= message.content %></td>
+        <td><%= message.contents %></td>
         <td><%= message.send_time %></td>
         <td><%= link_to 'Show', message %></td>
      </tr>

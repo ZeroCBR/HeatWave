@@ -3,7 +3,6 @@
 # a limited version of the standard controller created by the scaffold
 # only allows for viewing throught the rails app
 class MessagesController < ApplicationController
-  before_action :set_message
   before_action :admin_user!
 
   helper_method :sort_column, :sort_direction
@@ -16,6 +15,7 @@ class MessagesController < ApplicationController
   # GET /messages/1
   # GET /messages/1.json
   def show
+    set_message
   end
 
   private
