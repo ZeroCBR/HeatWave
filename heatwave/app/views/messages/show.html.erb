@@ -21,8 +21,14 @@
 </p>
 
 <p>
-  <strong>Location of the weather event that caused this message:</strong>
-  <%= @message.weather.location.name %>
+  <strong>Weather event that caused this message:</strong>
+  <%= "High temp of #{@message.weather.high_temp}"%>
+  <%= " at #{@message.weather.location.name}" %>
+  <%= " on #{@message.weather.date}" %>
+</p>
+<p>
+  <strong>Average temperature in that month:</strong>
+  <%= @message.weather.location.mean_for @message.weather.date %>
 </p>
 
 <p>
