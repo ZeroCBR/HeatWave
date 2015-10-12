@@ -12,7 +12,7 @@ class MessagesController < ApplicationController
       'INNER JOIN users ON users.id = messages.user_id'
       ).order(sort_column + ' ' + sort_direction)
 
-    return @messages if current_user.admin_access?
+    return @messages if current_user.admin_access
     @messages = @messages.select { |x| x.user == current_user }
   end
 
@@ -20,8 +20,9 @@ class MessagesController < ApplicationController
   # GET /messages/1.json
   def show
     set_message
-    #return unless current_user.admin_access?
-    #redirect_to action: index unless @message.user == current_user
+    return if current_user.admin_access
+    flash[:alert] = 'You may only view messages sent to you'
+    redirect_to messages_path unless @message.user == current_user
   end
 
   private
