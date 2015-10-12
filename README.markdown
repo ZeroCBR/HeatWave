@@ -15,6 +15,8 @@ Engineering Project.
 
 ## Simple Setup
 
+**If using windows**, see the `## Windows` section below before installing.
+
 Installation, validation, and the application itself can be run via
 scripts in the repository root.
 
@@ -72,7 +74,24 @@ of specifying the changes for the software system.
   is specified near the top of the file.  More precise instructions
   are in that file.
 
-TODO messenger's place
+TODO messenger's email address location
+
+## Windows
+
+If using Windows, then before running the install script,
+perform the following steps (shell commands should be entered
+in the **MSYS** shell):
+
+1. Install [MSYS](https://msys2.github.io/).
+2. Install Ruby v2.1.6, RubyGems v2.4.5, Rake, and build dependencies
+   using [RubyInstaller and Ruby DevKit](http://rubyinstaller.org/downloads).
+3. Add the Ruby DevKit's bin directory to your bash (MSYS) $PATH
+   environment variable.
+4. Install [Node.js v4.0.0+](https://nodejs.org/).
+5. Install gcc using:
+   * `$ pacman -S gcc`
+   * `$ pacman -S mingw64/mingw-w64-x86_64-gcc`
+7. Install other dependencies normally as specified below.
 
 # Contributing
 
@@ -193,22 +212,6 @@ This ensures that running tests is not a painful process.
 
 The following steps should be executed from the `heatwave`
 top level directory in the repository.
-
-## Windows
-
-If using windows, perform the following steps (shell commands
-should be entered in the **MSYS** shell):
-
-1. Install [MSYS](https://msys2.github.io/).
-2. Install Ruby v2.1.6, RubyGems v2.4.5, Rake, and build dependencies
-   using [RubyInstaller and Ruby DevKit](http://rubyinstaller.org/downloads).
-3. Add the Ruby DevKit's bin directory to your bash (MSYS) $PATH
-   environment variable.
-4. Install gcc using:
-   * `$ pacman -S gcc`
-   * `$ pacman -S mingw64/mingw-w64-x86_64-gcc`
-5. Install SQLite v3.8.8.2 using `$ pacman -S sqlite`.
-6. Install other dependencies normally as specified below.
 
 ## Deployment
 
