@@ -1,0 +1,31 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav navbar-left">
+      <%= link_to "Kildonan - Heatwave", root_path, class:"navbar-brand" %>
+    </ul>  
+  <% if user_signed_in? %>
+
+    <ul class="nav navbar-nav navbar-right">
+      <% if current_user.admin_access %>
+        <li><%= link_to 'Rule list', rules_path %></li>
+      <% end %> 
+      <li><%= link_to 'Log in as '+current_user.email, profile_path %></li>       
+      <li><%= link_to 'View profile', profile_path %></li>
+      <li><%= link_to 'Edit profile', edit_user_registration_path  %></li>
+      <li><%= link_to "Messages log", messages_path %></li>
+      <li><%= link_to "Logout", destroy_user_session_path, method: :delete %></li>          
+      <li><%= link_to "Unsubscribe",
+                  user_registration_path,
+                  id: current_user.id,
+                  data: { confirm: "Are you sure?" },
+                  method: :delete %></li>
+    </ul>                  
+
+  <% else %>
+   <ul class="nav navbar-nav navbar-right">
+      <li><%= link_to 'Sign up', new_user_registration_path %></li>
+      <li><%= link_to "Sign in", new_user_session_path %></li>
+    </ul>
+ <% end %>
+  </div><!-- /.container-fluid -->
+</nav>
