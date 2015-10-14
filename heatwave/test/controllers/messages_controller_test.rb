@@ -47,24 +47,23 @@ class NormalUserMessagesControllerTest < ActionController::TestCase
 
   test 'message#new should have no route' do
     assert_raises(ActionController::UrlGenerationError) \
-      { get :new}
+      { get :new }
   end
 
   test 'message#create should have no route' do
     assert_raises(ActionController::UrlGenerationError) \
-      { post :create}
+      { post :create }
   end
 
   test 'message#update should have no route' do
     assert_raises(ActionController::UrlGenerationError) \
-      { put :update}
+      { put :update }
   end
 
   test 'message#destroy should have no route' do
     assert_raises(ActionController::UrlGenerationError) \
-      { delete :destroy}
+      { delete :destroy }
   end
-
 end
 # cases where the Admin is logged in
 class AdminMessagesControllerTest < ActionController::TestCase
@@ -121,22 +120,21 @@ class AdminMessagesControllerTest < ActionController::TestCase
 
   test 'message#new should have no route' do
     assert_raises(ActionController::UrlGenerationError) \
-      { get :new}
+      { get :new }
   end
 
   test 'message#create should have no route' do
     assert_raises(ActionController::UrlGenerationError) \
-      { post :create}
+      { post :create }
   end
 
   test 'message#update should have no route' do
     assert_raises(ActionController::UrlGenerationError) \
-      { put :update}
+      { put :update }
   end
 
   test 'message#destroy should have no route' do
     assert_raises(ActionController::UrlGenerationError) \
-      { delete :destroy}
+      { delete :destroy }
   end
-
 end

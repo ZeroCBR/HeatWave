@@ -3,14 +3,14 @@
 # a limited version of the standard controller created by the scaffold
 # only allows for viewing throught the rails app
 class MessagesController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
   helper_method :sort_column, :sort_direction
   # GET /messages
   # GET /messages.json
   def index
     @messages = Message.joins(
       'INNER JOIN users ON users.id = messages.user_id'
-      ).order(sort_column + ' ' + sort_direction)
+    ).order(sort_column + ' ' + sort_direction)
 
     return @messages if current_user.admin_access
     @messages = @messages.select { |x| x.user == current_user }
@@ -33,8 +33,10 @@ class MessagesController < ApplicationController
   end
 
   def sort_column
-    (Message.column_names + %w(f_name l_name email))
-      .include?(params[:sort]) ? params[:sort] : 'send_time'
+    if (Message.column_names + %w(f_name l_name email)).include? params[:sort]
+      params[:sort]
+    else 'send_time'
+    end
   end
 
   def sort_direction
