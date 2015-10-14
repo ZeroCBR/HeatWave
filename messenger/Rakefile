@@ -42,64 +42,68 @@ namespace :test do
     puts 'Running example scenario with two users in Mildura on a hot day'
 
     Messenger::Database.initialise('test' || 'production')
-    Rule.destroy_all
     puts 'Adding a rule: '
-    p Rule.find_or_create_by(
+
+    p easy_rule = Rule.find_or_create_by(
       name: 'This rule is almost guaranteed to cause a heatwave',
       key_advice: 'Hello, this is a test message from HeatWave',
       full_advice: 'full advice text',
       activated: true,
       duration: 1,
-      delta: -100)
+      delta: 1)
     puts ''
     puts 'Adding a location: '
     p mildura = Location.find_or_create_by(
       name: 'MILDURA RACECOURSE',
-      jan_mean: 25.0, feb_mean: 22.1, mar_mean: 18.2, apr_mean: 14.3,
-      may_mean: 12.4, jun_mean: 10.5, jul_mean: 8.6, aug_mean: 12.7,
-      sep_mean: 14.8, oct_mean: 18.9, nov_mean: 20.0, dec_mean: 24.1)
-    Weather.destroy_all
+      jan_mean: 1, feb_mean: 2, mar_mean: 1, apr_mean: 1,
+      may_mean: 4, jun_mean: 1, jul_mean: 1, aug_mean: 1,
+      sep_mean: 1, oct_mean: 1, nov_mean: 2, dec_mean: 2)
     puts ''
     puts 'Adding today\'s weather for the location: '
-    p Weather.update_or_create_by(
-      { location: mildura, date: Date.today }, high_temp: 100)
+    p Weather.find_or_create_by(location: mildura,
+                     date: Date.today,
+                     high_temp: 100)
     puts ''
     puts 'Adding tomorrow\'s weather for the location: '
-    p Weather.update_or_create_by(
-      { location: mildura, date: Date.today + 1.day }, high_temp: 100)
+    p Weather.find_or_create_by(location: mildura,
+                     date: Date.today + 1.day,
+                     high_temp: 100)
     puts ''
     puts 'Adding the next day\'s weather for the location: '
-    p Weather.update_or_create_by(
-      { location: mildura, date: Date.today + 2.day }, high_temp: 100)
-    User.destroy_all
+    p Weather.find_or_create_by(location: mildura,
+                     date: Date.today + 2.day,
+                     high_temp: 100)
     puts ''
+    
     puts 'Adding a phone user'
-    p User.create(
+    p alice = User.find_or_create_by(
       email: 'asanchez@mail.com',
       encrypted_password: '12345678910',
       f_name: 'Alice',
       l_name: 'Sanchez',
       gender: 'F',
-      age: 1,
+      age: 19,
       phone: '0400400269',
       message_type: 'phone',
       location: mildura)
     puts ''
     puts 'Adding an email user'
-    p User.create(
+    p bob = User.find_or_create_by(
       email: 'jmcma@student.unimelb.edu.au',
       encrypted_password: '12345678910',
       f_name: 'Bob',
       l_name: 'Roberts',
       gender: 'M',
-      age: 2,
+      age: 28,
       message_type: 'email',
       location: mildura)
-    Message.destroy_all
+    alice.save!
+    bob.save!
 
     puts ''
     puts 'Generating messages'
     p messages = Messenger.retrieve_messages
+
     puts ''
     puts 'Sending ' + messages.size.to_s + ' messages with... '
     errors = Messenger.send_messages(messages)
