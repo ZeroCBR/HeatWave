@@ -1,0 +1,16 @@
+#Message yaml
+one:
+  user_id: 1
+  contents: 'message_content'
+  rule_id: 1
+  weather_id: 1
+  message_type: phone
+  sent_to: '0400400269'
+
+two:
+  user_id: 2
+  contents: 'message_content'
+  rule_id: 1
+  weather_id: 1
+  message_type: email
+  sent_to: 'user@machine.domain'

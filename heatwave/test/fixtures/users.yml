@@ -1,5 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 one:
+  id: 1
   f_name: O
   l_name: Ne
   encrypted_password: MyPassword123
@@ -11,6 +12,7 @@ one:
   location_id: 1
 
 two:
+  id: 2 
   f_name: T
   l_name: Wo
   encrypted_password: OtherPword
