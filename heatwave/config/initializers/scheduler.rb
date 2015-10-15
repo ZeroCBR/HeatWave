@@ -14,13 +14,30 @@ end
 # change.
 # Don't repeatedly try to repull constantly until it works, since we could
 # end up DDoSing ourselves.
-scheduler.every '6h' do
+
+scheduler.cron '00 09 * * *' do
   system(PULL_WEATHER)
 end
 
-# Run the messenger a while after the puller, for load balancing.
-scheduler.in '1h' do
-  scheduler.every '24h' do
-    system(SEND_MESSAGES)
-  end
+scheduler.cron '00 15 * * *' do
+  system(PULL_WEATHER)
+end
+
+scheduler.cron '00 21 * * *' do
+  system(PULL_WEATHER)
+end
+
+scheduler.cron '00 03 * * *' do
+  system(PULL_WEATHER)
+end
+
+# Run the messenger at noon.
+# Do this once per day to not hassle people,
+# and away from weather pulling to balance load.
+scheduler.cron '00 12 * * *' do
+  system(SEND_MESSAGES)
+end
+
+scheduler.cron "#{Time.now.min + 1} #{Time.now.hour} * * *" do
+  puts 'The scheduler is working'
 end
