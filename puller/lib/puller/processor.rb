@@ -121,16 +121,13 @@ module Puller
     # for those dates.
     def self.line_data(fields)
       field_indices = indices_for(fields)
-      dates = field_indices.map { |i| date_for i }
+      dates = field_indices
+              .map { |i| (i - field_indices.first) }
+              .map { |i| i / MAX_FIELD_DELTA }
+              .map { |i| Date.today + i }
       temperatures = field_indices.map { |i| fields[i].to_f }
 
       Hash[dates.zip temperatures]
-    end
-
-    # Determines the date for a particular field index,
-    # starting from today.
-    def self.date_for(field_index)
-      Date.today + (field_index - FIRST_MAX_FIELD) / MAX_FIELD_DELTA
     end
   end
 end

@@ -11,13 +11,13 @@ describe Puller::Processor do
       '#Possible rain.#'
 
     @aireys_id = '090180'
-    @aireys_want = { Date.today + 1 => 12.0,
-                     Date.today + 2 => 13.0,
-                     Date.today + 3 => 15.0,
+    @aireys_want = { Date.today => 12.0,
+                     Date.today + 1 => 13.0,
+                     Date.today + 2 => 15.0,
+                     Date.today + 3 => 14.0,
                      Date.today + 4 => 14.0,
-                     Date.today + 5 => 14.0,
-                     Date.today + 6 => 13.0,
-                     Date.today + 7 => 12.0 }
+                     Date.today + 5 => 13.0,
+                     Date.today + 6 => 12.0 }
 
     @albury = \
       '072146#Albury-Wodonga#VIC#20150829#20150829#161521#2#16#1#16#1#15#4#' \
@@ -40,13 +40,13 @@ describe Puller::Processor do
       'Shower or two.#Rain.#Possible shower.#Partly cloudy.#Becoming cloudy.#'
 
     @edenhope_id = '079099'
-    @edenhope_want = { Date.today + 1 => 14.0,
-                       Date.today + 2 => 15.0,
-                       Date.today + 3 => 17.0,
-                       Date.today + 4 => 14.0,
-                       Date.today + 5 => 15.0,
-                       Date.today + 6 => 14.0,
-                       Date.today + 7 => 13.0 }
+    @edenhope_want = { Date.today     => 14.0,
+                       Date.today + 1 => 15.0,
+                       Date.today + 2 => 17.0,
+                       Date.today + 3 => 14.0,
+                       Date.today + 4 => 15.0,
+                       Date.today + 5 => 14.0,
+                       Date.today + 6 => 13.0 }
   end
 
   describe '.data_in' do
