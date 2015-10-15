@@ -33,14 +33,18 @@ gem 'rufus-scheduler'
 # Devise provides user authentication.
 gem 'devise'
 
+PULLER_HOME = ENV['PULLER_HOME'] || '../puller'
+SENDER_HOME = ENV['SENDER_HOME'] || '../sms_sender'
+MESSENGER_HOME = ENV['MESSENGER_HOME'] || '../messenger'
+
 # Use the Heatwave data puller
-gem 'puller', '~> 1.0.0', path: ENV['PULLER_HOME']
+gem 'puller', '~> 1.0.0', path: PULLER_HOME
 
 # Use the Heatwave SMS sender
-gem 'sms_sender', '~> 1.0.0', path: ENV['SENDER_HOME']
+gem 'sms_sender', '~> 1.0.0', path: SENDER_HOME
 
 # Use the Heatwave messenger
-gem 'messenger', '~> 1.0.0', path: ENV['MESSENGER_HOME']
+gem 'messenger', '~> 1.0.0', path: MESSENGER_HOME
 
 # Use Unicorn as the app server
 # gem 'unicorn'
