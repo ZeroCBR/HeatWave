@@ -2,5 +2,6 @@
 # Version Info for SmsSender
 #
 module SmsSender
-  VERSION = '0.1.1'
+  ## Final integration version lock.
+  VERSION = '1.0.0'
 end

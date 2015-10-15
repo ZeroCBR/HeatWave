@@ -29,11 +29,18 @@ gem 'coffee-script-source', '1.8.0'
 # gem 'bcrypt', '~> 3.1.7'
 #  use scheduler
 gem 'rufus-scheduler'
+
 # Devise provides user authentication.
 gem 'devise'
 
-# use puller
-gem 'puller', path: '../puller'
+# Use the Heatwave data puller
+gem 'puller', '~> 1.0.0', path: ENV['PULLER_HOME']
+
+# Use the Heatwave SMS sender
+gem 'sms_sender', '~> 1.0.0', path: ENV['SENDER_HOME']
+
+# Use the Heatwave messenger
+gem 'messenger', '~> 1.0.0', path: ENV['MESSENGER_HOME']
 
 # Use Unicorn as the app server
 # gem 'unicorn'

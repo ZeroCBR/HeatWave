@@ -1,4 +1,5 @@
 #:nodoc:
 module Messenger
-  VERSION = '0.0.4' ## Updated for devise changes.
+  ## Final integration version lock.
+  VERSION = '1.0.0'
 end

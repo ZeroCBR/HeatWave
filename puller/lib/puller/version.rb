@@ -1,6 +1,6 @@
 #:nodoc:
 module Puller
   ##
-  # Version 0.4.0 - Integrated with devise changes.
-  VERSION = '0.4.0'
+  # Version 1.0.0 - Final integration version lock.
+  VERSION = '1.0.0'
 end
