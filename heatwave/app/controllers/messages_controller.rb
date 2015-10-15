@@ -20,9 +20,9 @@ class MessagesController < ApplicationController
   # GET /messages/1.json
   def show
     set_message
-    return if current_user.admin_access
+    return if current_user.admin_access || @message.user == current_user
     flash[:alert] = 'You may only view messages sent to you'
-    redirect_to messages_path unless @message.user == current_user
+    redirect_to messages_path
   end
 
   private
