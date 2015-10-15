@@ -4,6 +4,16 @@ PULL_WEATHER = 'puller'
 PULL_LOCATION = 'puller location'
 SEND_MESSAGES = 'messenger'
 
+# Allow puts here because it's only there to give instant feedback
+# to the user.
+# rubocop:disable Rails/Output
+min = Time.zone.now.min + 1
+hour = Time.zone.now.hour
+scheduler.cron "#{min} #{hour} * * *" do
+  puts format('The scheduler is working at %02d:%02d', hour, min)
+end
+# rubocop:enable Rails/Output
+
 scheduler.in '3s' do
   system(PULL_LOCATION)
   system(PULL_WEATHER)
@@ -36,8 +46,4 @@ end
 # and away from weather pulling to balance load.
 scheduler.cron '00 12 * * *' do
   system(SEND_MESSAGES)
-end
-
-scheduler.cron "#{Time.now.min + 1} #{Time.now.hour} * * *" do
-  puts 'The scheduler is working'
 end
