@@ -4,6 +4,14 @@ info='\e[0;36m'
 error='\e[1;31m'
 NC='\e[0m'
 
+# It is crucial that the initial admin account is removed or changed
+# before going live, as it is a major security vulnerability!
+ADMIN_EMAIL='heatwaveorange@gmail.com'
+ADMIN_PASSWORD='heatwaveorange1234'
+
+echo -e "${info}ADMIN_EMAIL = $ADMIN_EMAIL${NC}"
+echo -e "${info}ADMIN_PASSWORD = [HIDDEN]${NC}"
+
 # Install dependencies
 echo
 echo -e "${bold}Installing core build tools, Ruby, Sqlite3, and Node.js...${NC}"
@@ -87,7 +95,13 @@ echo -e "${bold}Core build tools, Ruby, Sqlite3, and Node.js installed.${NC}"
 echo
 echo -e "${bold}Updating Rubygems...${NC}"
 
-sudo gem update --system
+if `command -v sudo 2>&1 >/dev/null`; then
+    echo '... using sudo'
+    sudo gem update --system || exit -1
+else
+    echo '... not using sudo'
+    gem update --system || exit -1
+fi
 
 echo
 echo -e "${bold}Rubygems updated.${NC}"
@@ -113,7 +127,6 @@ echo -e "${bold}bundle installed.${NC}"
 export RAILS_HOME="$PWD/heatwave"
 export PULLER_HOME="$PWD/puller"
 export MESSENGER_HOME="$PWD/messenger"
-export MAILER_HOME="$PWD/mail_example"
 export SENDER_HOME="$PWD/sms_sender"
 
 echo
@@ -137,20 +150,17 @@ fi
 echo -e "${info}RAILS_HOME=${RAILS_HOME}${NC}"
 echo -e "${info}PULLER_HOME=${PULLER_HOME}${NC}"
 echo -e "${info}MESSENGER_HOME=${MESSENGER_HOME}${NC}"
-echo -e "${info}MAILER_HOME=${MAILER_HOME}${NC}"
 echo -e "${info}SENDER_HOME=${SENDER_HOME}${NC}"
 
 # Set up components.
+
 echo
-echo -e "${bold}Installing the Heatwave rails application...${NC}"
-cd "$RAILS_HOME"
+echo -e "${bold}Installing the Heatwave SMS sender...${NC}"
+cd "$SENDER_HOME"
 bundle install --path ../vendor || exit -1
-bundle exec rake db:migrate:reset || exit -1
-RAILS_ENV=production bundle exec rake db:migrate:reset || exit -1
-RAILS_ENV=production bundle exec rake db:seed || exit -1
-RAILS_ENV=production bundle exec rake assets:clean assets:precompile || exit -1
+bundle exec rake install || exit -1
 echo
-echo -e "${bold}Heatwave rails application installed.${NC}"
+echo -e "${bold}Heatwave SMS sender installed.${NC}"
 
 echo
 echo -e "${bold}Installing the Heatwave data puller...${NC}"
@@ -162,14 +172,6 @@ echo
 echo -e "${bold}Heatwave data puller installed.${NC}"
 
 echo
-echo -e "${bold}Installing the Heatwave SMS sender...${NC}"
-cd "$SENDER_HOME"
-bundle install --path ../vendor || exit -1
-bundle exec rake install || exit -1
-echo
-echo -e "${bold}Heatwave SMS sender installed.${NC}"
-
-echo
 echo -e "${bold}Installing the Heatwave messenger...${NC}"
 cd "$MESSENGER_HOME"
 bundle install --path ../vendor || exit -1
@@ -177,3 +179,15 @@ bundle exec rake install || exit -1
 bundle exec rake db:migrate:reset || exit -1
 echo
 echo -e "${bold}Heatwave messenger installed.${NC}"
+
+echo
+echo -e "${bold}Installing the Heatwave rails application...${NC}"
+cd "$RAILS_HOME"
+bundle install --path ../vendor || exit -1
+bundle exec rake db:migrate:reset || exit -1
+RAILS_ENV=production bundle exec rake db:migrate:reset || exit -1
+ADMIN_EMAIL=$ADMIN_EMAIL ADMIN_PASSWORD=$ADMIN_PASSWORD\
+    RAILS_ENV=production bundle exec rake db:seed || exit -1
+RAILS_ENV=production bundle exec rake assets:clean assets:precompile || exit -1
+echo
+echo -e "${bold}Heatwave rails application installed.${NC}"

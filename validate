@@ -25,7 +25,6 @@ fi
 export RAILS_HOME="$PWD/heatwave"
 export PULLER_HOME="$PWD/puller"
 export MESSENGER_HOME="$PWD/messenger"
-export MAILER_HOME="$PWD/mail_example"
 export SENDER_HOME="$PWD/sms_sender"
 
 echo
@@ -49,7 +48,6 @@ fi
 echo -e "${info}RAILS_HOME=${RAILS_HOME}${NC}"
 echo -e "${info}PULLER_HOME=${PULLER_HOME}${NC}"
 echo -e "${info}MESSENGER_HOME=${MESSENGER_HOME}${NC}"
-echo -e "${info}MAILER_HOME=${MAILER_HOME}${NC}"
 echo -e "${info}SENDER_HOME=${SENDER_HOME}${NC}"
 
 # Configure database

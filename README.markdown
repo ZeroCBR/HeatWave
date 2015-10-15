@@ -56,6 +56,8 @@ The initial administrator account has the following login details:
 **Email:** heatwaveorange@gmail.com
 **Password:** heatwaveorange1234
 
+These details can be set at the very top of the ./install script.
+
 This account can be used to set up accounts for real users and admins.
 It is recommended that this account be unregistered eventually for
 security purposes, but remember to make another admin account first!
@@ -112,7 +114,18 @@ of specifying the changes for the software system.
   is specified near the top of the file.  More precise instructions
   are in that file.
 
-TODO messenger's email address location
+`$REPOSITORY_ROOT/messenger/lib/messenger/email_wrapper.rb`:
+
+* The SMTP server from which to send heatwave alert emails is configured
+  by editing `Messenger::EmailWrapper::options_for(..)`.
+* The email account with which to log in to the SMTP server is configured
+  by editing `Messenger::EmailWrapper::create_email_details(..)`.
+
+`$REPOSITORY_ROOT/sms_sender/lib/sms_sender.rb`:
+
+* The Telstra developer API account with which to send heatwave alert SMSs is
+  configured by editing `ExampleSender::CLIENT_ID` and
+  `ExampleSender::CLIENT_SECRET`.
 
 ## Windows
 
@@ -130,10 +143,6 @@ in the **MSYS** shell):
    * `$ pacman -S gcc`
    * `$ pacman -S mingw64/mingw-w64-x86_64-gcc`
 7. Install other dependencies normally as specified below.
-
-# Functionality
-
-TODO describe how the rules engine works in detail.
 
 # Contributing
 

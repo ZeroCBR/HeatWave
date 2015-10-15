@@ -1,3 +1,10 @@
+# This file should contain all the record creation needed to seed the database with its default values.
+# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
+#
+# Examples:
+#
+#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
+#   Mayor.create(name: 'Emanuel', city: cities.first)
 melbourne = Location.create(id: 86071,
                             name: 'MELBOURNE REGIONAL OFFICE',
                             jan_mean: 25.9,
@@ -13,15 +20,8 @@ melbourne = Location.create(id: 86071,
                             nov_mean: 22.0,
                             dec_mean: 24.2)
 
-User.create(email: 'heatwaveorange@gmail.com',
-            password: 'heatwaveorange1234',
-            admin_access: true,
-            location: melbourne,
-            f_name: 'Heatwave',
-            l_name: 'Administrator',
-            gender: 'An enigma',
-            age: 99,
-            message_type: 'email')
+user = CreateAdminService.new.call(melbourne)
+puts 'CREATED ADMIN USER: ' << user.email
 
 full_advice = \
   'The rule name identifies the rule and is the heading of its advice page. '\
