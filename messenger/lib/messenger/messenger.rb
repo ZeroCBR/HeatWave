@@ -1,8 +1,4 @@
 require 'date'
-require 'messenger/version'
-require 'messenger/models'
-require 'messenger/sms_wrapper'
-require 'messenger/email_wrapper'
 
 ##
 # Sends the messages at the core of this application.
@@ -32,16 +28,9 @@ module Messenger
   #    i.e. a message that could not be sent and the relevant error
   #
   def self::send_messages(messages, sender = nil)
-    errors = []
-    messages.each do |message|
-      begin send_one_message(message, sender)
-      rescue MessageTypeError, SmsWrapper::SmsTooLongError => e
-        errors << { message: message, error: e }
-        next
-      else message.send_time = DateTime.now
-      end
-      message.save
-    end; errors
+    messages
+      .map { |m| attempt_to_send(m, sender) }
+      .reject(&:nil?)
   end
 
   ##
@@ -57,11 +46,9 @@ module Messenger
   # * An array of message hashes which haven't been sent yet.
   #
   def self::retrieve_messages(joiner = Messenger::Joiner)
-    models = {
-      location: Location,
-      message:  Message,
-      user:     User
-    }
+    models = { location: Location,
+               message:  Message,
+               user:     User }
     joiner.messages(models, Rule.all, Date.today)
   end
 
@@ -72,6 +59,19 @@ module Messenger
   # text for the error message when message_type is set wrong
   WRONGMETHODERROR = "'message_type' must be set to 'email' or 'phone'."\
     ' In this case it was: '
+
+  def self::attempt_to_send(message, sender = nil)
+    begin
+      send_one_message(message, sender)
+    rescue MessageTypeError, SmsWrapper::SmsTooLongError => e
+      error = { message: message, error: e }
+    else
+      message.send_time = DateTime.now
+      error = nil
+    end
+    message.save
+    error
+  end
 
   def self::send_one_message(message, sender = nil)
     case message.user.message_type

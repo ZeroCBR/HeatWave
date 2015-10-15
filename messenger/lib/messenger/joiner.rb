@@ -80,7 +80,8 @@ module Messenger
     #
     # ==== Parameters:
     #
-    # * +_rule+ - TODO not yet used, but it will be used eventually.
+    # * +rule+ - TODO not yet used, but it should be used eventually,
+    #   eg. to make certain rules apply to certain users.
     # * +location+ - the location where the potential recipients live.
     #
     # ==== Returns:

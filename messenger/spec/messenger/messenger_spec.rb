@@ -110,23 +110,23 @@ describe Messenger do
         @weather = Weather.update_or_create_by(
           { location: @mildura, date: Date.today }, high_temp: 100)
         User.destroy_all
-        @alice = User.create(email: 'asanchez@email.com',
-                             encrypted_password: '123',
-                             f_name: 'Alice',
-                             l_name: 'Sanchez',
-                             gender: 'F',
-                             age: 20,
-                             message_type: 'phone',
-                             phone: '0400400001',
-                             location: @mildura)
-        @bob = User.create(email: 'bobr@email.com',
-                           encrypted_password: 'abc',
-                           f_name: 'Bob',
-                           l_name: 'Roberts',
-                           gender: 'M',
-                           age: 30,
-                           message_type: 'email',
-                           location: @mildura)
+        @alice = User.create!(email: 'asanchez@email.com',
+                              password: '123456768',
+                              f_name: 'Alice',
+                              l_name: 'Sanchez',
+                              gender: 'F',
+                              age: 20,
+                              message_type: 'phone',
+                              phone: '0400400001',
+                              location: @mildura)
+        @bob = User.create!(email: 'bobr@email.com',
+                            password: '123456768',
+                            f_name: 'Bob',
+                            l_name: 'Roberts',
+                            gender: 'M',
+                            age: 30,
+                            message_type: 'email',
+                            location: @mildura)
         Message.destroy_all
         message_content = 'Hello, this is a test message from HeatWave'
         @message_model_1 = Message.create(
