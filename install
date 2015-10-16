@@ -148,6 +148,7 @@ bundle install --path ../vendor || exit -1
 bundle exec rake db:migrate:reset || exit -1
 RAILS_ENV=production bundle exec rake db:migrate:reset || exit -1
 RAILS_ENV=production bundle exec rake db:seed || exit -1
+RAILS_ENV=production bundle exec rake assets:clean assets:precompile || exit -1
 echo
 echo -e "${bold}Heatwave rails application installed.${NC}"
 
