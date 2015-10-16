@@ -44,7 +44,7 @@ namespace :test do
     Messenger::Database.initialise('test' || 'production')
     puts 'Adding a rule: '
 
-    p easy_rule = Rule.find_or_create_by(
+    p Rule.find_or_create_by(
       name: 'This rule is almost guaranteed to cause a heatwave',
       key_advice: 'Hello, this is a test message from HeatWave',
       full_advice: 'full advice text',
@@ -60,21 +60,24 @@ namespace :test do
       sep_mean: 1, oct_mean: 1, nov_mean: 2, dec_mean: 2)
     puts ''
     puts 'Adding today\'s weather for the location: '
-    p Weather.find_or_create_by(location: mildura,
-                     date: Date.today,
-                     high_temp: 100)
+    p Weather.find_or_create_by(
+      location: mildura,
+      date: Date.today,
+      high_temp: 100)
     puts ''
     puts 'Adding tomorrow\'s weather for the location: '
-    p Weather.find_or_create_by(location: mildura,
-                     date: Date.today + 1.day,
-                     high_temp: 100)
+    p Weather.find_or_create_by(
+      location: mildura,
+      date: Date.today + 1.day,
+      high_temp: 100)
     puts ''
     puts 'Adding the next day\'s weather for the location: '
-    p Weather.find_or_create_by(location: mildura,
-                     date: Date.today + 2.day,
-                     high_temp: 100)
+    p Weather.find_or_create_by(
+      location: mildura,
+      date: Date.today + 2.day,
+      high_temp: 100)
     puts ''
-    
+
     puts 'Adding a phone user'
     p alice = User.find_or_create_by(
       email: 'asanchez@mail.com',
