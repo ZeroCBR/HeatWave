@@ -2,7 +2,7 @@
 # Overriding controller for registration.
 # Overrides the default devise registrations controller.
 class RegistrationsController < Devise::RegistrationsController
-  before_action :set_user, only: [:edit, :update]
+  before_action :set_user, only: [:edit, :update, :destroy]
 
   def new
     render profile_path if user_signed_in?
@@ -30,6 +30,16 @@ class RegistrationsController < Devise::RegistrationsController
   def update
     @locations = Location.all.sort_by(&:name)
     super
+  end
+
+  def destroy
+    @user.unsubscribe
+    Devise.sign_out_all_scopes ? sign_out : sign_out(@user)
+    if is_flashing_format?
+      set_flash_message :notice,
+                        'You have succesfully unsubscribed'
+    end
+    redirect_to after_sign_out_path_for(User)
   end
 
   private

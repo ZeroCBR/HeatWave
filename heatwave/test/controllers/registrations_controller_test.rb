@@ -61,6 +61,54 @@ class CreateRegistrationsControllerTest < ActionController::TestCase
     assert_response :redirect
     User.find_by(email: @user.email + '2').delete
   end
+
+  test 'registrations#create should allow unsubscribed users' do
+    @user = users(:two)
+    assert_difference('User.count', 1) do
+      post :create, user: { email: @user.email + '3',
+                            password: '12345678',
+                            password_confirmation: '12345678',
+                            f_name: @user.f_name,
+                            l_name: @user.l_name,
+                            gender: @user.gender,
+                            age: @user.age,
+                            location_id: @user.location_id,
+                            message_type: 'unsubscribed',
+                            phone: @user.phone }
+    end
+    assert_response :redirect
+    User.find_by(email: @user.email + '3').delete
+  end
+end
+
+##
+# class that covers the cases for destroying a user
+# where a user is unsubscribed from the service
+class DestroyRegistrationsControllerTest < ActionController::TestCase
+  setup do
+    @request.env['devise.mapping'] = Devise.mappings[:user]
+    @controller = RegistrationsController.new
+  end
+
+  test 'registrations#destroy should mark a user as unsubscribed' do
+    @user = users(:one)
+    sign_in(@user)
+    assert_difference('User.count', 0) do
+      delete :destroy, user: { id: @user.id }
+    end
+    assert_response :redirect
+    assert_equal 'unsubscribed', User.find_by(id: @user.id).message_type
+  end
+
+  test 'registrations#destroy should only work on the current user' do
+    @user = users(:one)
+    sign_in(users(:two))
+    assert_difference('User.count', 0) do
+      delete :destroy, user: { id: @user.id }
+    end
+    assert_response :redirect
+    assert_equal @user.message_type, User.find_by(id: @user.id).message_type
+  end
 end
 
 ##
