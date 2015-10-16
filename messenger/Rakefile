@@ -79,7 +79,7 @@ namespace :test do
     puts ''
 
     puts 'Adding a phone user'
-    p alice = User.create!(
+    p User.create!(
       email: 'asanchez@mail.com',
       password: '12345678910',
       f_name: 'Alice',
@@ -91,7 +91,7 @@ namespace :test do
       location: mildura)
     puts ''
     puts 'Adding an email user'
-    p bob = User.create!(
+    p User.create!(
       email: 'jmcma@student.unimelb.edu.au',
       password: '12345678910',
       f_name: 'Bob',
