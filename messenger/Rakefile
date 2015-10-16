@@ -79,9 +79,9 @@ namespace :test do
     puts ''
 
     puts 'Adding a phone user'
-    p alice = User.find_or_create_by(
+    p alice = User.create!(
       email: 'asanchez@mail.com',
-      encrypted_password: '12345678910',
+      password: '12345678910',
       f_name: 'Alice',
       l_name: 'Sanchez',
       gender: 'F',
@@ -91,17 +91,15 @@ namespace :test do
       location: mildura)
     puts ''
     puts 'Adding an email user'
-    p bob = User.find_or_create_by(
+    p bob = User.create!(
       email: 'jmcma@student.unimelb.edu.au',
-      encrypted_password: '12345678910',
+      password: '12345678910',
       f_name: 'Bob',
       l_name: 'Roberts',
       gender: 'M',
       age: 28,
       message_type: 'email',
       location: mildura)
-    alice.save!
-    bob.save!
 
     puts ''
     puts 'Generating messages'
