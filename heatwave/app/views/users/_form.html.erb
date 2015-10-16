@@ -36,7 +36,9 @@
   <div class="field">
     <%= f.label :message_type %><br>
     <%= f.select :message_type,
-                 [['SMS', 'phone'], ['Email', 'email']],
+                 [['SMS', 'phone'],
+                  ['Email', 'email'],
+                  ['No Messages', 'unsubscribed']],
                  prompt: 'Select your prefered message type' %>
   </div>
   <div class="field">
