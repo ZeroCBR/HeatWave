@@ -10,7 +10,8 @@ Devise.setup do |config|
   # You can change it below and use your own secret key.
 
   config.secret_key =
-    '0c85068f7678baa73b066c28bd81dffca4451eaf564f25ae59f8112384c1e7489e8294ca6'\
+    '0c85068f7678baa73b066c28bd81dffca4451eaf564f25ae59f8112384c1e'\
+    '7489e8294ca6'\
     '2b4c043af5d4b7f21c239ce06156adde377064f882ca749f7fcecdb'
 
   # ==> Mailer Configuration

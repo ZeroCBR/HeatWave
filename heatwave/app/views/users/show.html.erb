@@ -1,36 +1,27 @@
+<% if @user.admin_access %>
+  <p>
+    <strong>This user is an administrator.</strong>
+  </p>
+<% end %>
+
 <p>
-  <strong>First name:</strong>
+  <strong>Given name:</strong>
   <%= @user.f_name %>
 </p>
 
 <p>
-  <strong>Last name:</strong>
+  <strong>Family name:</strong>
   <%= @user.l_name %>
-</p>
-
-<p>
-  <strong>Is an admin?:</strong>
-  <%= @user.admin_access %>
-</p>
-
-<p>
-  <strong>Gender:</strong>
-  <%= @user.gender %>
-</p>
-
-<p>
-  <strong>Mobile number:</strong>
-  <%= @user.phone %>
-</p>
-
-<p>
-  <strong>Age:</strong>
-  <%= @user.age %>
 </p>
 
 <p>
   <strong>Email:</strong>
   <%= @user.email %>
+</p>
+
+<p>
+  <strong>Mobile number:</strong>
+  <%= @user.phone %>
 </p>
 
 <p>
@@ -41,6 +32,16 @@
 <p>
   <strong>Nearest weather station:</strong>
   <%= @user.location.name %>
+</p>
+
+<p>
+  <strong>Gender:</strong>
+  <%= @user.gender %>
+</p>
+
+<p>
+  <strong>Age:</strong>
+  <%= @user.age %>
 </p>
 
 <% if current_user.admin_access %>

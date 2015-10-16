@@ -5,6 +5,7 @@ class RegistrationsController < Devise::RegistrationsController
   before_action :set_user, only: [:edit, :update]
 
   def new
+    render profile_path if user_signed_in?
     @locations = Location.all.sort_by(&:name)
     super
   end
@@ -39,7 +40,7 @@ class RegistrationsController < Devise::RegistrationsController
 
   def successful_create_response
     if @user.active_for_authentication?
-      flash[:notice] = :signed_up if is_navigational_format?
+      flash[:notice] = 'Successfully signed up' if is_navigational_format?
       sign_up :user, @user
       respond_with @user, location: after_sign_up_path_for(@user)
     else
