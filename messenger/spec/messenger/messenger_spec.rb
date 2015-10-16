@@ -17,6 +17,7 @@ describe Messenger do
     let(:phone_user) { double('phone_user') }
     let(:email_user) { double('email_user') }
     let(:bad_user) { double('bad_user') }
+    let(:unsubscribed_user) { double('unsubscribed_user') }
 
     let(:message_1) { double('1st_message') }
     let(:message_2) { double('2nd_message') }
@@ -73,6 +74,12 @@ describe Messenger do
           allow(message_4).to receive(:save) { true }
           allow(message_4).to receive(:send_time=) { true }
           allow(bad_user).to receive(:message_type) { 'carrier_pigeon' }
+
+          allow(message_3).to receive(:user) { unsubscribed_user }
+          allow(message_3).to receive(:save) { true }
+          allow(message_3).to receive(:send_time=) { true }
+
+          allow(unsubscribed_user).to receive(:message_type) { 'unsubscribed' }
         end
 
         it 'should pass each message to the right sender' do
@@ -81,7 +88,13 @@ describe Messenger do
           expect(Messenger.send_messages(messages, sender)).to be_empty
         end
 
-        it 'should fail if message_type is not email or phone' do
+        it 'should do nothing if message_type is unsubscribed' do
+          expect(sender).not_to receive(:send_via_sms)
+          expect(sender).not_to receive(:send_via_email)
+          expect(Messenger.send_messages([message_3], sender)).to be_empty
+        end
+
+        it 'should fail if message_type isnt email, phone or unsubscribed' do
           result = Messenger.send_messages([message_4])
           expect(result.length).to be 1
           expect(result.at(0)[:message]).to be message_4
@@ -127,6 +140,14 @@ describe Messenger do
                             age: 30,
                             message_type: 'email',
                             location: @mildura)
+        @carl = User.create!(email: 'carl@email.com',
+                             password: '123456768',
+                             f_name: 'Carl',
+                             l_name: 'Leonardson',
+                             gender: 'M',
+                             age: 30,
+                             message_type: 'unsubscribed',
+                             location: @mildura)
         Message.destroy_all
         message_content = 'Hello, this is a test message from HeatWave'
         @message_model_1 = Message.create(
@@ -137,6 +158,12 @@ describe Messenger do
         )
         @message_model_2 = Message.create(
           user: @bob,
+          contents: message_content,
+          rule: @spike_rule,
+          weather: @weather
+        )
+        @message_model_3 = Message.create(
+          user: @carl,
           contents: message_content,
           rule: @spike_rule,
           weather: @weather

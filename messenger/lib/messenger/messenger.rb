@@ -79,6 +79,7 @@ module Messenger
       send_sms(message, sender)
     when 'email'
       send_email(message, sender)
+    when 'unsubscribed' # do nothing
     else
       fail MessageTypeError, WRONGMETHODERROR + message.user.message_type
     end
