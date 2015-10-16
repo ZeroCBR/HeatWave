@@ -113,6 +113,7 @@ namespace :test do
     puts errors.to_s
     puts errors.size.to_s + ' errors'
   end
+  task acceptance: :'db:test:reset'
 end
 
 task spec: :'db:test:reset' # Always reset the test db before specs
