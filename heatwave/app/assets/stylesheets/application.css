@@ -25,3 +25,7 @@
 .alert-success {
   color: green;
 }
+
+input.navbar-link {
+    display: inline-block;
+}
