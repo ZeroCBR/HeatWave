@@ -9,7 +9,7 @@
       <% if current_user.admin_access %>
         <li><%= link_to 'Rule list', rules_path %></li>
       <% end %> 
-      <li><%= link_to 'Log in as '+current_user.email, profile_path %></li>       
+      <li><%= link_to 'Logged in as '+current_user.email, profile_path %></li>      
       <li><%= link_to 'View profile', profile_path %></li>
       <li><%= link_to 'Edit profile', edit_user_registration_path  %></li>
       <li><%= link_to "Messages log", messages_path %></li>
