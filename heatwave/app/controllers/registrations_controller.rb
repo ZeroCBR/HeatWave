@@ -37,7 +37,7 @@ class RegistrationsController < Devise::RegistrationsController
     Devise.sign_out_all_scopes ? sign_out : sign_out(@user)
     if is_flashing_format?
       set_flash_message :notice,
-                        'You have succesfully unsubscribed'
+                        'unsubscribed'
     end
     redirect_to after_sign_out_path_for(User)
   end
