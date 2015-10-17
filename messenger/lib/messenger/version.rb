@@ -1,5 +1,6 @@
 #:nodoc:
 module Messenger
   ## Final integration version lock.
-  VERSION = '1.0.0'
+  # added support for unsubscribed users
+  VERSION = '1.0.1'
 end

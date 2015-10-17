@@ -44,7 +44,7 @@ gem 'puller', '~> 1.0.0', path: PULLER_HOME
 gem 'sms_sender', '~> 1.0.0', path: SENDER_HOME
 
 # Use the Heatwave messenger
-gem 'messenger', '~> 1.0.0', path: MESSENGER_HOME
+gem 'messenger', '~> 1.0.1', path: MESSENGER_HOME
 
 # Use Unicorn as the app server
 # gem 'unicorn'

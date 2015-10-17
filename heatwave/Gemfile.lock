@@ -1,7 +1,7 @@
 PATH
   remote: ../messenger
   specs:
-    messenger (1.0.0)
+    messenger (1.0.1)
       active_record_migrations
       devise
       mail
@@ -227,7 +227,7 @@ DEPENDENCIES
   devise
   jbuilder (~> 2.0)
   jquery-rails
-  messenger (~> 1.0.0)!
+  messenger (~> 1.0.1)!
   puller (~> 1.0.0)!
   rails (= 4.2.4)
   rubocop
