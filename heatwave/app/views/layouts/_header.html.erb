@@ -8,17 +8,16 @@
     <ul class="nav navbar-nav navbar-right">
       <% if current_user.admin_access %>
         <li><%= link_to 'Rule list', rules_path %></li>
-      <% end %> 
-      <li><%= link_to 'Logged in as '+current_user.email, profile_path %></li>      
-      <li><%= link_to 'View profile', profile_path %></li>
-      <li><%= link_to 'Edit profile', edit_user_registration_path  %></li>
+      <% end %>               
       <li><%= link_to "Messages log", messages_path %></li>
-      <li><%= link_to "Logout", destroy_user_session_path, method: :delete %></li>          
       <li><%= link_to "Unsubscribe",
-                  user_registration_path,
-                  id: current_user.id,
-                  data: { confirm: "Are you sure?" },
-                  method: :delete %></li>
+            user_registration_path,
+            id: current_user.id,
+            data: { confirm: "Are you sure?" },
+            method: :delete %></li>
+      <li><%= link_to 'Edit profile', edit_user_registration_path  %></li>
+      <li><%= link_to 'Signed in as '+current_user.email, profile_path %></li>  
+      <li><%= link_to "Sign out", destroy_user_session_path, method: :delete %></li>          
     </ul>                  
 
   <% else %>
