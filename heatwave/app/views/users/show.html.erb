@@ -1,50 +1,52 @@
-<% if @user.admin_access %>
+<div class="container">
+  <% if @user.admin_access %>
+    <p>
+      <strong>This user is an administrator.</strong>
+    </p>
+  <% end %>
+
   <p>
-    <strong>This user is an administrator.</strong>
+    <strong>Given name:</strong>
+    <%= @user.f_name %>
   </p>
-<% end %>
 
-<p>
-  <strong>Given name:</strong>
-  <%= @user.f_name %>
-</p>
+  <p>
+    <strong>Family name:</strong>
+    <%= @user.l_name %>
+  </p>
 
-<p>
-  <strong>Family name:</strong>
-  <%= @user.l_name %>
-</p>
+  <p>
+    <strong>Email:</strong>
+    <%= @user.email %>
+  </p>
 
-<p>
-  <strong>Email:</strong>
-  <%= @user.email %>
-</p>
+  <p>
+    <strong>Mobile number:</strong>
+    <%= @user.phone %>
+  </p>
 
-<p>
-  <strong>Mobile number:</strong>
-  <%= @user.phone %>
-</p>
+  <p>
+    <strong>Prefered message type:</strong>
+    <%= @user.message_type %>
+  </p>
 
-<p>
-  <strong>Prefered message type:</strong>
-  <%= @user.message_type %>
-</p>
+  <p>
+    <strong>Nearest weather station:</strong>
+    <%= @user.location.name %>
+  </p>
 
-<p>
-  <strong>Nearest weather station:</strong>
-  <%= @user.location.name %>
-</p>
+  <p>
+    <strong>Gender:</strong>
+    <%= @user.gender %>
+  </p>
 
-<p>
-  <strong>Gender:</strong>
-  <%= @user.gender %>
-</p>
+  <p>
+    <strong>Age:</strong>
+    <%= @user.age %>
+  </p>
 
-<p>
-  <strong>Age:</strong>
-  <%= @user.age %>
-</p>
-
-<% if current_user.admin_access %>
-  <%= link_to 'All users', users_path %>
-  <%= link_to 'Edit details', edit_user_path(@user) %>
-<% end %>
+  <% if current_user.admin_access %>
+    <%= link_to 'All users', users_path %> |
+    <%= link_to 'Edit details', edit_user_path(@user) %>
+  <% end %>
+</div>

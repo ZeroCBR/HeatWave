@@ -10,12 +10,12 @@
   <div class="field">
     <b><%= f.label :current_password %></b>
     <i>(we need your current password to confirm your changes)</i><br/>
-    <%= f.password_field :current_password, autocomplete: "off" %>
+    <%= f.password_field :current_password, autocomplete: "off", class:"form-control", style:"width:30%" %>
   </div>
 
   <div class="field">
     <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
+    <%= f.email_field :email, autofocus: true, class:"form-control", style:"width:30%" %>
   </div>
 
   <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
@@ -24,51 +24,52 @@
 
   <div class="field">
     New password <i>(leave blank if you don't want to change it)</i><br/>
-    <%= f.password_field :password, autocomplete: "off" %>
+    <%= f.password_field :password, autocomplete: "off", class:"form-control", style:"width:30%" %>
   </div>
 
   <div class="field">
     New password confirmation<br/>
-    <%= f.password_field :password_confirmation, autocomplete: "off" %>
+    <%= f.password_field :password_confirmation, autocomplete: "off", class:"form-control", style:"width:30%" %>
   </div>
 
   <div class="field">
     <%= f.label :phone %><br>
-    <%= f.text_field :phone %>
+    <%= f.text_field :phone, class:"form-control", style:"width:30%" %>
   </div>
   <div class="field">
     <%= f.label :message_type %><br>
-    <%= f.select :message_type,
-      [['SMS', 'phone'],
-       ['Email', 'email'],
-       ['No Messages', 'unsubscribed']] %>
+    <%= f.select(:message_type,
+                 [['SMS', 'phone'],
+                  ['Email', 'email'],
+                  ['No Messages', 'unsubscribed']], {:prompt=>'Select your nearest weather station'}, {:class=>'form-control', :style=>"width:30%"})  %>
   </div>
   <div class="field">
     <%= f.label :location_id %><br>
-    <%= f.select :location_id,
-      @locations.map{ |l| [l.name, l.id] } %>
+    <%= f.select(:location_id,
+                 @locations.map{ |l| [l.name, l.id] },
+                 {:prompt=> 'Select your nearest weather station'}, {:class=>"form-control", :style=>"width:30%" }) %>
   </div>
 
   <div class="field">
-    <%= f.label :f_name %><br />
-    <%= f.text_field :f_name %>
+    <%= f.label :f_name, 'Given Name' %><br />
+    <%= f.text_field :f_name, class:"form-control", style:"width:30%" %>
   </div>
   <div class="field">
-    <%= f.label :l_name %><br />
-    <%= f.text_field :l_name %>
+    <%= f.label :l_name, 'Family Name'  %><br />
+    <%= f.text_field :l_name, class:"form-control", style:"width:30%" %>
   </div>
 
   <div class="field">
     <%= f.label :gender %><br>
-    <%= f.text_field :gender %>
+    <%= f.text_field :gender, class:"form-control", style:"width:10%" %>
   </div>
   <div class="field">
     <%= f.label :age %><br>
-    <%= f.number_field :age %>
+    <%= f.number_field :age, class:"form-control", style:"width:10%" %>
   </div>
 
   <div class="actions">
-    <%= f.submit "Update" %>
+    <%= f.submit "Update", class: "btn btn-large btn-primary" %>
   </div>
 <% end %>
 

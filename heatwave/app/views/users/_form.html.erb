@@ -14,59 +14,58 @@
 
   <div class="field">
     <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
+    <%= f.email_field :email, autofocus: true, class:"form-control", style:"width:30%" %>
   </div>
 
   <div class="field">
     <!-- Intentionally left visible; admins being able to see
     passwords for resetting purposes is important. -->
     <%= f.label :password %><i>(leave blank if you don't want to change it)</i><br />
-    <%= f.text_field :password, autocomplete: "off" %>
+    <%= f.text_field :password, autocomplete: "off", class:"form-control", style:"width:30%" %>
   </div>
 
   <div class="field">
-    <%= f.label :admin_access %><br>
+    <%= f.label :admin_access, "Administrator?" %><br>
     <%= f.check_box :admin_access %>
   </div>
 
   <div class="field">
     <%= f.label :phone %><br>
-    <%= f.text_field :phone %>
+    <%= f.text_field :phone, class:"form-control", style:"width:30%" %>
   </div>
   <div class="field">
     <%= f.label :message_type %><br>
-    <%= f.select :message_type,
+    <%= f.select(:message_type,
                  [['SMS', 'phone'],
                   ['Email', 'email'],
-                  ['No Messages', 'unsubscribed']],
-                 prompt: 'Select your prefered message type' %>
+                  ['No Messages', 'unsubscribed']], {:prompt=>'Select your nearest weather station'}, {:class=>'form-control', :style=>"width:30%"})%>
   </div>
   <div class="field">
     <%= f.label :location_id %><br>
-    <%= f.select :location_id,
+    <%= f.select(:location_id,
                  @locations.map{ |l| [l.name, l.id] },
-                 prompt: 'Select your nearest weather station' %>
+                 {:prompt=> 'Select your nearest weather station'}, {:class=>"form-control", :style=>"width:30%" }) %>
   </div>
 
   <div class="field">
-    <%= f.label :f_name %><br />
-    <%= f.text_field :f_name %>
+    <%= f.label :f_name, 'Given Name' %><br />
+    <%= f.text_field :f_name, class:"form-control", style:"width:30%" %>
   </div>
   <div class="field">
-    <%= f.label :l_name %><br />
-    <%= f.text_field :l_name %>
+    <%= f.label :l_name, 'Family Name' %><br />
+    <%= f.text_field :l_name, class:"form-control", style:"width:30%" %>
   </div>
 
   <div class="field">
     <%= f.label :gender %><br>
-    <%= f.text_field :gender %>
+    <%= f.text_field :gender, class:"form-control", style:"width:10%" %>
   </div>
   <div class="field">
     <%= f.label :age %><br>
-    <%= f.number_field :age %>
+    <%= f.number_field :age, class:"form-control", style:"width:10%" %>
   </div>
 
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit({:class=> "btn btn-large btn-primary"}) %>
   </div>
 <% end %>
